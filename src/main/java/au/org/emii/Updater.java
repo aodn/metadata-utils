@@ -98,6 +98,61 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 
 // two interfaces a builder to generate, and then a class to use.
 
+
+
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.HashMap;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+
+
+
+class XSLTProcessor {
+
+ private static final HashMap<String,Transformer> TRANSFORMER_CACHE = new HashMap<String,Transformer>();
+
+ final static String CCD_NO_TEXT_SECTIONS = "/ccd_no_text_sections.xsl";
+  
+ private XSLTProcessor() {
+   // no instantiation
+ }
+
+ private static Transformer getCCDTransformer() throws TransformerConfigurationException {
+
+  Transformer transformer = TRANSFORMER_CACHE.get(CCD_NO_TEXT_SECTIONS);
+  if (transformer == null) { 
+   TransformerFactory tsf = TransformerFactory.newInstance();
+         InputStream is = XSLTProcessor.class.getResourceAsStream(CCD_NO_TEXT_SECTIONS);
+   transformer = tsf.newTransformer(new StreamSource(is));
+   return transformer;
+  }
+  return transformer;
+ }
+ 
+ public static String stripTextSections(final String xmlString) throws TransformerConfigurationException,
+        TransformerException, 
+        TransformerFactoryConfigurationError {
+
+        final StringReader xmlReader = new StringReader(xmlString);
+        final StringWriter xmlWriter = new StringWriter();
+        final Transformer ccdTransformer = getCCDTransformer();
+        ccdTransformer.transform(new StreamSource(xmlReader),
+            new StreamResult(xmlWriter));
+        
+        return xmlWriter.toString();
+ }
+}
+
+
 class Updater 
 {
 
