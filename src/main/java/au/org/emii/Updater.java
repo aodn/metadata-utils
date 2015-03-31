@@ -114,50 +114,31 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 
-// http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
 class XSLTProcessor {
 
- private static final HashMap<String,Transformer> TRANSFORMER_CACHE = new HashMap<String,Transformer>();
+	// http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
- // final static String CCD_NO_TEXT_SECTIONS = "/ccd_no_text_sections.xsl";
-// final static String CCD_NO_TEXT_SECTIONS = "/ccd_no_text_sections.xsl";
-  
- private XSLTProcessor() {
-   // no instantiation
- }
+	public XSLTProcessor() {
+	// no instantiation
+	}
 
- private static Transformer getCCDTransformer() throws Exception {
-
-/*  Transformer transformer = TRANSFORMER_CACHE.get(CCD_NO_TEXT_SECTIONS);
-  if (transformer == null) { 
-*/
-   TransformerFactory tsf = TransformerFactory.newInstance();
-/*
-         InputStream is = XSLTProcessor.class.getResourceAsStream(CCD_NO_TEXT_SECTIONS);
-*/
-
-	InputStream is  = new FileInputStream( "trans.xslt" ); 
-
-  Transformer transformer = tsf.newTransformer(new StreamSource(is));
-   return transformer;
-/*
-  }
-  return transformer;
-*/
- }
- 
- public static String stripTextSections(final String xmlString) throws Exception 
+	private Transformer getCCDTransformer() throws Exception 
 	{
+		final TransformerFactory tsf = TransformerFactory.newInstance();
+		final InputStream is  = new FileInputStream( "trans.xslt" ); 
+		return tsf.newTransformer(new StreamSource(is));
+	}
 
-        final StringReader xmlReader = new StringReader(xmlString);
-        final StringWriter xmlWriter = new StringWriter();
-        final Transformer ccdTransformer = getCCDTransformer();
-        ccdTransformer.transform(new StreamSource(xmlReader),
-            new StreamResult(xmlWriter));
-        
-        return xmlWriter.toString();
- }
+	public String stripTextSections(final String xmlString) throws Exception 
+	{
+		final StringReader xmlReader = new StringReader(xmlString);
+		final StringWriter xmlWriter = new StringWriter();
+		final Transformer ccdTransformer = getCCDTransformer();
+
+		ccdTransformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
+		return xmlWriter.toString();
+	}
 }
 
 
@@ -212,7 +193,7 @@ class Updater
 		System.out.println( "conn " + conn ); 
 
 
-		String query = "SELECT data FROM metadata ";
+		String query = "SELECT data FROM metadata where uuid = '4402cb50-e20a-44ee-93e6-4728259250d2' ";
 
         PreparedStatement stmt = conn.prepareStatement( query );
         ResultSet rs =  stmt.executeQuery();
@@ -224,9 +205,12 @@ class Updater
 
 			System.out.println("**************");
 			String s = (String) rs.getObject( 1);
+		//	System.out.println(s);
 
-			System.out.println(s);
+			String result = new XSLTProcessor(). stripTextSections( s );  
 
+			System.out.println(result);
+	
             ++count;
 			break;
         }
