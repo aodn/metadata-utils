@@ -116,7 +116,7 @@ class Updater
 
 		// psql -h test-geoserver -U meteo -d harvest
 
-		String url = "jdbc:postgresql://test-geoserver/harvest";
+		String url = "jdbc:postgresql://127.0.0.1/geonetwork";
 		Properties props = new Properties();
 		props.setProperty("user","meteo");
 		props.setProperty("password","meteo");
@@ -140,9 +140,35 @@ class Updater
 		return conn;
 	}
 
-	public static void main(String[] args) 
+	public static void main(String[] args) throws Exception
 	{
 		System.out.println( "hello world" ); 
+
+		Connection conn = getConn(); 
+
+		System.out.println( "conn " + conn ); 
+
+
+		String query = "SELECT data FROM metadata ";
+
+        PreparedStatement stmt = conn.prepareStatement( query );
+        ResultSet rs =  stmt.executeQuery();
+
+        System.out.println( "got some data " );
+        int count = 0;
+        while ( rs.next() ) 
+        {
+
+			System.out.println("**************");
+			String s = (String) rs.getObject( 1);
+
+			System.out.println(s);
+
+            ++count;
+			break;
+        }
+        System.out.println( "count " + count );
+
 	}
 }
 
