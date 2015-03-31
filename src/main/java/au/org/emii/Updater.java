@@ -114,33 +114,41 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 
-
+// http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
 class XSLTProcessor {
 
  private static final HashMap<String,Transformer> TRANSFORMER_CACHE = new HashMap<String,Transformer>();
 
- final static String CCD_NO_TEXT_SECTIONS = "/ccd_no_text_sections.xsl";
+ // final static String CCD_NO_TEXT_SECTIONS = "/ccd_no_text_sections.xsl";
+// final static String CCD_NO_TEXT_SECTIONS = "/ccd_no_text_sections.xsl";
   
  private XSLTProcessor() {
    // no instantiation
  }
 
- private static Transformer getCCDTransformer() throws TransformerConfigurationException {
+ private static Transformer getCCDTransformer() throws Exception {
 
-  Transformer transformer = TRANSFORMER_CACHE.get(CCD_NO_TEXT_SECTIONS);
+/*  Transformer transformer = TRANSFORMER_CACHE.get(CCD_NO_TEXT_SECTIONS);
   if (transformer == null) { 
+*/
    TransformerFactory tsf = TransformerFactory.newInstance();
+/*
          InputStream is = XSLTProcessor.class.getResourceAsStream(CCD_NO_TEXT_SECTIONS);
-   transformer = tsf.newTransformer(new StreamSource(is));
+*/
+
+	InputStream is  = new FileInputStream( "trans.xslt" ); 
+
+  Transformer transformer = tsf.newTransformer(new StreamSource(is));
    return transformer;
+/*
   }
   return transformer;
+*/
  }
  
- public static String stripTextSections(final String xmlString) throws TransformerConfigurationException,
-        TransformerException, 
-        TransformerFactoryConfigurationError {
+ public static String stripTextSections(final String xmlString) throws Exception 
+	{
 
         final StringReader xmlReader = new StringReader(xmlString);
         final StringWriter xmlWriter = new StringWriter();
