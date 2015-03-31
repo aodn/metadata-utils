@@ -24,7 +24,7 @@
 		<whoot>sometext </whoot>
     </xsl:template>
 
-     <xsl:template match="mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons/mcp:attributionConstraints/gco:CharacterString">  
+     <xsl:template match="gmd:identificationInfo/mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons/mcp:attributionConstraints/gco:CharacterString[matches(.,'Data was sourced')]">  
 		<whoot>sometext2</whoot>
     </xsl:template>
 
