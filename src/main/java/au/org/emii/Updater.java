@@ -97,12 +97,32 @@ class Updater
 		Options options = new Options();
 
 		// add t option
-		options.addOption("t", false, "display current time");
+		options.addOption("t", true, "display current time");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse( options, args);
 
 
+		if(cmd.hasOption("t")) {
+			// print the date and time
+	       System.out.println( "has t" );
+
+			String countryCode = cmd.getOptionValue("t");
+			if(countryCode == null) {
+				System.out.println( "no argument" );
+			} else {
+
+				System.out.println( "got argument t" + countryCode );
+
+			}
+			
+		}
+		else {
+			// print the date
+	       System.out.println( "doesn't have has t" );
+		}
+
+/*
 		Connection conn = getConn(); 
 
 		System.out.println( "conn " + conn ); 
@@ -130,7 +150,7 @@ class Updater
 			break;
         }
         System.out.println( "count " + count );
-
+*/
 	}
 }
 
