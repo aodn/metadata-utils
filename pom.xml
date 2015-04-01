@@ -43,7 +43,6 @@
 
 
   <repositories>
-    <!--other repositories if any-->
 
     <repository>
       <id>apache-snapshots</id>
@@ -93,6 +92,8 @@
                   <mainClass>org.sonatype.haven.HavenCli</mainClass>
                 </transformer>
               </transformers>
+
+              <createDependencyReducedPom>false</createDependencyReducedPom>
 
               <!-- http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar -->
               <filters>
