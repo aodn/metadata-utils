@@ -19,48 +19,41 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.*;
 
 
-class XSLTProcessor {
 
-	// http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
+// xslt examples,
+// http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
-	public XSLTProcessor() {
-	// no instantiation
-	}
 
-	private Transformer getCCDTransformer() throws Exception 
-	{
-		final TransformerFactory tsf = TransformerFactory.newInstance();
-		final InputStream is  = new FileInputStream( "trans.xslt" ); 
-		return tsf.newTransformer(new StreamSource(is));
-	}
-
-	public String stripTextSections(final String xmlString) throws Exception 
-	{
-		final StringReader xmlReader = new StringReader(xmlString);
-		final StringWriter xmlWriter = new StringWriter();
-		final Transformer ccdTransformer = getCCDTransformer();
-
-		ccdTransformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
-		return xmlWriter.toString();
-	}
-}
 
 
 class Updater 
 {
 
 	public Updater ()
-	{
+	{ }
 
+	private static Transformer getTransformer( String filename ) throws Exception 
+	{
+		final TransformerFactory tsf = TransformerFactory.newInstance();
+		final InputStream is  = new FileInputStream( "trans.xslt" ); 
+
+		return tsf.newTransformer(new StreamSource(is));
 	}
 
-	// not sure if we should do this here...
+	private static String transform ( Transformer transformer, String xmlString) throws Exception 
+	{
+		final StringReader xmlReader = new StringReader(xmlString);
+		final StringWriter xmlWriter = new StringWriter();
 
-	// certainly configuration should be pulled out... and put in resources.
+		transformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
 
-    public static Connection getConn( String url, String user, String pass) throws Exception
+		return xmlWriter.toString();
+	}
+
+    private static Connection getConn( String url, String user, String pass) throws Exception
 	{
 		Properties props = new Properties();
+
 		props.setProperty("user", user );
 		props.setProperty("password",pass );
 
@@ -80,49 +73,56 @@ class Updater
 		options.addOption("p", true, "password");
 		options.addOption("uuid", true, "metadata record uuid");
 		options.addOption("help", false, "show help");
+		options.addOption("t", true, "xslt file for transform");
+		options.addOption("stdout", false, "dump result to stdout");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse( options, args);
 
-		String url = cmd.getOptionValue("url");
-		String user = cmd.getOptionValue("u");
-		String pass = cmd.getOptionValue("p");
-		String uuid = cmd.getOptionValue("uuid");
-
-		if(cmd.hasOption("help") || url == null || user == null || pass == null) {
+		if(cmd.hasOption("help") || !cmd.hasOption("url") || !cmd.hasOption("u") || !cmd.hasOption("u")) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp( "Updater", options );
 			return;
 		}
 
-		Connection conn = getConn( url, user, pass); 
+		Connection conn = getConn( 
+			cmd.getOptionValue("url"), 
+			cmd.getOptionValue("u"), 
+			cmd.getOptionValue("p")
+		); 
 
-		String query = "SELECT data FROM metadata "  ;
-		if( uuid != null) {
-			query += " where uuid = '" + uuid + "'"; 
+		String query = "SELECT id,data FROM metadata "  ;
+		if( cmd.hasOption("uuid")) {
+			query += " where uuid = '" + cmd.getOptionValue("uuid") + "'"; 
 		} 
 
         PreparedStatement stmt = conn.prepareStatement( query );
-        ResultSet rs =  stmt.executeQuery();
+        ResultSet rs = stmt.executeQuery();
 
-        System.out.println( "got some data " );
+		Transformer transformer = null; 
+		if( cmd.hasOption("t")) { 
+			transformer = getTransformer(cmd.getOptionValue("t") );
+		}	 
+
         int count = 0;
         while ( rs.next() ) 
         {
+			int id = (Integer) rs.getObject(1);
+			String record = (String) rs.getObject(2);
 
-			System.out.println("**************");
-			String s = (String) rs.getObject( 1);
-			System.out.println(s);
-
-//			String result = new XSLTProcessor(). stripTextSections( s );  
-//			System.out.println(result);
+			if( transformer != null ) {
+				record = transform( transformer, record);  
+			}
 	
+			if( cmd.hasOption("stdout")) {
+				System.out.println(record);
+			}
+
             ++count;
 			break;
         }
 
-        System.out.println( "records processed: " + count );
-
+        System.out.println( "records processed " + count );
 	}
 }
 
