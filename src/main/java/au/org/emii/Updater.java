@@ -35,7 +35,7 @@ class Updater
 	private static Transformer getTransformer( String filename ) throws Exception 
 	{
 		final TransformerFactory tsf = TransformerFactory.newInstance();
-		final InputStream is  = new FileInputStream( "trans.xslt" ); 
+		final InputStream is  = new FileInputStream( filename ); 
 
 		return tsf.newTransformer(new StreamSource(is));
 	}
