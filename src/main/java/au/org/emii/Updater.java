@@ -91,7 +91,7 @@ class Updater
 			cmd.getOptionValue("p")
 		); 
 
-		String query = "SELECT id,data FROM metadata "  ;
+		String query = "SELECT id,uuid,data FROM metadata "  ;
 		if( cmd.hasOption("uuid")) {
 			query += " where uuid = '" + cmd.getOptionValue("uuid") + "'"; 
 		} 
@@ -107,15 +107,18 @@ class Updater
         int count = 0;
         while ( rs.next() ) 
         {
-			int id = (Integer) rs.getObject(1);
-			String record = (String) rs.getObject(2);
+			int id = (Integer) rs.getObject("id");
+			String uuid = (String) rs.getObject("uuid");
+			String data = (String) rs.getObject("data");
 
 			if( transformer != null ) {
-				record = transform( transformer, record);  
+				data = transform( transformer, data);  
 			}
 	
 			if( cmd.hasOption("stdout")) {
-				System.out.println(record);
+				System.out.println( "id " + id );
+				System.out.println( "uuid " + uuid );
+				System.out.println(data);
 			}
 
             ++count;
