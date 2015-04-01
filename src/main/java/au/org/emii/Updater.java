@@ -18,7 +18,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.cli.*;
 
-
+import java.io.FileNotFoundException;
+import javax.xml.transform.TransformerConfigurationException;
 
 // xslt examples,
 // http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
@@ -31,8 +32,14 @@ class Updater
 
 	public Updater ()
 	{ }
+/*
+FileNotFoundException; 
+ /home/meteo/imos/projects/geonetwork_updater/src/main/java/au/org/emii/Updater.java:[40,27] error: unreported exception TransformerConfigurationException; must be caught or declared to be thrown
 
-	private static Transformer getTransformer( String filename ) throws Exception 
+*/
+
+	private static Transformer getTransformer( String filename ) 
+		throws FileNotFoundException, TransformerConfigurationException
 	{
 		final TransformerFactory tsf = TransformerFactory.newInstance();
 		final InputStream is  = new FileInputStream( filename ); 
