@@ -1,8 +1,8 @@
 
 mvn clean install
 
-java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1/geonetwork -u meteo -p meteo
-
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -help 
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u meteo -p meteo
 
 -----
 mvn clean install

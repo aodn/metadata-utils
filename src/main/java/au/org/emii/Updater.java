@@ -60,36 +60,25 @@ class Updater
 
     public static Connection getConn( String url, String user, String pass) throws Exception
 	{
-		//String url = "jdbc:postgresql://127.0.0.1/postgres";
-		// psql -h test-geoserver -U meteo -d harvest
-
-//		String url = "jdbc:postgresql://127.0.0.1/geonetwork";
 		Properties props = new Properties();
 		props.setProperty("user", user );
 		props.setProperty("password",pass );
 
-//		props.setProperty("search_path","soop_sst,public");
-
+		// props.setProperty("search_path","soop_sst,public");
 		props.setProperty("ssl","true");
 		props.setProperty("sslfactory","org.postgresql.ssl.NonValidatingFactory");
 		props.setProperty("driver","org.postgresql.Driver" );
 
 		return DriverManager.getConnection(url, props);
-		/*if(conn == null) {
-			throw new RuntimeException( "Could not get connection" );
-		}*/
 	}
 
 	public static void main(String[] args) throws Exception
 	{
-		System.out.println( "hello world" ); 
-
 		Options options = new Options();
-
-		// add t option
 		options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
 		options.addOption("u", true, "user");
 		options.addOption("p", true, "password");
+		options.addOption("help", false, "show help");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse( options, args);
@@ -98,25 +87,16 @@ class Updater
 		String user = cmd.getOptionValue("u");
 		String pass = cmd.getOptionValue("p");
 
+		if(cmd.hasOption("help") || url == null || user == null || pass == null) {
+			HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp( "Updater", options );
+			return;
+		}
+
+
 		System.out.println( "conn string " + url + " " + user + " " + pass );
 
-/*
-		if(cmd.hasOption("u")) {
-			// print the date and time
-	       System.out.println( "has t" );
 
-			String countryCode = cmd.getOptionValue("t");
-			if(countryCode == null) {
-				System.out.println( "no argument" );
-			} 
-			
-		}
-		else {
-			// print the date
-	       System.out.println( "doesn't have has t" );
-		}
-
-*/
 		Connection conn = getConn( url, user, pass); 
 
 		System.out.println( "conn " + conn ); 
