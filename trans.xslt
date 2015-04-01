@@ -108,7 +108,7 @@
                  <gco:CharacterString>Attribution 4.0 International</gco:CharacterString>
              </mcp:licenseName>
              <mcp:attributionConstraints>
-                 <gco:CharacterString>Data was sourced</gco:CharacterString>
+                 <gco:CharacterString>Any users of IMOS data are required to clearly acknowledge the source of the material derived from IMOS in the format: "Data was sourced from the Integrated Marine Observing System (IMOS) - IMOS is a national collaborative research infrastructure, supported by the Australian Government." If relevant, also credit other organisations involved in collection of this particular datastream (as listed in 'credit' in the metadata record).</gco:CharacterString>
              </mcp:attributionConstraints>
          </mcp:MD_Commons>
 
