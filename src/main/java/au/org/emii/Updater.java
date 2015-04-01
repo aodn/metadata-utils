@@ -76,6 +76,7 @@ class Updater
 		options.addOption("t", true, "xslt file for transform");
 		options.addOption("stdout", false, "dump result to stdout");
 		options.addOption("update", false, "actually update the record");
+		options.addOption("all", false, "update all records");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse( options, args);
@@ -92,10 +93,18 @@ class Updater
 			cmd.getOptionValue("p")
 		); 
 
-		String query = "SELECT id,uuid,data FROM metadata "  ;
-		if( cmd.hasOption("uuid")) {
+		String query = "SELECT id,uuid,data FROM metadata ";
+		if(cmd.hasOption("uuid")) {
 			query += " where uuid = '" + cmd.getOptionValue("uuid") + "'"; 
 		} 
+
+		else if(cmd.hasOption("stdout") || cmd.hasOption( "update")) {
+			; 
+		}
+		else { 
+			throw new RuntimeException ( "Options should include -uuid, -all or -stdout" ); 
+		}
+
 
         PreparedStatement stmt = conn.prepareStatement( query );
         ResultSet rs = stmt.executeQuery();
