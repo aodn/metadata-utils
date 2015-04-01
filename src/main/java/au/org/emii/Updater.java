@@ -75,6 +75,7 @@ class Updater
 		options.addOption("help", false, "show help");
 		options.addOption("t", true, "xslt file for transform");
 		options.addOption("stdout", false, "dump result to stdout");
+		options.addOption("update", false, "actually update the record");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse( options, args);
@@ -119,6 +120,13 @@ class Updater
 				System.out.println( "id " + id );
 				System.out.println( "uuid " + uuid );
 				System.out.println(data);
+			}
+
+			if( cmd.hasOption("update")) {
+				PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ; 
+				updateStmt.setString(1, data );
+				updateStmt.setInt(2, id );
+				updateStmt.executeUpdate();
 			}
 
             ++count;

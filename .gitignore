@@ -1,5 +1,7 @@
 *.swp
 *.swo
+*.swn
 *.class
 target
 testWrite.nc
+old
