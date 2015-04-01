@@ -37,23 +37,23 @@ class BadCLIArgumentsException extends Exception
 
 
 
-class Updater 
+class Updater
 {
 
 	public Updater ()
 	{ }
 
-	private static Transformer getTransformer( String filename ) 
+	private static Transformer getTransformer( String filename )
 		throws FileNotFoundException, TransformerConfigurationException
 	{
 		final TransformerFactory tsf = TransformerFactory.newInstance();
-		final InputStream is  = new FileInputStream( filename ); 
+		final InputStream is  = new FileInputStream( filename );
 
 		return tsf.newTransformer(new StreamSource(is));
 	}
 
-	private static String transform ( Transformer transformer, String xmlString) 
-		throws TransformerException 
+	private static String transform ( Transformer transformer, String xmlString)
+		throws TransformerException
 	{
 		final StringReader xmlReader = new StringReader(xmlString);
 		final StringWriter xmlWriter = new StringWriter();
@@ -63,7 +63,7 @@ class Updater
 		return xmlWriter.toString();
 	}
 
-    private static Connection getConn( String url, String user, String pass) 
+    private static Connection getConn( String url, String user, String pass)
 		throws SQLException
 	{
 		Properties props = new Properties();
@@ -81,7 +81,7 @@ class Updater
 
 
 	public static void main(String[] args)
-		throws FileNotFoundException, TransformerConfigurationException, TransformerException, 
+		throws FileNotFoundException, TransformerConfigurationException, TransformerException,
 			SQLException, ParseException, BadCLIArgumentsException
 	{
 		Options options = new Options();
@@ -104,54 +104,54 @@ class Updater
 			return;
 		}
 
-		Connection conn = getConn( 
-			cmd.getOptionValue("url"), 
-			cmd.getOptionValue("u"), 
+		Connection conn = getConn(
+			cmd.getOptionValue("url"),
+			cmd.getOptionValue("u"),
 			cmd.getOptionValue("p")
-		); 
+		);
 
 		String query = "SELECT id,uuid,data FROM metadata ";
 		if(cmd.hasOption("uuid")) {
-			query += " where uuid = '" + cmd.getOptionValue("uuid") + "'"; 
-		} 
+			query += " where uuid = '" + cmd.getOptionValue("uuid") + "'";
+		}
 
 		else if(cmd.hasOption("stdout") || cmd.hasOption( "update")) {
-			; 
+			;
 		}
-		else { 
-			throw new BadCLIArgumentsException( "Options should include -uuid, -all or -stdout" ); 
+		else {
+			throw new BadCLIArgumentsException( "Options should include -uuid, -all or -stdout" );
 		}
 
 
         PreparedStatement stmt = conn.prepareStatement( query );
         ResultSet rs = stmt.executeQuery();
 
-		Transformer transformer = null; 
-		if( cmd.hasOption("t")) { 
+		Transformer transformer = null;
+		if( cmd.hasOption("t")) {
 			transformer = getTransformer(cmd.getOptionValue("t") );
-		}	 
+		}
 
         int count = 0;
-        while ( rs.next() ) 
+        while ( rs.next() )
         {
 			int id = (Integer) rs.getObject("id");
 			String uuid = (String) rs.getObject("uuid");
 			String data = (String) rs.getObject("data");
 
 			if( transformer != null ) {
-				data = transform( transformer, data);  
+				data = transform( transformer, data);
 			}
-	
+
 			if( cmd.hasOption("stdout")) {
 				System.out.println( "id " + id + "\nuuid " + uuid + "\n" + data);
 			}
 
 			if( cmd.hasOption("update")) {
-				PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ; 
+				PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ;
 				updateStmt.setString(1, data );
 				updateStmt.setInt(2, id );
 				updateStmt.executeUpdate();
-				// close...? 
+				// close...?
 			}
 
             ++count;
