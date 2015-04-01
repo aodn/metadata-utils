@@ -78,6 +78,7 @@ class Updater
 		options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
 		options.addOption("u", true, "user");
 		options.addOption("p", true, "password");
+		options.addOption("uuid", true, "metadata record uuid");
 		options.addOption("help", false, "show help");
 
 		CommandLineParser parser = new DefaultParser();
@@ -86,6 +87,7 @@ class Updater
 		String url = cmd.getOptionValue("url");
 		String user = cmd.getOptionValue("u");
 		String pass = cmd.getOptionValue("p");
+		String uuid = cmd.getOptionValue("uuid");
 
 		if(cmd.hasOption("help") || url == null || user == null || pass == null) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -93,16 +95,12 @@ class Updater
 			return;
 		}
 
-
-		System.out.println( "conn string " + url + " " + user + " " + pass );
-
-
 		Connection conn = getConn( url, user, pass); 
 
-		System.out.println( "conn " + conn ); 
-
-
-		String query = "SELECT data FROM metadata where uuid = '4402cb50-e20a-44ee-93e6-4728259250d2' ";
+		String query = "SELECT data FROM metadata "  ;
+		if( uuid != null) {
+			query += " where uuid = '" + uuid + "'"; 
+		} 
 
         PreparedStatement stmt = conn.prepareStatement( query );
         ResultSet rs =  stmt.executeQuery();
@@ -114,7 +112,7 @@ class Updater
 
 			System.out.println("**************");
 			String s = (String) rs.getObject( 1);
-		//	System.out.println(s);
+			System.out.println(s);
 
 //			String result = new XSLTProcessor(). stripTextSections( s );  
 //			System.out.println(result);
@@ -122,7 +120,8 @@ class Updater
             ++count;
 			break;
         }
-        System.out.println( "count " + count );
+
+        System.out.println( "records processed: " + count );
 
 	}
 }
