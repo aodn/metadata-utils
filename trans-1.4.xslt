@@ -2,7 +2,7 @@
 
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mcp="http://schemas.aodn.org.au/mcp-2.0"
+  xmlns:mcp="http://schemas.aodn.org.au/mcp-1.4"
   xmlns:gco="http://www.isotc211.org/2005/gco"
   xmlns:gmd="http://www.isotc211.org/2005/gmd"
   xmlns:gmx="http://www.isotc211.org/2005/gmx"
@@ -85,13 +85,34 @@
 			  </gmd:CI_Contact>
 			</gmd:contactInfo>
 			<gmd:role>
-			  <gmd:CI_RoleCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+			  <gmd:CI_RoleCode codeList="http://schemas.aodn.org.au/mcp-1.4/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
 			</gmd:role>
 		  </gmd:CI_ResponsibleParty>
 		</gmd:contact>
     </xsl:template>
 
-     <xsl:template match="gmd:identificationInfo/mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons/mcp:attributionConstraints/gco:CharacterString[matches(.,'Data was sourced')]">HERE Any users of IMOS data are required to clearly acknowledge the source of the material derived from IMOS in the format: "Data was sourced from the Integrated Marine Observing System (IMOS) - IMOS is a national collaborative research infrastructure, supported by the Australian Government." If relevant, also credit other organisations involved in collection of this particular datastream (as listed in 'credit' in the metadata record).</xsl:template>
 
+     <xsl:template match="gmd:identificationInfo/mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons">
+
+		<mcp:MD_Commons mcp:commonsType="Creative Commons" gco:isoType="gmd:MD_Constraints">
+             <mcp:jurisdictionLink>
+				  <gmd:URL>http://creativecommons.org/international/</gmd:URL>
+             </mcp:jurisdictionLink>
+             <mcp:licenseLink>
+				  <gmd:URL>http://creativecommons.org/licenses/by/4.0/</gmd:URL>
+             </mcp:licenseLink>
+             <mcp:imageLink>
+				  <gmd:URL>http://i.creativecommons.org/l/by/4.0/88x31.png</gmd:URL>
+             </mcp:imageLink>
+             <mcp:licenseName>
+                 <gco:CharacterString>Attribution 4.0 International</gco:CharacterString>
+             </mcp:licenseName>
+             <mcp:attributionConstraints>
+                 <gco:CharacterString>Any users of IMOS data are required to clearly acknowledge the source of the material derived from IMOS in the format: "Data was sourced from the Integrated Marine Observing System (IMOS) - IMOS is a national collaborative research infrastructure, supported by the Australian Government." If relevant, also credit other organisations involved in collection of this particular datastream (as listed in 'credit' in the metadata record).</gco:CharacterString>
+             </mcp:attributionConstraints>
+         </mcp:MD_Commons>
+
+    </xsl:template>
 
 </xsl:stylesheet>
+

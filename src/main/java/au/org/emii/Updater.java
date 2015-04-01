@@ -35,7 +35,7 @@ class Updater
 	private static Transformer getTransformer( String filename ) throws Exception 
 	{
 		final TransformerFactory tsf = TransformerFactory.newInstance();
-		final InputStream is  = new FileInputStream( "trans.xslt" ); 
+		final InputStream is  = new FileInputStream( filename ); 
 
 		return tsf.newTransformer(new StreamSource(is));
 	}
@@ -117,9 +117,7 @@ class Updater
 			}
 	
 			if( cmd.hasOption("stdout")) {
-				System.out.println( "id " + id );
-				System.out.println( "uuid " + uuid );
-				System.out.println(data);
+				System.out.println( "id " + id + "\nuuid " + uuid + "\n" + data);
 			}
 
 			if( cmd.hasOption("update")) {
@@ -127,6 +125,7 @@ class Updater
 				updateStmt.setString(1, data );
 				updateStmt.setInt(2, id );
 				updateStmt.executeUpdate();
+				// close...? 
 			}
 
             ++count;

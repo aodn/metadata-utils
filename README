@@ -6,6 +6,16 @@ need to specify the actual xslt transform to use ...
 
 mvn clean install
 
+# dump record to stdout
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u meteo -p meteo  -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -stdout
+
+# perform the update in geonetwork
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u meteo -p meteo  -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -t trans.xslt  -stdout
+
+# perform the update in geonetwork
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u meteo -p meteo  -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -t trans.xslt  -update
+
+
 java -cp ./target/myartifcat-1.0.0.jar au.org.emii.Updater -help 
 java -cp ./target/myartifcat-1.0.0.jar au.org.emii.Updater -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u meteo -p meteo
 
@@ -31,8 +41,11 @@ sudo -u postgres pg_dump -Fc geonetwork
 # local
 rsync -avzP catalogue-123.aodn.org.au:~/geonetwork/geonetwork.dump .
 
-sudo -u postgres pg_restore  -O -x ./geonetwork.dump  -C  -d postgres
+sudo -u postgres psql  -c 'drop database geonetwork '
+sudo -u postgres pg_restore /vagrant/geonetwork.dump  -C  -d postgres
 
+# or if production,
+sudo -u postgres pg_restore  -O -x ./geonetwork.dump  -C  -d postgres
 sudo -u postgres psql -d geonetwork -c 'grant all on database geonetwork to meteo ' 
 sudo -u postgres psql -d geonetwork -c 'grant all on schema public  to meteo ' 
 sudo -u postgres psql -d geonetwork -c 'grant all on all tables in schema public to meteo ' 
