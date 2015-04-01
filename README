@@ -1,10 +1,19 @@
 
 mvn clean install
+
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1/geonetwork -u meteo -p meteo
+
+
+-----
+mvn clean install
 mvn exec:java -Dexec.mainClass="au.org.emii.Updater"
 
 sudo -u postgres psql -d geonetwork -c "select data from metadata where uuid=  '4402cb50-e20a-44ee-93e6-4728259250d2'" 
 
 java -jar saxon9he.jar  ./argo.xml   trans.xslt  | less
+
+
+
 
 ---
 
