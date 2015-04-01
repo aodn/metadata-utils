@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import java.sql.*;
+import java.sql.SQLException;
 
 import java.util.Properties;
 
@@ -20,10 +21,19 @@ import org.apache.commons.cli.*;
 
 import java.io.FileNotFoundException;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 
 // xslt examples,
 // http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
+
+class BadCLIArgumentsException extends Exception
+{
+	public BadCLIArgumentsException( String message )
+	{
+		super(message);
+	}
+}
 
 
 
@@ -32,11 +42,6 @@ class Updater
 
 	public Updater ()
 	{ }
-/*
-FileNotFoundException; 
- /home/meteo/imos/projects/geonetwork_updater/src/main/java/au/org/emii/Updater.java:[40,27] error: unreported exception TransformerConfigurationException; must be caught or declared to be thrown
-
-*/
 
 	private static Transformer getTransformer( String filename ) 
 		throws FileNotFoundException, TransformerConfigurationException
@@ -47,7 +52,8 @@ FileNotFoundException;
 		return tsf.newTransformer(new StreamSource(is));
 	}
 
-	private static String transform ( Transformer transformer, String xmlString) throws Exception 
+	private static String transform ( Transformer transformer, String xmlString) 
+		throws TransformerException 
 	{
 		final StringReader xmlReader = new StringReader(xmlString);
 		final StringWriter xmlWriter = new StringWriter();
@@ -57,7 +63,8 @@ FileNotFoundException;
 		return xmlWriter.toString();
 	}
 
-    private static Connection getConn( String url, String user, String pass) throws Exception
+    private static Connection getConn( String url, String user, String pass) 
+		throws SQLException
 	{
 		Properties props = new Properties();
 
@@ -72,7 +79,10 @@ FileNotFoundException;
 		return DriverManager.getConnection(url, props);
 	}
 
-	public static void main(String[] args) throws Exception
+
+	public static void main(String[] args)
+		throws FileNotFoundException, TransformerConfigurationException, TransformerException, 
+			SQLException, ParseException, BadCLIArgumentsException
 	{
 		Options options = new Options();
 		options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
@@ -109,7 +119,7 @@ FileNotFoundException;
 			; 
 		}
 		else { 
-			throw new RuntimeException ( "Options should include -uuid, -all or -stdout" ); 
+			throw new BadCLIArgumentsException( "Options should include -uuid, -all or -stdout" ); 
 		}
 
 
