@@ -230,22 +230,16 @@ class GeonetworkServer
 
     XPathFactory xPathfactory = XPathFactory.newInstance();
     XPath xpath = xPathfactory.newXPath();
-   // XPathExpression expr = xpath.compile( "/");
-//     xPath.setNamespaceContext( nuLL );//new MyNamespaceContext()); 
-
-  
-//        xpath.setNamespaceContext(new HardcodedNamespaceResolver());
 
 
-
-  Map x = new HashMap<String, String>();
-  x.put( "geonet", "http://www.fao.org/geonetwork" );
+    Map x = new HashMap<String, String>();
+    x.put( "geonet", "http://www.fao.org/geonetwork" );
 
 
     xpath.setNamespaceContext( new SimpleNamespaceContext( x ) ) ; 
 
 
-    XPathExpression expr = xpath.compile("/response/metadata/geonet:info");
+    XPathExpression expr = xpath.compile("/response/metadata/geonet:info/uuid");
     NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
    
     // now iterate over the node list ? 
@@ -253,7 +247,7 @@ class GeonetworkServer
 
     for (int i = 0; i < nl.getLength(); i++) {
       Element show = (Element) nl.item(i);
-      System.out.println( "here -> " + show.getNodeName() );
+      System.out.println( "here -> " + show.getNodeName() + " " + show.getFirstChild().getNodeValue() );
       // String guestName = xPath.evaluate("guest/name", show);
 
     }
