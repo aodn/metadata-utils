@@ -6,6 +6,7 @@ import java.io.InputStream ;
 import java.io.FileInputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Reader;
 
 import java.sql.*;
 import java.sql.SQLException;
@@ -20,8 +21,32 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.*;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+
+
+
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
+import java.net.URL;
+ 
+import javax.net.ssl.HttpsURLConnection;
+
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
+
 
 // xslt examples,
 // http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
@@ -34,6 +59,62 @@ class BadCLIArgumentsException extends Exception
 		super(message);
 	}
 }
+
+
+
+class ConnectHttps {
+
+  public void connect() throws Exception {
+    /*
+     *  fix for
+     *    Exception in thread "main" javax.net.ssl.SSLHandshakeException:
+     *       sun.security.validator.ValidatorException:
+     *           PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException:
+     *               unable to find valid certification path to requested target
+     */
+    TrustManager[] trustAllCerts = new TrustManager[] {
+       new X509TrustManager() {
+          public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+            return null;
+          }
+
+          public void checkClientTrusted(X509Certificate[] certs, String authType) {  }
+
+          public void checkServerTrusted(X509Certificate[] certs, String authType) {  }
+
+       }
+    };
+
+    SSLContext sc = SSLContext.getInstance("SSL");
+    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+    // Create all-trusting host name verifier
+    HostnameVerifier allHostsValid = new HostnameVerifier() {
+        public boolean verify(String hostname, SSLSession session) {
+          return true;
+        }
+    };
+    // Install the all-trusting host verifier
+    HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+    /*
+     * end of the fix
+     */
+
+	String surl = "https://catalogue-123.aodn.org.au/geonetwork/srv/eng/xml.metadata.get?uuid=4402cb50-e20a-44ee-93e6-4728259250d2";
+    URL url = new URL( surl );// "https://securewebsite.com");
+    URLConnection con = url.openConnection();
+    Reader reader = new InputStreamReader(con.getInputStream());
+    while (true) {
+      int ch = reader.read();
+      if (ch==-1) {
+        break;
+      }
+      System.out.print((char)ch);
+    }
+  }
+}
+
 
 
 
@@ -79,11 +160,59 @@ class Updater
 		return DriverManager.getConnection(url, props);
 	}
 
+	
+	private final static String USER_AGENT = "Mozilla/5.0";
+
+	// HTTP GET request
+	private static void sendGet() /*throws Exception */ throws IOException  
+	{
+//		String url = "http://www.google.com/search?q=mkyong";
+
+		String url = "https://catalogue-123.aodn.org.au/geonetwork/srv/eng/xml.metadata.get?uuid=4402cb50-e20a-44ee-93e6-4728259250d2";
+ 
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+ 
+		// optional default is GET
+		con.setRequestMethod("GET");
+ 
+		//add request header
+		con.setRequestProperty("User-Agent", USER_AGENT);
+ 
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+ 
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+ 
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+ 
+		//print result
+		System.out.println(response.toString());
+ 
+	}
+
 
 	public static void main(String[] args)
 		throws FileNotFoundException, TransformerConfigurationException, TransformerException,
-			SQLException, ParseException, BadCLIArgumentsException
+			SQLException, ParseException, BadCLIArgumentsException, IOException 
+			, Exception
 	{
+
+//		sendGet(); 
+
+			new ConnectHttps(). connect() ; 
+ 
+ 
+
+		if( false ) {
+		
 		Options options = new Options();
 		options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
 		options.addOption("u", true, "user");
@@ -159,6 +288,7 @@ class Updater
         }
 
         System.out.println( "records processed " + count );
+	}
 	}
 }
 
