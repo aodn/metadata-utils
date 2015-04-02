@@ -65,6 +65,14 @@ class BadCLIArgumentsException extends Exception
 class ConnectHttps {
 
 
+  ConnectHttps( String serverURL )
+  {
+    this.serverURL = serverURL;
+  }
+
+  final String serverURL ;
+  
+
 	public void init() throws Exception
   {
 
@@ -103,13 +111,13 @@ class ConnectHttps {
       /*
        * end of the fix
        */
-
   }
 
-  public void connect() throws Exception {
+  public void getRecord( String uuid ) throws Exception {
   
-//	String surl = "https://catalogue-123.aodn.org.au/geonetwork/srv/eng/xml.metadata.get?uuid=4402cb50-e20a-44ee-93e6-4728259250d2";
-	String surl = "http://www.cnn.com";
+    String surl = serverURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
+
+	  // String surl = "http://www.cnn.com";
     URL url = new URL( surl );// "https://securewebsite.com");
     URLConnection con = url.openConnection();
     Reader reader = new InputStreamReader(con.getInputStream());
@@ -216,11 +224,12 @@ class Updater
 //		sendGet(); 
 
 
-    ConnectHttps a = new ConnectHttps(); 
+    ConnectHttps a = new ConnectHttps( "https://catalogue-123.aodn.org.au" ); 
+	  a.init(); 
+    a.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
+    
 
-			a.init(); 
-    a.connect() ; 
-    a.connect() ; 
+    // a.connect() ; 
  
  
 
