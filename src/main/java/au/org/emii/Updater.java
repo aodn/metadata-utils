@@ -66,6 +66,14 @@ import org.xml.sax.SAXParseException;
 
 import org.xml.sax.InputSource; 
 
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import javax.xml.namespace.NamespaceContext;
+
+
+
 // xslt examples,
 // http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
@@ -158,6 +166,33 @@ class HttpRequester
 
 };
 
+
+
+
+class SimpleNamespaceContext implements NamespaceContext {
+
+    private final Map<String, String> PREF_MAP = new HashMap<String, String>();
+
+    public SimpleNamespaceContext(final Map<String, String> prefMap) {
+        PREF_MAP.putAll(prefMap);       
+    }
+
+    public String getNamespaceURI(String prefix) {
+        return PREF_MAP.get(prefix);
+    }
+
+    public String getPrefix(String uri) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Iterator getPrefixes(String uri) {
+        throw new UnsupportedOperationException();
+    }
+
+}
+
+
+
 class GeonetworkServer 
 {
   GeonetworkServer( HttpRequester conn, String baseURL )
@@ -196,6 +231,18 @@ class GeonetworkServer
     XPathFactory xPathfactory = XPathFactory.newInstance();
     XPath xpath = xPathfactory.newXPath();
    // XPathExpression expr = xpath.compile( "/");
+//     xPath.setNamespaceContext( nuLL );//new MyNamespaceContext()); 
+
+  
+//        xpath.setNamespaceContext(new HardcodedNamespaceResolver());
+
+
+
+  Map x = new HashMap<String, String>();
+  x.put( "geonet", "http://www.fao.org/geonetwork" );
+
+
+    xpath.setNamespaceContext( new SimpleNamespaceContext( x ) ) ; 
 
 
     XPathExpression expr = xpath.compile("/response/metadata/geonet:info");
