@@ -2,57 +2,65 @@
 
 package au.org.emii;
 
-import java.io.InputStream ;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream ;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Reader;
 
 import java.sql.*;
 import java.sql.SQLException;
 
 import java.util.Properties;
 
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+
 
 import org.apache.commons.cli.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
 
+import javax.xml.xpath.XPathFactory; 
+import javax.xml.xpath.XPath; 
+import javax.xml.xpath.XPathExpression;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import javax.xml.xpath.XPathConstants;
+
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.net.URL;
  
 import javax.net.ssl.HttpsURLConnection;
-
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 import java.security.cert.X509Certificate;
-
-
 
 import org.w3c.dom.Document;
 import org.w3c.dom.*;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException; 
 
@@ -173,17 +181,36 @@ class GeonetworkServer
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.search"; 
     String result = conn.request( path ) ; 
-    //System.out.print( result );
+//    System.out.print( result );
 
 
-    Document d = loadXMLFromString( result );
+    Document doc = loadXMLFromString( result );
 
-    System.out.println( "document is " + d );
+    System.out.println( "document is " + doc );
 
-    if( d == null )
+    if( doc == null )
     {
         System.out.println( "document is null" );
     }
+
+    XPathFactory xPathfactory = XPathFactory.newInstance();
+    XPath xpath = xPathfactory.newXPath();
+   // XPathExpression expr = xpath.compile( "/");
+
+
+    XPathExpression expr = xpath.compile("/response/metadata/geonet:info");
+    NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+   
+    // now iterate over the node list ? 
+    nl.getLength();
+
+    for (int i = 0; i < nl.getLength(); i++) {
+      Element show = (Element) nl.item(i);
+      System.out.println( "here -> " + show.getNodeName() );
+      // String guestName = xPath.evaluate("guest/name", show);
+
+    }
+ 
   }
 
   public static Document loadXMLFromString(String xml) throws Exception
