@@ -28,7 +28,6 @@ import javax.xml.transform.TransformerException;
 
 
 
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -48,6 +47,17 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
 
 
+
+import org.w3c.dom.Document;
+import org.w3c.dom.*;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException; 
+
+import org.xml.sax.InputSource; 
+
 // xslt examples,
 // http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
@@ -64,17 +74,12 @@ class BadCLIArgumentsException extends Exception
 
 class HttpRequester 
 {
-
- // private final String serverURL ;
-
 	private final static String USER_AGENT = "Mozilla/5.0";
 
-  HttpRequester( /*String serverURL */ )
-  {
-//    this.serverURL = serverURL;
-  }
+  HttpRequester(  )
+  { }
 
-	public void disableSSL() throws Exception
+	public void enableSelfSignedSSL() throws Exception
   {
 
     /*
@@ -145,9 +150,8 @@ class HttpRequester
 
 };
 
-class GeonetworkServer {
-
-
+class GeonetworkServer 
+{
   GeonetworkServer( HttpRequester conn, String baseURL )
   {
     this.conn = conn; 
@@ -157,30 +161,38 @@ class GeonetworkServer {
   private final String baseURL; 
   private final HttpRequester conn ; 
 
- 
   // should return a string...
-  public void getRecord( String uuid ) throws Exception {
-  
+  public void getRecord( String uuid ) throws Exception 
+  {
     String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
-
     String result = conn.request( path ) ; 
-
-  System.out.print( result );
-/*
-	  // String surl = "http://www.cnn.com";
-    URL url = new URL( surl );// "https://securewebsite.com");
-    URLConnection con = url.openConnection();
-    Reader reader = new InputStreamReader(con.getInputStream());
-    while (true) {
-      int ch = reader.read();
-      if (ch==-1) {
-        break;
-      }
-      System.out.print((char)ch);
-    }
-*/
+    System.out.print( result );
   }
 
+  public void list( ) throws Exception 
+  {
+    String path = baseURL + "/geonetwork/srv/eng/xml.search"; 
+    String result = conn.request( path ) ; 
+    //System.out.print( result );
+
+
+    Document d = loadXMLFromString( result );
+
+    System.out.println( "document is " + d );
+
+    if( d == null )
+    {
+        System.out.println( "document is null" );
+    }
+  }
+
+  public static Document loadXMLFromString(String xml) throws Exception
+  {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    InputSource is = new InputSource(new StringReader(xml));
+    return builder.parse(is);
+  }
 
 
 }
@@ -267,6 +279,8 @@ class Updater
 */
 
 
+  
+
 	public static void main(String[] args)
 		throws FileNotFoundException, TransformerConfigurationException, TransformerException,
 			SQLException, ParseException, BadCLIArgumentsException, IOException 
@@ -277,18 +291,18 @@ class Updater
 
 
     HttpRequester c = new HttpRequester( ); // "https://catalogue-123.aodn.org.au"); 
-	  c.disableSSL(); 
+	  c.enableSelfSignedSSL(); 
 
     GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
 
 
-    g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
+    g.list(  );
+
+//    g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
 
 
 
-//    a.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
-    // a.connect() ; 
- 
+
  
 
 		if( false ) {
