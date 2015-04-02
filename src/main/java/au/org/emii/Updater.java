@@ -246,7 +246,7 @@ class GeonetworkServer
     return uuids;
   }
 
-  public static Document loadXMLFromString(String xml) throws Exception
+  private static Document loadXMLFromString(String xml) throws Exception
   {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
@@ -354,7 +354,6 @@ class Updater
 	  c.enableSelfSignedSSL(); 
 
     GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
-
 
     List< String> m = g.getRecords();
 
