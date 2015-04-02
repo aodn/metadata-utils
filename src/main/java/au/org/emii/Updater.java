@@ -15,6 +15,11 @@ import java.sql.*;
 import java.sql.SQLException;
 
 import java.util.Properties;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -23,6 +28,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+
+import javax.xml.namespace.NamespaceContext;
+
 
 
 import org.apache.commons.cli.*;
@@ -66,11 +74,6 @@ import org.xml.sax.SAXParseException;
 
 import org.xml.sax.InputSource; 
 
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import javax.xml.namespace.NamespaceContext;
 
 
 
@@ -212,32 +215,20 @@ class GeonetworkServer
     System.out.print( result );
   }
 
-  public void list( ) throws Exception 
+  public List< String> getRecords( ) throws Exception 
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.search"; 
     String result = conn.request( path ) ; 
 //    System.out.print( result );
-
-
     Document doc = loadXMLFromString( result );
-
-    System.out.println( "document is " + doc );
-
-    if( doc == null )
-    {
-        System.out.println( "document is null" );
-    }
 
     XPathFactory xPathfactory = XPathFactory.newInstance();
     XPath xpath = xPathfactory.newXPath();
 
-
     Map x = new HashMap<String, String>();
     x.put( "geonet", "http://www.fao.org/geonetwork" );
 
-
     xpath.setNamespaceContext( new SimpleNamespaceContext( x ) ) ; 
-
 
     XPathExpression expr = xpath.compile("/response/metadata/geonet:info/uuid");
     NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
@@ -245,13 +236,14 @@ class GeonetworkServer
     // now iterate over the node list ? 
     nl.getLength();
 
-    for (int i = 0; i < nl.getLength(); i++) {
-      Element show = (Element) nl.item(i);
-      System.out.println( "here -> " + show.getNodeName() + " " + show.getFirstChild().getNodeValue() );
-      // String guestName = xPath.evaluate("guest/name", show);
 
+    List< String>  uuids = new ArrayList< String > ();
+    for (int i = 0; i < nl.getLength(); i++) {
+      String uuid = nl.item(i).getFirstChild().getNodeValue() ; 
+      uuids.add( uuid );
+      System.out.println( "uuid -> '" + uuid + "'" );
     }
- 
+    return uuids;
   }
 
   public static Document loadXMLFromString(String xml) throws Exception
@@ -364,7 +356,7 @@ class Updater
     GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
 
 
-    g.list(  );
+    List< String> m = g.getRecords();
 
 //    g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
 
