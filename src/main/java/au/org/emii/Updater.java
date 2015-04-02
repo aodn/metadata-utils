@@ -115,7 +115,7 @@ class ConnectHttps {
   }
 
 
-  public void request( String url ) throws Exception
+  public String request( String url ) throws Exception
   {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -141,7 +141,8 @@ class ConnectHttps {
 		in.close();
  
 		//print result
-		System.out.println(response.toString());
+		//System.out.println(response.toString());
+		return response.toString();
   }
 
 
@@ -150,6 +151,9 @@ class ConnectHttps {
   
     String surl = serverURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
 
+
+    String s = request( surl ) ; 
+/*
 	  // String surl = "http://www.cnn.com";
     URL url = new URL( surl );// "https://securewebsite.com");
     URLConnection con = url.openConnection();
@@ -161,6 +165,7 @@ class ConnectHttps {
       }
       System.out.print((char)ch);
     }
+*/
   }
 
 
