@@ -64,44 +64,52 @@ class BadCLIArgumentsException extends Exception
 
 class ConnectHttps {
 
-  public void connect() throws Exception {
+
+	public void init() throws Exception
+  {
+
     /*
-     *  fix for
-     *    Exception in thread "main" javax.net.ssl.SSLHandshakeException:
-     *       sun.security.validator.ValidatorException:
-     *           PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException:
-     *               unable to find valid certification path to requested target
-     */
-    TrustManager[] trustAllCerts = new TrustManager[] {
-       new X509TrustManager() {
-          public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-            return null;
+       *  fix for
+       *    Exception in thread "main" javax.net.ssl.SSLHandshakeException:
+       *       sun.security.validator.ValidatorException:
+       *           PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException:
+       *               unable to find valid certification path to requested target
+       */
+      TrustManager[] trustAllCerts = new TrustManager[] {
+         new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+              return null;
+            }
+
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {  }
+
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {  }
+
+         }
+      };
+
+      SSLContext sc = SSLContext.getInstance("SSL");
+      sc.init(null, trustAllCerts, new java.security.SecureRandom());
+      HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+      // Create all-trusting host name verifier
+      HostnameVerifier allHostsValid = new HostnameVerifier() {
+          public boolean verify(String hostname, SSLSession session) {
+            return true;
           }
+      };
+      // Install the all-trusting host verifier
+      HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+      /*
+       * end of the fix
+       */
 
-          public void checkClientTrusted(X509Certificate[] certs, String authType) {  }
+  }
 
-          public void checkServerTrusted(X509Certificate[] certs, String authType) {  }
-
-       }
-    };
-
-    SSLContext sc = SSLContext.getInstance("SSL");
-    sc.init(null, trustAllCerts, new java.security.SecureRandom());
-    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-
-    // Create all-trusting host name verifier
-    HostnameVerifier allHostsValid = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession session) {
-          return true;
-        }
-    };
-    // Install the all-trusting host verifier
-    HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-    /*
-     * end of the fix
-     */
-
-	String surl = "https://catalogue-123.aodn.org.au/geonetwork/srv/eng/xml.metadata.get?uuid=4402cb50-e20a-44ee-93e6-4728259250d2";
+  public void connect() throws Exception {
+  
+//	String surl = "https://catalogue-123.aodn.org.au/geonetwork/srv/eng/xml.metadata.get?uuid=4402cb50-e20a-44ee-93e6-4728259250d2";
+	String surl = "http://www.cnn.com";
     URL url = new URL( surl );// "https://securewebsite.com");
     URLConnection con = url.openConnection();
     Reader reader = new InputStreamReader(con.getInputStream());
@@ -207,7 +215,12 @@ class Updater
 
 //		sendGet(); 
 
-			new ConnectHttps(). connect() ; 
+
+    ConnectHttps a = new ConnectHttps(); 
+
+			a.init(); 
+    a.connect() ; 
+    a.connect() ; 
  
  
 
