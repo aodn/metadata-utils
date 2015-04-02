@@ -62,20 +62,19 @@ class BadCLIArgumentsException extends Exception
 
 
 
-class ConnectHttps {
+class HttpRequester 
+{
 
-
-  ConnectHttps( String serverURL )
-  {
-    this.serverURL = serverURL;
-  }
-
-  final String serverURL ;
+ // private final String serverURL ;
 
 	private final static String USER_AGENT = "Mozilla/5.0";
-  
 
-	public void init() throws Exception
+  HttpRequester( /*String serverURL */ )
+  {
+//    this.serverURL = serverURL;
+  }
+
+	public void disableSSL() throws Exception
   {
 
     /*
@@ -114,7 +113,6 @@ class ConnectHttps {
        */
   }
 
-
   public String request( String url ) throws Exception
   {
 		URL obj = new URL(url);
@@ -145,14 +143,29 @@ class ConnectHttps {
 		return response.toString();
   }
 
+};
 
+class GeonetworkServer {
+
+
+  GeonetworkServer( HttpRequester conn, String baseURL )
+  {
+    this.conn = conn; 
+    this.baseURL = baseURL;
+  }
+
+  private final String baseURL; 
+  private final HttpRequester conn ; 
+
+ 
   // should return a string...
   public void getRecord( String uuid ) throws Exception {
   
-    String surl = serverURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
+    String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
 
+    String result = conn.request( path ) ; 
 
-    String s = request( surl ) ; 
+  System.out.print( result );
 /*
 	  // String surl = "http://www.cnn.com";
     URL url = new URL( surl );// "https://securewebsite.com");
@@ -263,12 +276,17 @@ class Updater
 //		sendGet(); 
 
 
-    ConnectHttps a = new ConnectHttps( "https://catalogue-123.aodn.org.au" ); 
-	  a.init(); 
-//    a.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
-    
-    a.request( "https://catalogue-123.aodn.org.au/geonetwork/srv/eng/xml.metadata.get?uuid=4402cb50-e20a-44ee-93e6-4728259250d2" );
+    HttpRequester c = new HttpRequester( ); // "https://catalogue-123.aodn.org.au"); 
+	  c.disableSSL(); 
 
+    GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
+
+
+    g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
+
+
+
+//    a.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
     // a.connect() ; 
  
  
