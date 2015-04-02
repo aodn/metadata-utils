@@ -71,6 +71,8 @@ class ConnectHttps {
   }
 
   final String serverURL ;
+
+	private final static String USER_AGENT = "Mozilla/5.0";
   
 
 	public void init() throws Exception
@@ -92,7 +94,6 @@ class ConnectHttps {
             public void checkClientTrusted(X509Certificate[] certs, String authType) {  }
 
             public void checkServerTrusted(X509Certificate[] certs, String authType) {  }
-
          }
       };
 
@@ -113,6 +114,38 @@ class ConnectHttps {
        */
   }
 
+
+  public void request( String url ) throws Exception
+  {
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+ 
+		// optional default is GET
+		con.setRequestMethod("GET");
+ 
+		//add request header
+		con.setRequestProperty("User-Agent", USER_AGENT);
+ 
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+ 
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+ 
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+ 
+		//print result
+		System.out.println(response.toString());
+  }
+
+
+  // should return a string...
   public void getRecord( String uuid ) throws Exception {
   
     String surl = serverURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
@@ -129,6 +162,9 @@ class ConnectHttps {
       System.out.print((char)ch);
     }
   }
+
+
+
 }
 
 
@@ -176,11 +212,9 @@ class Updater
 		return DriverManager.getConnection(url, props);
 	}
 
-	
-	private final static String USER_AGENT = "Mozilla/5.0";
-
+/*	
 	// HTTP GET request
-	private static void sendGet() /*throws Exception */ throws IOException  
+	private static void sendGet()  throws IOException  
 	{
 //		String url = "http://www.google.com/search?q=mkyong";
 
@@ -211,8 +245,8 @@ class Updater
  
 		//print result
 		System.out.println(response.toString());
- 
 	}
+*/
 
 
 	public static void main(String[] args)
@@ -226,8 +260,9 @@ class Updater
 
     ConnectHttps a = new ConnectHttps( "https://catalogue-123.aodn.org.au" ); 
 	  a.init(); 
-    a.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
+//    a.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
     
+    a.request( "https://catalogue-123.aodn.org.au/geonetwork/srv/eng/xml.metadata.get?uuid=4402cb50-e20a-44ee-93e6-4728259250d2" );
 
     // a.connect() ; 
  
