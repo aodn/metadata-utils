@@ -200,6 +200,7 @@ class GeonetworkServer
 {
   GeonetworkServer( HttpRequester requester, String baseURL )
   {
+    // change name to proxy,
     this.requester = requester; 
     this.baseURL = baseURL;
   }
@@ -220,7 +221,7 @@ class GeonetworkServer
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.search"; 
     String result = requester.request( path ) ; 
-//    System.out.print( result );
+    // System.out.print( result );
     Document doc = loadXMLFromString( result );
 
     XPathFactory xPathfactory = XPathFactory.newInstance();
@@ -231,12 +232,14 @@ class GeonetworkServer
 
     xpath.setNamespaceContext( new SimpleNamespaceContext( x ) ) ; 
 
-    XPathExpression expr = xpath.compile("/response/metadata/geonet:info/uuid");
+    XPathExpression expr = xpath.compile("/response/metadata/geonet:info/uuid/text()");
     NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
     
     List< String>  uuids = new ArrayList< String > ();
     for (int i = 0; i < nl.getLength(); i++) {
-      String uuid = nl.item(i).getFirstChild().getNodeValue() ; 
+      // String s = xpath.evaluate( (Element )nl.item(i), "/text()");
+      // System.out.println( "s -> '" + s + "'" );
+      String uuid = nl.item(i).getNodeValue() ; 
       uuids.add( uuid );
       // System.out.println( "uuid -> '" + uuid + "'" );
     }
