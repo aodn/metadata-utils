@@ -198,27 +198,28 @@ class SimpleNamespaceContext implements NamespaceContext {
 
 class GeonetworkServer 
 {
-  GeonetworkServer( HttpRequester conn, String baseURL )
+  GeonetworkServer( HttpRequester requester, String baseURL )
   {
-    this.conn = conn; 
+    this.requester = requester; 
     this.baseURL = baseURL;
   }
 
   private final String baseURL; 
-  private final HttpRequester conn ; 
+  private final HttpRequester requester ; 
 
   // should return a string...
-  public void getRecord( String uuid ) throws Exception 
+  public String getRecord( String uuid ) throws Exception 
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
-    String result = conn.request( path ) ; 
-    System.out.print( result );
+    String result = requester.request( path ) ; 
+    // System.out.print( result );
+    return result ; 
   }
 
   public List< String> getRecords( ) throws Exception 
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.search"; 
-    String result = conn.request( path ) ; 
+    String result = requester.request( path ) ; 
 //    System.out.print( result );
     Document doc = loadXMLFromString( result );
 
@@ -232,19 +233,16 @@ class GeonetworkServer
 
     XPathExpression expr = xpath.compile("/response/metadata/geonet:info/uuid");
     NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-   
-    // now iterate over the node list ? 
-    nl.getLength();
-
-
+    
     List< String>  uuids = new ArrayList< String > ();
     for (int i = 0; i < nl.getLength(); i++) {
       String uuid = nl.item(i).getFirstChild().getNodeValue() ; 
       uuids.add( uuid );
-      System.out.println( "uuid -> '" + uuid + "'" );
+      // System.out.println( "uuid -> '" + uuid + "'" );
     }
     return uuids;
   }
+
 
   private static Document loadXMLFromString(String xml) throws Exception
   {
@@ -355,7 +353,11 @@ class Updater
 
     GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
 
-    List< String> m = g.getRecords();
+    List< String> uuids = g.getRecords();
+    for( String uuid : uuids ) {
+      String record = g.getRecord( uuid ); 
+      System.out.println( "got record " + uuid ); 
+    } 
 
 //    g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
 
