@@ -137,7 +137,8 @@ class HttpProxy
        */
   }
 
-  public String request( String url ) throws Exception
+  // should be called get...
+  public String get( String url ) throws Exception
   {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -212,7 +213,7 @@ class GeonetworkServer
   public String getRecord( String uuid ) throws Exception 
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
-    String result = proxy.request( path ) ; 
+    String result = proxy.get( path ) ; 
     // System.out.print( result );
     return result ; 
   }
@@ -225,7 +226,7 @@ class GeonetworkServer
   public String updateRecord( String uuid ) throws Exception 
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
-    String result = proxy.request( path ) ; 
+    String result = proxy.get( path ) ; 
     // System.out.print( result );
     return result ; 
   }
@@ -235,7 +236,7 @@ class GeonetworkServer
   public List< String> getRecords( ) throws Exception 
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.search"; 
-    String result = proxy.request( path ) ; 
+    String result = proxy.get( path ) ; 
     // System.out.print( result );
     Document doc = loadXMLFromString( result );
 
