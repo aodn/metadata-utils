@@ -91,11 +91,11 @@ class BadCLIArgumentsException extends Exception
 
 
 
-class HttpRequester 
+class HttpProxy 
 {
 	private final static String USER_AGENT = "Mozilla/5.0";
 
-  HttpRequester(  )
+  HttpProxy(  )
   { }
 
 	public void enableSelfSignedSSL() throws Exception
@@ -198,29 +198,44 @@ class SimpleNamespaceContext implements NamespaceContext {
 
 class GeonetworkServer 
 {
-  GeonetworkServer( HttpRequester requester, String baseURL )
+  GeonetworkServer( HttpProxy proxy, String baseURL )
   {
     // change name to proxy,
-    this.requester = requester; 
+    this.proxy = proxy; 
     this.baseURL = baseURL;
   }
 
   private final String baseURL; 
-  private final HttpRequester requester ; 
+  private final HttpProxy proxy ; 
 
   // should return a string...
   public String getRecord( String uuid ) throws Exception 
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
-    String result = requester.request( path ) ; 
+    String result = proxy.request( path ) ; 
     // System.out.print( result );
     return result ; 
   }
 
+  // authentication is going to be an issue... 
+
+  // we need post, get, delete 
+
+  // should return a string...
+  public String updateRecord( String uuid ) throws Exception 
+  {
+    String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
+    String result = proxy.request( path ) ; 
+    // System.out.print( result );
+    return result ; 
+  }
+
+
+
   public List< String> getRecords( ) throws Exception 
   {
     String path = baseURL + "/geonetwork/srv/eng/xml.search"; 
-    String result = requester.request( path ) ; 
+    String result = proxy.request( path ) ; 
     // System.out.print( result );
     Document doc = loadXMLFromString( result );
 
@@ -351,15 +366,20 @@ class Updater
 //		sendGet(); 
 
 
-    HttpRequester c = new HttpRequester( ); // "https://catalogue-123.aodn.org.au"); 
+    HttpProxy c = new HttpProxy( ); // "https://catalogue-123.aodn.org.au"); 
 	  c.enableSelfSignedSSL(); 
 
     GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
 
     List< String> uuids = g.getRecords();
+
     for( String uuid : uuids ) {
       String record = g.getRecord( uuid ); 
+
       System.out.println( "got record " + uuid ); 
+
+      // ok, want to be able putRecord ...
+
     } 
 
 //    g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
