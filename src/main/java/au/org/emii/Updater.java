@@ -227,10 +227,10 @@ class GeonetworkServer
     XPathFactory xPathfactory = XPathFactory.newInstance();
     XPath xpath = xPathfactory.newXPath();
 
-    Map x = new HashMap<String, String>();
-    x.put( "geonet", "http://www.fao.org/geonetwork" );
+    Map namespacing = new HashMap<String, String>();
+    namespacing.put( "geonet", "http://www.fao.org/geonetwork" );
 
-    xpath.setNamespaceContext( new SimpleNamespaceContext( x ) ) ; 
+    xpath.setNamespaceContext( new SimpleNamespaceContext( namespacing ) ) ; 
 
     XPathExpression expr = xpath.compile("/response/metadata/geonet:info/uuid/text()");
     NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
