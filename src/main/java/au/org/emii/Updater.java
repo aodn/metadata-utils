@@ -48,6 +48,9 @@ import javax.xml.xpath.XPathExpression;
 
 import javax.xml.xpath.XPathConstants;
 
+import javax.xml.transform.dom.DOMSource ;
+
+
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.net.URL;
@@ -177,15 +180,20 @@ class HttpProxy
 		return response.toString();
   }
 
-// post, http://stackoverflow.com/questions/1359689/how-to-send-http-request-in-java 
+  // post, http://stackoverflow.com/questions/1359689/how-to-send-http-request-in-java 
   // should be called get...
-  public String put( String url ) throws Exception
+
+  // we have to encode the xml values...
+  // or pass the node...
+  // or should it be a node...
+
+  public String post( String url, String xml ) throws Exception
   {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
  
 		// optional default is GET
-		con.setRequestMethod("GET");
+		con.setRequestMethod("POST");
  
 		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
@@ -305,7 +313,9 @@ class GeonetworkServer
   }
 
 
-  private static Document loadXMLFromString(String xml) throws Exception
+
+  // change name XMLofString 
+  public static Document loadXMLFromString(String xml) throws Exception
   {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
@@ -314,6 +324,18 @@ class GeonetworkServer
   }
 
 
+  public static Document stringFromXML( Document doc ) throws Exception
+  {
+    // http://stackoverflow.com/questions/315517/is-there-a-more-elegant-way-to-convert-an-xml-document-to-a-string-in-java-than
+
+    TransformerFactory tf = TransformerFactory.newInstance();
+    Transformer transformer = tf.newTransformer();
+    // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+    StringWriter writer = new StringWriter();
+    transformer.transform(new DOMSource(doc), new StreamResult(writer));
+    String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
+    return output;
+  }
 }
 
 
@@ -407,6 +429,42 @@ class Updater
 	{
 
 //		sendGet(); 
+
+
+
+  {
+
+    String s = 
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
+      " <response/>"; 
+
+    Document doc = GeonetworkServer.loadXMLFromString( s );  
+
+    // can we serialize back from doc to string ...
+
+/*
+
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  //dbf.setNamespaceAware(true); //If you need namespace support turn this on, it is off by default
+
+    Document doc = dbf.newDocumentBuilder().newDocument();
+
+    //Add a root element
+    Element rootElement = doc.createElement("root");
+    doc.appendChild(rootElement);
+
+    // we kind of want a generic builder ...
+
+
+    // should we be assembling the whole thing from scratch. or should we parse an existing 
+    // node and then manipulate the details, eg the uuid, and version ...
+    // we could target the nodes to change with xpath 
+*/
+
+    if( true) return ; 
+  }
+
+
 
 
     HttpProxy c = new HttpProxy( ); // "https://catalogue-123.aodn.org.au"); 
