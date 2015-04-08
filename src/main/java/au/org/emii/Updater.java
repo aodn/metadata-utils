@@ -29,8 +29,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import javax.xml.namespace.NamespaceContext;
+import javax.xml.transform.OutputKeys; 
 
+import javax.xml.namespace.NamespaceContext;
 
 
 import org.apache.commons.cli.*;
@@ -68,6 +69,8 @@ import java.security.cert.X509Certificate;
 import org.w3c.dom.Document;
 import org.w3c.dom.*;
 
+import org.w3c.dom.CDATASection;
+
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -76,7 +79,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException; 
 
 import org.xml.sax.InputSource; 
-
 
 
 
@@ -288,15 +290,9 @@ class GeonetworkServer
     String path = baseURL + "/geonetwork/srv/eng/xml.search"; 
     String result = proxy.get( path ) ; 
     // System.out.print( result );
-    Document doc = loadXMLFromString( result );
+    Document doc = xMLFromString( result );
 
-    XPathFactory xPathfactory = XPathFactory.newInstance();
-    XPath xpath = xPathfactory.newXPath();
-
-    Map namespacing = new HashMap<String, String>();
-    namespacing.put( "geonet", "http://www.fao.org/geonetwork" );
-
-    xpath.setNamespaceContext( new SimpleNamespaceContext( namespacing ) ) ; 
+    XPath xpath = getXpath(); 
 
     XPathExpression expr = xpath.compile("/response/metadata/geonet:info/uuid/text()");
     NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
@@ -312,10 +308,28 @@ class GeonetworkServer
     return uuids;
   }
 
+// change name XMLofString 
+  public static XPath getXpath() throws Exception
+  {
+    // see also reusing, http://stackoverflow.com/questions/5568443/avoid-repeated-instantiation-of-inputsource-with-xpath-in-java 
+
+    // we don't need the namespacing to perform the http actions because the geonetwork is 
+
+    XPathFactory xPathfactory = XPathFactory.newInstance();
+    XPath xpath = xPathfactory.newXPath();
+
+    Map namespacing = new HashMap<String, String>();
+    namespacing.put( "geonet", "http://www.fao.org/geonetwork" );
+
+    xpath.setNamespaceContext( new SimpleNamespaceContext( namespacing ) ) ; 
+
+    return xpath;
+  }
+
 
 
   // change name XMLofString 
-  public static Document loadXMLFromString(String xml) throws Exception
+  public static Document xMLFromString(String xml) throws Exception
   {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
@@ -324,13 +338,17 @@ class GeonetworkServer
   }
 
 
-  public static Document stringFromXML( Document doc ) throws Exception
+  public static String stringFromXML( Document doc ) throws Exception
   {
     // http://stackoverflow.com/questions/315517/is-there-a-more-elegant-way-to-convert-an-xml-document-to-a-string-in-java-than
 
     TransformerFactory tf = TransformerFactory.newInstance();
     Transformer transformer = tf.newTransformer();
     // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+
+    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
     StringWriter writer = new StringWriter();
     transformer.transform(new DOMSource(doc), new StreamResult(writer));
     String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
@@ -434,11 +452,60 @@ class Updater
 
   {
 
+/*
+<?xml version="1.0" encoding="UTF-8"?>
+<request>
+  <id>11</id>
+  <version>1</version>
+  <data><![CDATA[
+    <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+    ...
+
+          </gmd:DQ_DataQuality>
+      </gmd:dataQualityInfo>
+    </gmd:MD_Metadata>]]>
+  </data>
+</request>
+*/
     String s = 
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
-      " <response/>"; 
+      "<request>" + 
+      " <uuid/>" +
+      " <version>1</version>" + 
+      " <data/>" + 
+      "</request>" ; 
 
-    Document doc = GeonetworkServer.loadXMLFromString( s );  
+    Document doc = GeonetworkServer.xMLFromString( s );  
+
+
+
+    XPathFactory xPathfactory = XPathFactory.newInstance();
+    XPath xpath = xPathfactory.newXPath();
+   
+   
+/* 
+    {
+      NodeList myNodeList = (NodeList) xpath.compile("//request/uuid").evaluate( doc, XPathConstants.NODESET); 
+      myNodeList.item(0).setTextContent("Hi mom!");
+    }
+*/
+
+
+    {
+      // http://examples.javacodegeeks.com/core-java/xml/dom/add-cdata-section-to-dom-document/
+
+      NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
+      //myNodeList.item(0).setNodeValue("Hi mom!");
+      //myNodeList.item(0).setTextContent("Hi mom!");
+      CDATASection cdata = doc.createCDATASection("<mycdata>123</mycdata>");
+      myNodeList.item(0).appendChild( cdata );
+      //myNodeList.item(0) = cdata; 
+    }
+
+
+    System.out.println( "here -> \n" + GeonetworkServer.stringFromXML( doc ) ); 
 
     // can we serialize back from doc to string ...
 
