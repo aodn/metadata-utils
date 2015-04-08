@@ -408,7 +408,8 @@ class Updater
 	public Updater ()
 	{ }
 
-	public static Transformer getTransformer( String filename )
+
+	public static Transformer getTransformerFromFile( String filename )
 		throws FileNotFoundException, TransformerConfigurationException
 	{
 		final TransformerFactory tsf = TransformerFactory.newInstance();
@@ -445,8 +446,7 @@ class Updater
       return writer.toString();
   }
 
-
-
+  /* TODO remove - shouldn't ever need string -> string transform */
 	public static String transform ( Transformer transformer, String xmlString)
 		throws TransformerException
 	{
@@ -457,6 +457,10 @@ class Updater
 
 		return xmlWriter.toString();
 	}
+
+
+
+
 
     private static Connection getConn( String url, String user, String pass)
 		throws SQLException
@@ -570,8 +574,6 @@ class Updater
     CDATASection cdata = doc.createCDATASection("mycdata");
     myNodeList.item( 0).appendChild(cdata);
 
-
-
     String identity = 
       "<xsl:stylesheet version=\"2.0\"" + 
       " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
@@ -586,34 +588,11 @@ class Updater
       "</xsl:stylesheet>"
       ;
 
-      Transformer transformer = getTransformerFromString( identity ); 
+    Transformer transformer = getTransformerFromString( identity ); 
 
-	    String result = transform ( transformer, doc ); 
+    String result = transform ( transformer, doc ); 
 
-      System.out.println( "here -> \n" + result ); 
-
-//    System.out.println( "here -> \n" + GeonetworkServer.stringFromXML( doc ) ); 
-
-    // can we serialize back from doc to string ...
-
-/*
-
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-  //dbf.setNamespaceAware(true); //If you need namespace support turn this on, it is off by default
-
-    Document doc = dbf.newDocumentBuilder().newDocument();
-
-    //Add a root element
-    Element rootElement = doc.createElement("root");
-    doc.appendChild(rootElement);
-
-    // we kind of want a generic builder ...
-
-
-    // should we be assembling the whole thing from scratch. or should we parse an existing 
-    // node and then manipulate the details, eg the uuid, and version ...
-    // we could target the nodes to change with xpath 
-*/
+    System.out.println( "here -> \n" + result ); 
 
     if( true) return ; 
   }
@@ -690,7 +669,7 @@ class Updater
 
 		Transformer transformer = null;
 		if( cmd.hasOption("t")) {
-			transformer = getTransformer(cmd.getOptionValue("t") );
+			transformer = getTransformerFromFile( cmd.getOptionValue("t") );
 		}
 
         int count = 0;
