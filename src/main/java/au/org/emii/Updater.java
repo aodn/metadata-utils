@@ -251,6 +251,68 @@ class HttpProxy
 
 
 
+
+
+class Misc
+{
+
+	public Misc ()
+	{ }
+
+
+	public static Transformer getTransformerFromFile( String filename )
+		throws FileNotFoundException, TransformerConfigurationException
+	{
+		final TransformerFactory tsf = TransformerFactory.newInstance();
+		final InputStream is  = new FileInputStream( filename );
+
+		return tsf.newTransformer(new StreamSource(is));
+	}
+
+
+	public static Transformer getTransformerFromString ( String input )
+		throws FileNotFoundException, TransformerConfigurationException
+	{
+		final TransformerFactory tsf = TransformerFactory.newInstance();
+
+    InputStream is = new ByteArrayInputStream( input.getBytes());//StandardCharsets.UTF_8));
+
+//		final InputStream is  = new StringInputStream( input );
+
+		return tsf.newTransformer(new StreamSource(is));
+	}
+
+
+
+	public static String transform ( Transformer transformer, Document xml )
+		throws TransformerException
+  {
+  	  //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
+      Writer writer = new StringWriter();
+      StreamResult result=new StreamResult( writer );
+
+      transformer.transform( new DOMSource(xml), result);
+
+      // System.out.println( writer.toString() );
+      return writer.toString();
+  }
+
+  /* TODO remove - shouldn't ever need string -> string transform */
+	public static String transform ( Transformer transformer, String xmlString)
+		throws TransformerException
+	{
+		final StringReader xmlReader = new StringReader(xmlString);
+		final StringWriter xmlWriter = new StringWriter();
+
+		transformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
+
+		return xmlWriter.toString();
+	}
+
+}
+
+
+
 class SimpleNamespaceContext implements NamespaceContext {
 
     private final Map<String, String> PREF_MAP = new HashMap<String, String>();
@@ -303,13 +365,85 @@ class GeonetworkServer
   // should return a string...
   public String updateRecord( String uuid ) throws Exception 
   {
+    /*
+    <?xml version="1.0" encoding="UTF-8"?>
+    <request>
+      <id>11</id>
+      <version>1</version>
+      <data><![CDATA[
+        <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+        ...
+
+              </gmd:DQ_DataQuality>
+          </gmd:dataQualityInfo>
+        </gmd:MD_Metadata>]]>
+      </data>
+    </request>
+    */
+
+    // rename to template,
+    String s = 
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
+      "<request>" + 
+      " <uuid/>" +
+      " <version>1</version>" + 
+      " <data/>" + 
+      "</request>" ; 
+
+    Document doc = GeonetworkServer.xMLFromString( s );  
+
+    XPathFactory xPathfactory = XPathFactory.newInstance();
+
+    // substitute the data 
+    {
+      XPath xpath = xPathfactory.newXPath();
+      NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
+      CDATASection cdata = doc.createCDATASection("mycdata");
+      myNodeList.item( 0).appendChild(cdata);
+    }
+
+    // substitute the uuid 
+    {
+      XPath xpath = xPathfactory.newXPath();
+      NodeList myNodeList = (NodeList) xpath.compile("//request/uuid").evaluate( doc, XPathConstants.NODESET); 
+      myNodeList.item(0).setTextContent("Hi mom!");
+    }
+
+    String identity = 
+      "<xsl:stylesheet version=\"2.0\"" + 
+      " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
+      " <xsl:output omit-xml-declaration=\"no\" indent=\"yes\"" + 
+      " cdata-section-elements=\"data\"/>" +
+      " <xsl:strip-space elements=\"*\"/>" +
+      " <xsl:template match=\"node()|@*\">" +
+      "     <xsl:copy>" +
+      "       <xsl:apply-templates select=\"node()|@*\"/>" +
+      "     </xsl:copy>" +
+      " </xsl:template>" +
+      "</xsl:stylesheet>"
+      ;
+
+    Transformer transformer = Misc.getTransformerFromString( identity ); 
+
+    String result = Misc.transform ( transformer, doc ); 
+
+    System.out.println( "here -> \n" + result ); 
+//    if( true) return ; 
+
+/*
     String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
     String result = proxy.get( path ) ; 
-    // System.out.print( result );
+
     return result ; 
+*/
+    return "";
   }
 
 
+  // do we want to factor each of these into a class... 
+  // 
 
   public List< String> getRecords( ) throws Exception 
   {
@@ -368,6 +502,7 @@ class GeonetworkServer
   }
 
 
+/*
   public static String stringFromXML( Document doc ) throws Exception
   {
     // http://stackoverflow.com/questions/315517/is-there-a-more-elegant-way-to-convert-an-xml-document-to-a-string-in-java-than
@@ -392,7 +527,7 @@ class GeonetworkServer
     String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
     return output;
   }
-
+*/
 
 
 
@@ -402,64 +537,9 @@ class GeonetworkServer
 
 
 
+
 class Updater
 {
-
-	public Updater ()
-	{ }
-
-
-	public static Transformer getTransformerFromFile( String filename )
-		throws FileNotFoundException, TransformerConfigurationException
-	{
-		final TransformerFactory tsf = TransformerFactory.newInstance();
-		final InputStream is  = new FileInputStream( filename );
-
-		return tsf.newTransformer(new StreamSource(is));
-	}
-
-
-	public static Transformer getTransformerFromString ( String input )
-		throws FileNotFoundException, TransformerConfigurationException
-	{
-		final TransformerFactory tsf = TransformerFactory.newInstance();
-
-    InputStream is = new ByteArrayInputStream( input.getBytes());//StandardCharsets.UTF_8));
-
-//		final InputStream is  = new StringInputStream( input );
-
-		return tsf.newTransformer(new StreamSource(is));
-	}
-
-
-
-	public static String transform ( Transformer transformer, Document xml )
-		throws TransformerException
-  {
-  	  //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
-      Writer writer = new StringWriter();
-      StreamResult result=new StreamResult( writer );
-
-      transformer.transform( new DOMSource(xml), result);
-
-      // System.out.println( writer.toString() );
-      return writer.toString();
-  }
-
-  /* TODO remove - shouldn't ever need string -> string transform */
-	public static String transform ( Transformer transformer, String xmlString)
-		throws TransformerException
-	{
-		final StringReader xmlReader = new StringReader(xmlString);
-		final StringWriter xmlWriter = new StringWriter();
-
-		transformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
-
-		return xmlWriter.toString();
-	}
-
-
-
 
 
     private static Connection getConn( String url, String user, String pass)
@@ -535,91 +615,24 @@ class Updater
 //		sendGet(); 
 
 
-
-  {
-
-/*
-<?xml version="1.0" encoding="UTF-8"?>
-<request>
-  <id>11</id>
-  <version>1</version>
-  <data><![CDATA[
-    <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
-                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
-    ...
-
-          </gmd:DQ_DataQuality>
-      </gmd:dataQualityInfo>
-    </gmd:MD_Metadata>]]>
-  </data>
-</request>
-*/
-
-    // rename to template,
-    String s = 
-      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
-      "<request>" + 
-      " <uuid/>" +
-      " <version>1</version>" + 
-      " <data/>" + 
-      "</request>" ; 
-
-    Document doc = GeonetworkServer.xMLFromString( s );  
-
-    XPathFactory xPathfactory = XPathFactory.newInstance();
-    XPath xpath = xPathfactory.newXPath();
-
-    NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
-    CDATASection cdata = doc.createCDATASection("mycdata");
-    myNodeList.item( 0).appendChild(cdata);
-
-    String identity = 
-      "<xsl:stylesheet version=\"2.0\"" + 
-      " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
-      " <xsl:output omit-xml-declaration=\"no\" indent=\"yes\"" + 
-      " cdata-section-elements=\"data\"/>" +
-      " <xsl:strip-space elements=\"*\"/>" +
-      " <xsl:template match=\"node()|@*\">" +
-      "     <xsl:copy>" +
-      "       <xsl:apply-templates select=\"node()|@*\"/>" +
-      "     </xsl:copy>" +
-      " </xsl:template>" +
-      "</xsl:stylesheet>"
-      ;
-
-    Transformer transformer = getTransformerFromString( identity ); 
-
-    String result = transform ( transformer, doc ); 
-
-    System.out.println( "here -> \n" + result ); 
-
-    if( true) return ; 
-  }
-
-
-
-
     HttpProxy c = new HttpProxy( ); // "https://catalogue-123.aodn.org.au"); 
 	  c.enableSelfSignedSSL(); 
 
     GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
 
+/*
     List< String> uuids = g.getRecords();
-
     for( String uuid : uuids ) {
       String record = g.getRecord( uuid ); 
-
       System.out.println( "got record " + uuid ); 
-
       // ok, want to be able putRecord ...
-
     } 
+*/
 
-//    g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
+    String s = g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
 
 
-
+    g.updateRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" ); 
 
  
 
@@ -669,7 +682,7 @@ class Updater
 
 		Transformer transformer = null;
 		if( cmd.hasOption("t")) {
-			transformer = getTransformerFromFile( cmd.getOptionValue("t") );
+			transformer = Misc.getTransformerFromFile( cmd.getOptionValue("t") );
 		}
 
         int count = 0;
@@ -680,7 +693,7 @@ class Updater
 			String data = (String) rs.getObject("data");
 
 			if( transformer != null ) {
-				data = transform( transformer, data);
+				data = Misc.transform( transformer, data);
 			}
 
 			if( cmd.hasOption("stdout")) {
