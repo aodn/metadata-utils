@@ -204,7 +204,7 @@ class HttpProxy
 		in.close();
  
 		//print result
-		//System.out.println(response.toString());
+//		System.out.println(response.toString());
 		return response.toString();
   }
 
@@ -217,6 +217,7 @@ class HttpProxy
 
   public String post( String url, String xml ) throws Exception
   {
+    // url = url + "1";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
  
@@ -226,9 +227,29 @@ class HttpProxy
 		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
  
+    
+    con.setRequestMethod("POST");
+    con.setRequestProperty("Content-Type", "application/xml");
+    con.setRequestProperty("Content-Length", "" + Integer.toString( xml.getBytes().length));
+ //   con.setRequestProperty("Content-Language", "en-US");  
+
+
+      con.setUseCaches (false);
+      con.setDoInput(true);
+      con.setDoOutput(true);
+
+      //Send request
+      DataOutputStream wr = new DataOutputStream ( con.getOutputStream ());
+
+      wr.writeBytes ( xml ); // ??
+      wr.flush ();
+      wr.close ();
+
+
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("\nSending 'POST' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
+
  
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
@@ -241,7 +262,13 @@ class HttpProxy
 		in.close();
  
 		//print result
-		//System.out.println(response.toString());
+
+		System.out.println("here1" );
+		System.out.println(response.toString());
+
+		System.out.println("here2" );
+
+
 		return response.toString();
   }
 
@@ -363,9 +390,10 @@ class GeonetworkServer
   // we need post, get, delete 
 
   // should return a string...
-  public String updateRecord( String uuid ) throws Exception 
+  public String updateRecord( String uuid, String record ) throws Exception 
   {
     /*
+    /geonetwork/srv/eng/xml.metadata.update
     <?xml version="1.0" encoding="UTF-8"?>
     <request>
       <id>11</id>
@@ -373,9 +401,7 @@ class GeonetworkServer
       <data><![CDATA[
         <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
         ...
-
               </gmd:DQ_DataQuality>
           </gmd:dataQualityInfo>
         </gmd:MD_Metadata>]]>
@@ -384,7 +410,7 @@ class GeonetworkServer
     */
 
     // rename to template,
-    String s = 
+    String template = 
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
       "<request>" + 
       " <uuid/>" +
@@ -392,7 +418,7 @@ class GeonetworkServer
       " <data/>" + 
       "</request>" ; 
 
-    Document doc = GeonetworkServer.xMLFromString( s );  
+    Document doc = GeonetworkServer.xMLFromString( template);  
 
     XPathFactory xPathfactory = XPathFactory.newInstance();
 
@@ -400,7 +426,7 @@ class GeonetworkServer
     {
       XPath xpath = xPathfactory.newXPath();
       NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
-      CDATASection cdata = doc.createCDATASection("mycdata");
+      CDATASection cdata = doc.createCDATASection( record );
       myNodeList.item( 0).appendChild(cdata);
     }
 
@@ -408,7 +434,7 @@ class GeonetworkServer
     {
       XPath xpath = xPathfactory.newXPath();
       NodeList myNodeList = (NodeList) xpath.compile("//request/uuid").evaluate( doc, XPathConstants.NODESET); 
-      myNodeList.item(0).setTextContent("Hi mom!");
+      myNodeList.item(0).setTextContent( uuid);
     }
 
     String identity = 
@@ -429,16 +455,12 @@ class GeonetworkServer
 
     String result = Misc.transform ( transformer, doc ); 
 
-    System.out.println( "here -> \n" + result ); 
+//    System.out.println( "here -> \n" + result ); 
 //    if( true) return ; 
 
-/*
-    String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
-    String result = proxy.get( path ) ; 
-
-    return result ; 
-*/
-    return "";
+    String path = baseURL + "/geonetwork/srv/eng/xml.metadata.update"; 
+    String x = proxy.post( path, result ); 
+    return x; 
   }
 
 
@@ -629,10 +651,10 @@ class Updater
     } 
 */
 
-    String s = g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
+    String record = g.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
 
 
-    g.updateRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" ); 
+    g.updateRecord( "4402cb50-e20a-44ee-93e6-4728259250d2", record ); 
 
  
 
