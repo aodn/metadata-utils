@@ -499,7 +499,7 @@ class Updater
       NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
       //myNodeList.item(0).setNodeValue("Hi mom!");
       //myNodeList.item(0).setTextContent("Hi mom!");
-      CDATASection cdata = doc.createCDATASection("<mycdata>123</mycdata>");
+      CDATASection cdata = doc.createCDATASection("<blah>123</blah>");
       myNodeList.item(0).appendChild( cdata );
       //myNodeList.item(0) = cdata; 
     }
