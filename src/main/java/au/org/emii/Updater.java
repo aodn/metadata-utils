@@ -402,10 +402,10 @@ class GeonetworkServer
 
 
 
-class Updater1
+class Updater
 {
 
-	public Updater1 ()
+	public Updater ()
 	{ }
 
 	public static Transformer getTransformer( String filename )
@@ -430,6 +430,20 @@ class Updater1
 		return tsf.newTransformer(new StreamSource(is));
 	}
 
+
+
+	public static String transform ( Transformer transformer, Document xml )
+		throws TransformerException
+  {
+  	  //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
+      Writer writer = new StringWriter();
+      StreamResult result=new StreamResult( writer );
+
+      transformer.transform( new DOMSource(xml), result);
+
+      // System.out.println( writer.toString() );
+      return writer.toString();
+  }
 
 
 
@@ -496,7 +510,7 @@ class Updater1
 	}
 */
 
-
+/*
     public static final void prettyPrint(Document xml) throws Exception {
         Transformer tf = TransformerFactory.newInstance().newTransformer();
         tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
@@ -505,6 +519,7 @@ class Updater1
         tf.transform(new DOMSource(xml), new StreamResult(out));
         System.out.println(out.toString());
     }   
+*/
 
 
 	public static void main(String[] args)
@@ -536,6 +551,8 @@ class Updater1
   </data>
 </request>
 */
+
+    // rename to template,
     String s = 
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
       "<request>" + 
@@ -544,62 +561,36 @@ class Updater1
       " <data/>" + 
       "</request>" ; 
 
-//    Document doc = GeonetworkServer.xMLFromString( s );  
+    Document doc = GeonetworkServer.xMLFromString( s );  
 
     XPathFactory xPathfactory = XPathFactory.newInstance();
     XPath xpath = xPathfactory.newXPath();
-   
-/* 
-    {
-      NodeList myNodeList = (NodeList) xpath.compile("//request/uuid").evaluate( doc, XPathConstants.NODESET); 
-      myNodeList.item(0).setTextContent("Hi mom!");
-    }
-*/
-    {
-      // http://examples.javacodegeeks.com/core-java/xml/dom/add-cdata-section-to-dom-document/
 
-//      NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
+    NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
+    CDATASection cdata = doc.createCDATASection("mycdata");
+    myNodeList.item( 0).appendChild(cdata);
 
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//      DBf.setValidating(false);
-        DocumentBuilder db = dbf.newDocumentBuilder();
 
-        Document doc = db.parse(new FileInputStream(new File("in.xml")));
+    String identity = 
+      "<xsl:stylesheet version=\"2.0\"" + 
+      " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
+      " <xsl:output omit-xml-declaration=\"yes\" indent=\"yes\"" + 
+      " cdata-section-elements=\"data\"/>" +
+      " <xsl:strip-space elements=\"*\"/>" +
+      " <xsl:template match=\"node()|@*\">" +
+      "     <xsl:copy>" +
+      "       <xsl:apply-templates select=\"node()|@*\"/>" +
+      "     </xsl:copy>" +
+      " </xsl:template>" +
+      "</xsl:stylesheet>"
+      ;
 
-        Element element = doc.getDocumentElement();
-        CDATASection cdata = doc.createCDATASection("mycdata");
-        element.appendChild(cdata);
+      Transformer transformer = getTransformerFromString( identity ); 
 
-        prettyPrint(doc);
+	    String result = transform ( transformer, doc ); 
 
-
-/*
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//      DBf.setValidating(false);
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(new FileInputStream(new File("in.xml")));
-    //    Document doc = GeonetworkServer.xMLFromString( s );  
-        Element element = doc.getDocumentElement();
-        CDATASection cdata = doc.createCDATASection("mycdata");
-        element.appendChild(cdata);
-//      myNodeList.item(0).appendChild( cdata );
-      doc.getDocumentElement().appendChild( cdata);
-    GeonetworkServer.prettyPrint( doc ) ; 
-*/
-
-
-/*      Element element = doc.getDocumentElement();
-      CDATASection cdata = doc.createCDATASection("mycdata");
-      element.appendChild(cdata);
-*/
-
-/*
-      newCDATA=xmlDoc.createCDATASection(newtext);
-      x[i].appendChild(newCDATA);
-*/
-    }
-
+      System.out.println( "here -> \n" + result ); 
 
 //    System.out.println( "here -> \n" + GeonetworkServer.stringFromXML( doc ) ); 
 
@@ -736,8 +727,8 @@ class Updater1
 
 
 
-    
-public class Updater 
+/*    
+public class Updater1 
 {
 
     public static void main(String[] args) throws Exception {
@@ -789,4 +780,4 @@ public class Updater
 
 
 
-
+*/
