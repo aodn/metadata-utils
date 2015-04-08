@@ -575,7 +575,7 @@ class Updater
     String identity = 
       "<xsl:stylesheet version=\"2.0\"" + 
       " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
-      " <xsl:output omit-xml-declaration=\"yes\" indent=\"yes\"" + 
+      " <xsl:output omit-xml-declaration=\"no\" indent=\"yes\"" + 
       " cdata-section-elements=\"data\"/>" +
       " <xsl:strip-space elements=\"*\"/>" +
       " <xsl:template match=\"node()|@*\">" +
