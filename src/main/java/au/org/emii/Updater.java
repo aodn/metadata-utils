@@ -2,12 +2,35 @@
 
 package au.org.emii;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.io.ByteArrayInputStream; 
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.File;
 import java.io.InputStream ;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Writer;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -67,9 +90,12 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.*;
+
 
 import org.w3c.dom.CDATASection;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 
 
 import org.w3c.dom.Element;
@@ -332,6 +358,10 @@ class GeonetworkServer
   public static Document xMLFromString(String xml) throws Exception
   {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+
+//    factory.setValidating(false);
+
     DocumentBuilder builder = factory.newDocumentBuilder();
     InputSource is = new InputSource(new StringReader(xml));
     return builder.parse(is);
@@ -343,29 +373,42 @@ class GeonetworkServer
     // http://stackoverflow.com/questions/315517/is-there-a-more-elegant-way-to-convert-an-xml-document-to-a-string-in-java-than
 
     TransformerFactory tf = TransformerFactory.newInstance();
-    Transformer transformer = tf.newTransformer();
-    // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 
+
+
+    Transformer transformer = tf.newTransformer();
+
+
+    // http://docs.oracle.com/javaee/1.4/api/javax/xml/transform/OutputKeys.html
+
+    // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
     transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
     transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
     StringWriter writer = new StringWriter();
+
     transformer.transform(new DOMSource(doc), new StreamResult(writer));
+
     String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
     return output;
   }
+
+
+
+
+
 }
 
 
 
 
-class Updater
+class Updater1
 {
 
-	public Updater ()
+	public Updater1 ()
 	{ }
 
-	private static Transformer getTransformer( String filename )
+	public static Transformer getTransformer( String filename )
 		throws FileNotFoundException, TransformerConfigurationException
 	{
 		final TransformerFactory tsf = TransformerFactory.newInstance();
@@ -374,7 +417,23 @@ class Updater
 		return tsf.newTransformer(new StreamSource(is));
 	}
 
-	private static String transform ( Transformer transformer, String xmlString)
+
+	public static Transformer getTransformerFromString ( String input )
+		throws FileNotFoundException, TransformerConfigurationException
+	{
+		final TransformerFactory tsf = TransformerFactory.newInstance();
+
+    InputStream is = new ByteArrayInputStream( input.getBytes());//StandardCharsets.UTF_8));
+
+//		final InputStream is  = new StringInputStream( input );
+
+		return tsf.newTransformer(new StreamSource(is));
+	}
+
+
+
+
+	public static String transform ( Transformer transformer, String xmlString)
 		throws TransformerException
 	{
 		final StringReader xmlReader = new StringReader(xmlString);
@@ -438,7 +497,15 @@ class Updater
 */
 
 
-  
+    public static final void prettyPrint(Document xml) throws Exception {
+        Transformer tf = TransformerFactory.newInstance().newTransformer();
+        tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        tf.setOutputProperty(OutputKeys.INDENT, "yes");
+        Writer out = new StringWriter();
+        tf.transform(new DOMSource(xml), new StreamResult(out));
+        System.out.println(out.toString());
+    }   
+
 
 	public static void main(String[] args)
 		throws FileNotFoundException, TransformerConfigurationException, TransformerException,
@@ -477,13 +544,10 @@ class Updater
       " <data/>" + 
       "</request>" ; 
 
-    Document doc = GeonetworkServer.xMLFromString( s );  
-
-
+//    Document doc = GeonetworkServer.xMLFromString( s );  
 
     XPathFactory xPathfactory = XPathFactory.newInstance();
     XPath xpath = xPathfactory.newXPath();
-   
    
 /* 
     {
@@ -491,21 +555,53 @@ class Updater
       myNodeList.item(0).setTextContent("Hi mom!");
     }
 */
-
-
     {
       // http://examples.javacodegeeks.com/core-java/xml/dom/add-cdata-section-to-dom-document/
 
-      NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
-      //myNodeList.item(0).setNodeValue("Hi mom!");
-      //myNodeList.item(0).setTextContent("Hi mom!");
-      CDATASection cdata = doc.createCDATASection("<blah>123</blah>");
-      myNodeList.item(0).appendChild( cdata );
-      //myNodeList.item(0) = cdata; 
+//      NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
+
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//      DBf.setValidating(false);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+
+        Document doc = db.parse(new FileInputStream(new File("in.xml")));
+
+        Element element = doc.getDocumentElement();
+        CDATASection cdata = doc.createCDATASection("mycdata");
+        element.appendChild(cdata);
+
+        prettyPrint(doc);
+
+
+/*
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//      DBf.setValidating(false);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(new FileInputStream(new File("in.xml")));
+    //    Document doc = GeonetworkServer.xMLFromString( s );  
+        Element element = doc.getDocumentElement();
+        CDATASection cdata = doc.createCDATASection("mycdata");
+        element.appendChild(cdata);
+//      myNodeList.item(0).appendChild( cdata );
+      doc.getDocumentElement().appendChild( cdata);
+    GeonetworkServer.prettyPrint( doc ) ; 
+*/
+
+
+/*      Element element = doc.getDocumentElement();
+      CDATASection cdata = doc.createCDATASection("mycdata");
+      element.appendChild(cdata);
+*/
+
+/*
+      newCDATA=xmlDoc.createCDATASection(newtext);
+      x[i].appendChild(newCDATA);
+*/
     }
 
 
-    System.out.println( "here -> \n" + GeonetworkServer.stringFromXML( doc ) ); 
+//    System.out.println( "here -> \n" + GeonetworkServer.stringFromXML( doc ) ); 
 
     // can we serialize back from doc to string ...
 
@@ -637,5 +733,87 @@ class Updater
 	}
 	}
 }
+
+
+
+    
+public class Updater 
+{
+
+    public static void main(String[] args) throws Exception {
+        System.out.println( "here" );
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//      DBf.setValidating(false);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+
+        Document doc = db.parse(new FileInputStream(new File("in.xml")));
+
+        Element element = doc.getDocumentElement();
+        CDATASection cdata = doc.createCDATASection("mycdata");
+        element.appendChild(cdata);
+
+        prettyPrint(doc);
+
+    }
+
+    public static final void prettyPrint(Document xml) throws Exception {
+        //Transformer tf = TransformerFactory.newInstance().newTransformer();
+
+        String source = 
+"<xsl:stylesheet version=\"1.0\"" + 
+" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
+" <xsl:output omit-xml-declaration=\"yes\" indent=\"yes\"" + 
+" cdata-section-elements=\"data\"/>" +
+" <xsl:strip-space elements=\"*\"/>" +
+" <xsl:template match=\"node()|@*\">" +
+"     <xsl:copy>" +
+"       <xsl:apply-templates select=\"node()|@*\"/>" +
+"     </xsl:copy>" +
+" </xsl:template>" +
+"</xsl:stylesheet>"
+;
+
+      Transformer transformer = Updater1.getTransformerFromString ( source ); 
+
+     // String result = Updater1.transform( transformer, 0String xmlString)
+	
+//      String out ; 
+ //     transformer.transform(new DOMSource(xml), new StreamResult(out));
+ 
+
+        Writer writer = new StringWriter();
+        StreamResult result=new StreamResult( writer ); //new StringWriter());
+
+      transformer.transform( new DOMSource(xml), result);
+
+      String str= writer.toString();	
+
+        System.out.println(str);
+
+/*	
+       Transformer transformer =
+            TransformerFactory.newInstance().newTransformer(new StreamSource(new
+          ByteArrayInputStream(source.getBytes())));
+*/
+
+
+/*        
+        Writer writer = new StringWriter();
+
+       transformer.transform(new StreamSource(new
+            ByteArrayInputStream(source.getBytes())),
+                              new StreamResult(writer));
+
+//        tf.setOutputProperty(OutputKeys.INDENT, "yes");
+ //       Writer out = new StringWriter();
+//        String out = transformer.transform(new DOMSource(xml), writer );//new StreamResult(out));
+        System.out.println(writer.toString());
+*/
+    }
+
+}
+
+
 
 
