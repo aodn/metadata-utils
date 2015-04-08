@@ -760,7 +760,7 @@ public class Updater
     public static final void prettyPrint(Document xml) throws Exception {
         //Transformer tf = TransformerFactory.newInstance().newTransformer();
 
-        String source = 
+        String identity = 
           "<xsl:stylesheet version=\"2.0\"" + 
           " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
           " <xsl:output omit-xml-declaration=\"yes\" indent=\"yes\"" + 
@@ -774,42 +774,15 @@ public class Updater
           "</xsl:stylesheet>"
           ;
 
-      Transformer transformer = Updater1.getTransformerFromString ( source ); 
+      Transformer transformer = Updater1.getTransformerFromString ( identity ); 
 
-     // String result = Updater1.transform( transformer, 0String xmlString)
-	
-//      String out ; 
- //     transformer.transform(new DOMSource(xml), new StreamResult(out));
- 
-
-        Writer writer = new StringWriter();
-        StreamResult result=new StreamResult( writer ); //new StringWriter());
+      Writer writer = new StringWriter();
+      StreamResult result=new StreamResult( writer );
 
       transformer.transform( new DOMSource(xml), result);
 
-      String str= writer.toString();	
+      System.out.println( writer.toString() );
 
-        System.out.println(str);
-
-/*	
-       Transformer transformer =
-            TransformerFactory.newInstance().newTransformer(new StreamSource(new
-          ByteArrayInputStream(source.getBytes())));
-*/
-
-
-/*        
-        Writer writer = new StringWriter();
-
-       transformer.transform(new StreamSource(new
-            ByteArrayInputStream(source.getBytes())),
-                              new StreamResult(writer));
-
-//        tf.setOutputProperty(OutputKeys.INDENT, "yes");
- //       Writer out = new StringWriter();
-//        String out = transformer.transform(new DOMSource(xml), writer );//new StreamResult(out));
-        System.out.println(writer.toString());
-*/
     }
 
 }
