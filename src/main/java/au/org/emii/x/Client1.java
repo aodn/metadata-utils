@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.File;
 import java.io.InputStream ;
@@ -196,6 +197,60 @@ class HttpProxy
        */
   }
 
+
+  public void writeOutputStream( OutputStream os, String data  )
+    throws IOException
+  {
+      DataOutputStream wr = new DataOutputStream ( os );
+      wr.writeBytes ( data );
+      wr.flush ();
+      wr.close ();
+  }
+
+
+  public String globInputStream( InputStream is  )
+    throws IOException
+  {
+    // this shit should be factored... slurpInputStream  
+    BufferedReader in = new BufferedReader( new InputStreamReader( is )); //connection.getInputStream()));
+    String inputLine;
+    StringBuffer response = new StringBuffer();
+ 
+    while ((inputLine = in.readLine()) != null) {
+      response.append(inputLine);
+    }
+    in.close();
+ 
+    // print result
+    // System.out.println(response.toString());
+    return response.toString();
+  }
+
+
+
+  Map< String, String> extractCookies( String cookies )
+  {
+      // extract the cookies ...
+      Map< String, String> result = new HashMap< String, String>();
+
+      for( String part : cookies.split(";") )
+      {
+        System.out.println("part: "+ part );
+        String[] keyvals = part.split("=");
+        // System.out.println("keyvals.length "+ keyvals.length ); 
+        if( keyvals.length == 1) {
+          result.put( keyvals[ 0], null );  
+        }
+        else if( keyvals.length == 2) {
+          result.put( keyvals[ 0], keyvals[ 1] );  
+        }
+      }
+
+    return result; 
+  }
+
+ 
+
   // post, http://stackoverflow.com/questions/1359689/how-to-send-http-request-in-java 
   // should be called get...
 
@@ -229,32 +284,29 @@ class HttpProxy
         throw new BadHttpReturnCode( "bad return code" ); 
     }
 
-    System.out.println("\nSending 'GET' request to URL : " + url);
-    System.out.println("Response Code : " + responseCode);
+    // System.out.println("\nSending 'GET' request to URL : " + url);
+    // System.out.println("Response Code : " + responseCode);
 
     return globInputStream( connection.getInputStream() );
   }
 
-  public String globInputStream( InputStream is  )
-    throws IOException
+
+
+  // should return a string...
+  public String getRecord( String uuid ) throws Exception 
   {
-    // this shit should be factored... slurpInputStream  
-    BufferedReader in = new BufferedReader( new InputStreamReader( is )); //connection.getInputStream()));
-    String inputLine;
-    StringBuffer response = new StringBuffer();
- 
-    while ((inputLine = in.readLine()) != null) {
-      response.append(inputLine);
-    }
-    in.close();
- 
-    // print result
-    // System.out.println(response.toString());
-    return response.toString();
+    // String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
+    return this.get( baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid ) ; 
+    // System.out.print( result );
+    // return result ; 
   }
 
- 
-  public void login( String user, String pass ) {
+
+
+
+  public void login( String user, String pass ) 
+    throws Exception
+  {
 
     // URL url;
     HttpURLConnection connection = null;  
@@ -276,62 +328,34 @@ class HttpProxy
       connection.setDoOutput(true);
 
       //Send request
-      DataOutputStream wr = new DataOutputStream ( connection.getOutputStream ());
-      wr.writeBytes ( request );
-      wr.flush ();
-      wr.close ();
+      writeOutputStream( connection.getOutputStream (), request ); 
 
       //Get Response    
-      InputStream is = connection.getInputStream();
-      BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-      String line;
-      StringBuffer response = new StringBuffer(); 
-      while((line = rd.readLine()) != null) {
-        response.append(line);
-        response.append('\r');
-      }
-      rd.close();
+      String response = globInputStream( connection.getInputStream() );
+ 
+      // response code is 302 here, should be checking goes to non-long redirect... 
 
-      // should check the response code, that it's 200 and not to the login page...
-
-      // extract the cookies ...
-      Map< String, String> cookies = new HashMap< String, String>();
-
-      for( String part : connection.getHeaderField("Set-Cookie").split(";") )
-      {
-        System.out.println("part: "+ part );
-        String[] keyvals = part.split("=");
-        // System.out.println("keyvals.length "+ keyvals.length ); 
-        if( keyvals.length == 1) {
-          cookies.put( keyvals[ 0], null );  
-        }
-        else if( keyvals.length == 2) {
-          cookies.put( keyvals[ 0], keyvals[ 1] );  
-        }
-      }
+      Map< String, String> cookies = extractCookies( connection.getHeaderField("Set-Cookie") ); 
 
       // set the session id...
       System.out.println( "JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
       this.sessionID = cookies.get( "JSESSIONID" );
 
-/*
+
       String newUrl = connection.getHeaderField("location");
       System.out.println("newUrl: "+ newUrl );
 
-      System.out.println("here1" );
-      System.out.println(response.toString());
-    
-      System.out.println( connection.getResponseCode() );
-      System.out.println("here2" );
-
-      return response.toString();
-*/
-    } catch (Exception e) {
+      /* System.out.println("here1" );
+            System.out.println(response.toString());
+            System.out.println( connection.getResponseCode() );
+            System.out.println("here2" );
+      */
+    } /*catch (Exception e) {
 
       e.printStackTrace();
       // return null;
 
-    } finally {
+    } */ finally {
 
       if(connection != null) {
         connection.disconnect(); 
@@ -489,8 +513,13 @@ class Client1
 
 
     String result = c.get( "/geonetwork/srv/en/xml.group.list" ) ; 
- 
     System.out.println( "result is " + result ); 
+
+
+    String record = c.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
+    System.out.println( "record is " + record ); 
+
+ 
   } 
 
 }
