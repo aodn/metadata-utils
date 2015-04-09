@@ -268,6 +268,9 @@ class HttpProxy
 		System.out.println("Cookies: "+cookies);
 
 
+		String newUrl = connection.getHeaderField("location");
+		System.out.println("newUrl: "+ newUrl );
+
 		System.out.println("here1" );
 		System.out.println(response.toString());
   
