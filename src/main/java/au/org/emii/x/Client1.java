@@ -118,6 +118,9 @@ import org.xml.sax.InputSource;
 
 
 
+import org.apache.commons.codec.binary.Base64;
+
+
 // xslt examples,
 // http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
@@ -274,21 +277,38 @@ class HttpProxy
       // connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
       // we shouldn't have to url encode like this...
+
+      connection.setRequestProperty("User-Agent", "Mozilla/5.0");  
       connection.setRequestProperty("Content-Type", "application/xml;charset=UTF-8");
 
       connection.setRequestProperty("Content-Language", "en-US");  
       connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
 
-/*
-      // String cookies_ = "JSESSIONID=" + sessionID + ";HttpOnly;";  
-      String cookies_ = "JSESSIONID=" + sessionID ;  
-      System.out.println( "setting cookies to " + cookies_ );
-     connection.setRequestProperty("Cookie", cookies_ );
-      connection.setRequestProperty("Cookie", "JSESSIONID=F81BA2750D49E33EB9D3DD044DCADFB7; _ga=GA1.3.193332679.1414962116;" );
-*/
 
+      // use basic authentification
+      if( false )
+      {
+        // c.login( "admin", "rqpxNDd8BS" ); 
+
+        String name = "admin";
+        String password = "rqpxNDd8BS";
+
+        String authString = name + ":" + password;
+        System.out.println("auth string: " + authString);
+        byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+        String authStringEnc = new String(authEncBytes);
+        System.out.println("Base64 encoded auth string: " + authStringEnc);
+
+        // URL url = new URL(webPage);
+        // URLConnection urlConnection = url.openConnection();
+        connection .setRequestProperty("Authorization", "Basic " + authStringEnc);
+
+      }
+
+      // use session id cookie
       System.out.println( "setting session cookie " + sessionID );
       connection.setRequestProperty("Cookie", sessionID );
+
 
       connection.setUseCaches (false);
       connection.setDoInput(true);
@@ -356,7 +376,7 @@ class HttpProxy
     return this.httpGet( "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid ) ; 
   }
 
-
+/*
   public void createUser( )
     throws Exception 
   {
@@ -379,7 +399,7 @@ class HttpProxy
 
       this.httpPostXML( "/geonetwork/srv/en/user.update", template ); 
   }
-
+*/
 
 
   public void login( String user, String pass ) 
@@ -402,10 +422,9 @@ class HttpProxy
       connection.setRequestMethod("POST");
       // connection.setRequestProperty("Content-Type", "application/xml");
       connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-      connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
       connection.setRequestProperty("Content-Language", "en-US");  
 
-      System.out.println( "fuck " + Integer.toString( data.getBytes().length)  ); 
+
 
 /*
       connection.setRequestProperty("Content-Type", "text/xml");
@@ -427,7 +446,7 @@ class HttpProxy
  
       // response code is 302 here, should be checking goes to non-long redirect... 
 /*
-      Map< String, String> cookies = extractCookies( connection.getHeaderField("Set-Cookie") ); 
+      Map< STRING, String> cookies = extractCookies( connection.getHeaderField("Set-Cookie") ); 
 
       // set the session id...
       System.out.println( "got JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
@@ -560,15 +579,18 @@ class Client1
     // HttpProxy c = new HttpProxy( "http://127.0.0.1:8081" ); 
   
     c.enableSelfSignedSSL(); 
+
             
     c.login( "admin", "rqpxNDd8BS" ); 
 
-   
+//    c.login( "admin", "QhbHVQ75R9uP" ); 
+
+ /*  
     // ///////////////////////////
     System.out.println( "*** doing xml.usergroups.list "  ) ; 
 
     c.httpGet( "/geonetwork/srv/en/xml.usergroups.list" ) ; 
-
+*/
 
 
     // ///////////////////////////
@@ -579,11 +601,28 @@ class Client1
       "  <id>3</id>" + 
       "<request> " 
       ;
-
     data = "";
-
     c.httpPostXML( "/geonetwork/srv/en/xml.usergroups.list", data ) ; 
 
+
+/*
+   String data = 
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
+      "<request>" + 
+      " <operation>newuser</operation>" +
+      " <username>aaa</username>" +
+      " <password>bbb</password>" +
+      " <profile>Editor</profile>" +
+      " <name>Samantha</name>" +
+      " <city>Amsterdam</city>" +
+      " <country>Netherlands</country>" +
+      " <email>Netherlands</email>" +
+      " <data/>" + 
+      "</request>" ; 
+
+    c.httpPostXML( "/geonetwork/srv/en/user.update", data ) ; 
+*/
+    
 
   } 
 
