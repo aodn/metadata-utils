@@ -291,20 +291,32 @@ class HttpProxy
    
       // optional default is GET
       connection.setRequestMethod("GET");
+
+      connection.setRequestProperty("Content-Type", "application/xml;charset=UTF-8");
+      connection.setRequestProperty("Content-Language", "en-US");  
+
+
    
       //add request header
       // connection.setRequestProperty("User-Agent", USER_AGENT);
 
 
-      String cookies = "JSESSIONID=" + sessionID + ";HttpOnly;";  
+/*      String cookies = "JSESSIONID=" + sessionID + ";HttpOnly;";  
       System.out.println( "get setting cookies " + cookies ); 
       connection.setRequestProperty("Cookie", cookies );
+*/
+
+      connection.setRequestProperty("Cookie", sessionID );
+
+      connection.connect();
+
+      System.out.println( "response code " + connection.getResponseCode() ); 
    
-      int responseCode = connection.getResponseCode();
-      if( responseCode != 200 ) {
+
+/*      if( responseCode != 200 ) {
           throw new BadHttpReturnCode( "bad return code" ); 
       }
-
+*/
       // System.out.println("\nSending 'GET' request to URL : " + url);
       // System.out.println("Response Code : " + responseCode);
 
@@ -335,17 +347,28 @@ class HttpProxy
       connection.setRequestProperty("Content-Language", "en-US");  
       */
       // connection.setInstanceFollowRedirects(true );
+/*
       connection.setRequestProperty("Content-Type", "text/xml");
       connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
       connection.setRequestProperty("Content-Language", "en-US");
+*/
+
+      // we shouldn't have to url encode like this...
+      connection.setRequestProperty("Content-Type", "application/xml");
+      connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
+      connection.setRequestProperty("Content-Language", "en-US");  
 
 
 
+/*
       // String cookies_ = "JSESSIONID=" + sessionID + ";HttpOnly;";  
       String cookies_ = "JSESSIONID=" + sessionID ;  
-
       System.out.println( "setting cookies to " + cookies_ );
      connection.setRequestProperty("Cookie", cookies_ );
+*/
+
+      System.out.println( "setting session cookie " + sessionID );
+      connection.setRequestProperty("Cookie", "JSESSIONID=F81BA2750D49E33EB9D3DD044DCADFB7; _ga=GA1.3.193332679.1414962116;" );
 
       connection.setUseCaches (false);
       connection.setDoInput(true);
@@ -528,12 +551,16 @@ class HttpProxy
 
       //Create connection
       URL url = new URL ( baseURL + "/geonetwork/j_spring_security_check" );
+      // URL url = new URL ( baseURL + "/geonetwork/srv/en/xml.user.login" );
+
       connection = (HttpURLConnection)url.openConnection();
       connection.setRequestMethod("POST");
       // connection.setRequestProperty("Content-Type", "application/xml");
       connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
       connection.setRequestProperty("Content-Language", "en-US");  
+
+      System.out.println( "fuck " + Integer.toString( data.getBytes().length)  ); 
 
 /*
       connection.setRequestProperty("Content-Type", "text/xml");
@@ -554,13 +581,17 @@ class HttpProxy
       String response = globInputStream( connection.getInputStream() );
  
       // response code is 302 here, should be checking goes to non-long redirect... 
-
+/*
       Map< String, String> cookies = extractCookies( connection.getHeaderField("Set-Cookie") ); 
 
       // set the session id...
       System.out.println( "got JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
       this.sessionID = cookies.get( "JSESSIONID" );
+*/
+     this.sessionID  = connection.getHeaderField("Set-Cookie") .split(";")[ 0] ;
 
+      System.out.println( "got sesssion " + this.sessionID  ); 
+ 
 
       String newUrl = connection.getHeaderField("location");
       System.out.println("login redirect newUrl: "+ newUrl );
@@ -663,6 +694,8 @@ class Client1
 
     //sendGet(); 
     HttpProxy c = new HttpProxy( "https://catalogue-123.aodn.org.au" ); 
+//   HttpProxy c = new HttpProxy( "http://127.0.0.1:8081" ); 
+  
     c.enableSelfSignedSSL(); 
 
     // GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
@@ -732,7 +765,7 @@ class Client1
     c.login( "user", "pass" ); 
 
 
-//    String result = c.httpGet( "/geonetwork/srv/en/xml.group.list" ) ; 
+    // String result = c.httpGet( "/geonetwork/srv/en/xml.group.list" ) ; 
     // System.out.println( "result is " + result ); 
 
 
@@ -743,8 +776,23 @@ class Client1
  //   c.updateRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" , record ); 
  
 
-    c. createUser( ); 
- 
+ //   c. createUser( ); 
+
+
+    String data =
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
+      "<request>" + 
+      "  <id>3</id>" + 
+      "<request> " 
+      ;
+   
+
+    System.out.println( "*** doing xml.usergroups.list "  ) ; 
+//    c.httpPostXML( "/geonetwork/srv/en/xml.usergroups.list", data ) ; 
+
+    c.httpGet( "/geonetwork/srv/en/xml.usergroups.list" ) ; 
+
+//  "https://catalogue-123.aodn.org.au/geonetwork/srv/en/xml.usergroups.list"
 
   } 
 
