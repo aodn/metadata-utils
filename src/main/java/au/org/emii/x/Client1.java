@@ -354,21 +354,21 @@ class HttpProxy
 */
 
       // we shouldn't have to url encode like this...
-      connection.setRequestProperty("Content-Type", "application/xml");
-      connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
+
+      connection.setRequestProperty("Content-Type", "application/xml;charset=UTF-8");
       connection.setRequestProperty("Content-Language", "en-US");  
-
-
+      connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
 
 /*
       // String cookies_ = "JSESSIONID=" + sessionID + ";HttpOnly;";  
       String cookies_ = "JSESSIONID=" + sessionID ;  
       System.out.println( "setting cookies to " + cookies_ );
      connection.setRequestProperty("Cookie", cookies_ );
+      connection.setRequestProperty("Cookie", "JSESSIONID=F81BA2750D49E33EB9D3DD044DCADFB7; _ga=GA1.3.193332679.1414962116;" );
 */
 
       System.out.println( "setting session cookie " + sessionID );
-      connection.setRequestProperty("Cookie", "JSESSIONID=F81BA2750D49E33EB9D3DD044DCADFB7; _ga=GA1.3.193332679.1414962116;" );
+      connection.setRequestProperty("Cookie", sessionID );
 
       connection.setUseCaches (false);
       connection.setDoInput(true);
@@ -547,7 +547,7 @@ class HttpProxy
 
       System.out.println("*** doing login" );
 
-      String data = "username=admin&password=rqpxNDd8BS";
+      String data = "username=" + user + "&password=" + pass ; 
 
       //Create connection
       URL url = new URL ( baseURL + "/geonetwork/j_spring_security_check" );
@@ -761,8 +761,8 @@ class Client1
  
 //    String path = baseURL + "/geonetwork/login.jsp"; 
 */
-              
-    c.login( "user", "pass" ); 
+             
+    c.login( "admin", "rqpxNDd8BS" ); 
 
 
     // String result = c.httpGet( "/geonetwork/srv/en/xml.group.list" ) ; 
@@ -779,20 +779,25 @@ class Client1
  //   c. createUser( ); 
 
 
-    String data =
+   
+    // ///////////////////////////
+    System.out.println( "*** doing xml.usergroups.list "  ) ; 
+
+    c.httpGet( "/geonetwork/srv/en/xml.usergroups.list" ) ; 
+
+
+
+    // ///////////////////////////
+    System.out.println( "*** doing post xml.usergroups.list "  ) ; 
+     String data =
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
       "<request>" + 
       "  <id>3</id>" + 
       "<request> " 
       ;
-   
 
-    System.out.println( "*** doing xml.usergroups.list "  ) ; 
-//    c.httpPostXML( "/geonetwork/srv/en/xml.usergroups.list", data ) ; 
+    c.httpPostXML( "/geonetwork/srv/en/xml.usergroups.list", data ) ; 
 
-    c.httpGet( "/geonetwork/srv/en/xml.usergroups.list" ) ; 
-
-//  "https://catalogue-123.aodn.org.au/geonetwork/srv/en/xml.usergroups.list"
 
   } 
 
