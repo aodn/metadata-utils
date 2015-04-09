@@ -139,12 +139,27 @@ class BadHttpReturnCode extends Exception
 
 
 
+
+
+
+
+
+
 class HttpProxy 
 {
-	private final static String USER_AGENT = "Mozilla/5.0";
+	// private final static String USER_AGENT = "Mozilla/5.0";
 
-  HttpProxy(  )
-  { }
+  String sessionID; 
+  String baseURL;
+
+  HttpProxy( String baseURL)
+  { 
+    this.baseURL = baseURL;
+    this.sessionID = null;
+  }
+
+
+  
 
   public void enableSelfSignedSSL() throws Exception
   {
@@ -195,107 +210,131 @@ class HttpProxy
 
 	// http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
 
-
-
     // we can't really abstract out the connection handling, because the serveri
     // may decide to disconnect us.
-   
-    public static String executePost(String targetURL, String urlParameters) {
+  
 
-      URL url;
-      HttpURLConnection connection = null;  
-      try {
-        //Create connection
-        url = new URL(targetURL);
-        connection = (HttpURLConnection)url.openConnection();
-        connection.setRequestMethod("POST");
-        // connection.setRequestProperty("Content-Type", "application/xml");
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+  // should be called get...
+  public String get( String url ) throws Exception
+  {
+		URL obj = new URL( baseURL + url);
+		HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+ 
+		// optional default is GET
+		connection.setRequestMethod("GET");
+ 
+		//add request header
+		// connection.setRequestProperty("User-Agent", USER_AGENT);
 
-        connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
-        connection.setRequestProperty("Content-Language", "UTF8");  
-        /*
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/xml");
-            con.setRequestProperty("Content-Length", "" + Integer.toString( xml.getBytes().length));
-            // con.setRequestProperty("Content-Language", "en-US");  
-            con.setRequestProperty("Content-Language", "en-US");  
-        */
+    connection.setRequestProperty("Cookie", "JSESSIONID=" + sessionID );
+ 
+		int responseCode = connection.getResponseCode();
+    if( responseCode != 200 ) {
+        throw new BadHttpReturnCode( "bad return code" ); 
+    }
 
-        /*
-            connection.setRequestProperty("username", "admin");  
-            connection.setRequestProperty("password", "rqpxNDd8BS");  
-        */
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+ 
+		BufferedReader in = new BufferedReader( new InputStreamReader(connection.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+ 
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+ 
+		// print result
+    // System.out.println(response.toString());
+		return response.toString();
+  }
 
-        connection.setInstanceFollowRedirects(true );
 
-        connection.setUseCaches (false);
-        connection.setDoInput(true);
-        connection.setDoOutput(true);
+ 
+  public void login( String user, String pass ) {
 
-        //Send request
-        DataOutputStream wr = new DataOutputStream ( connection.getOutputStream ());
-        wr.writeBytes (urlParameters);
-        wr.flush ();
-        wr.close ();
+    // URL url;
+    HttpURLConnection connection = null;  
+    try {
+      String request = "username=admin&password=rqpxNDd8BS";
 
-        //Get Response    
-        InputStream is = connection.getInputStream();
-        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-        String line;
-        StringBuffer response = new StringBuffer(); 
-        while((line = rd.readLine()) != null) {
-          response.append(line);
-          response.append('\r');
+      //Create connection
+      URL url = new URL ( baseURL + "/geonetwork/j_spring_security_check" );
+      connection = (HttpURLConnection)url.openConnection();
+      connection.setRequestMethod("POST");
+      // connection.setRequestProperty("Content-Type", "application/xml");
+      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+      connection.setRequestProperty("Content-Length", "" + Integer.toString( request.getBytes().length));
+      connection.setRequestProperty("Content-Language", "UTF8");  
+      // connection.setInstanceFollowRedirects(true );
+
+      connection.setUseCaches (false);
+      connection.setDoInput(true);
+      connection.setDoOutput(true);
+
+      //Send request
+      DataOutputStream wr = new DataOutputStream ( connection.getOutputStream ());
+      wr.writeBytes ( request );
+      wr.flush ();
+      wr.close ();
+
+      //Get Response    
+      InputStream is = connection.getInputStream();
+      BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+      String line;
+      StringBuffer response = new StringBuffer(); 
+      while((line = rd.readLine()) != null) {
+        response.append(line);
+        response.append('\r');
+      }
+      rd.close();
+
+      // should check the response code, that it's 200 and not to the login page...
+
+      // extract the cookies ...
+      Map< String, String> cookies = new HashMap< String, String>();
+
+      for( String part : connection.getHeaderField("Set-Cookie").split(";") )
+      {
+        System.out.println("part: "+ part );
+        String[] keyvals = part.split("=");
+        // System.out.println("keyvals.length "+ keyvals.length ); 
+        if( keyvals.length == 1) {
+          cookies.put( keyvals[ 0], null );  
         }
-        rd.close();
-
-        //Obtenemos la cookie por si se necesita
-//        String cookies = connection.getHeaderField("Set-Cookie");
-//         System.out.println("Cookies: "+cookies);
-
-
-        // extract the cookies ...
-        Map< String, String> cookies = new HashMap< String, String>();
-
-        for( String part : connection.getHeaderField("Set-Cookie").split(";") )
-        {
-          System.out.println("part: "+ part );
-          String[] keyvals = part.split("=");
-          // System.out.println("keyvals.length "+ keyvals.length ); 
-          if( keyvals.length == 2) {
-            cookies.put( keyvals[ 0], null );  
-          }
-          else if( keyvals.length == 2) {
-            cookies.put( keyvals[ 0], keyvals[ 1] );  
-          }
-        }
-
-        System.out.println( "JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
-
-
-        String newUrl = connection.getHeaderField("location");
-        System.out.println("newUrl: "+ newUrl );
-
-        System.out.println("here1" );
-        System.out.println(response.toString());
-      
-        System.out.println( connection.getResponseCode() );
-        System.out.println("here2" );
-
-        return response.toString();
-
-      } catch (Exception e) {
-
-        e.printStackTrace();
-        return null;
-
-      } finally {
-
-        if(connection != null) {
-          connection.disconnect(); 
+        else if( keyvals.length == 2) {
+          cookies.put( keyvals[ 0], keyvals[ 1] );  
         }
       }
+
+      // set the session id...
+      System.out.println( "JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
+      this.sessionID = cookies.get( "JSESSIONID" );
+
+/*
+      String newUrl = connection.getHeaderField("location");
+      System.out.println("newUrl: "+ newUrl );
+
+      System.out.println("here1" );
+      System.out.println(response.toString());
+    
+      System.out.println( connection.getResponseCode() );
+      System.out.println("here2" );
+
+      return response.toString();
+*/
+    } catch (Exception e) {
+
+      e.printStackTrace();
+      // return null;
+
+    } finally {
+
+      if(connection != null) {
+        connection.disconnect(); 
+      }
+    }
   }
 
  
@@ -377,7 +416,7 @@ class Client1
 	{
 
 		//sendGet(); 
-		HttpProxy c = new HttpProxy( ); // "https://catalogue-123.aodn.org.au"); 
+		HttpProxy c = new HttpProxy( "https://catalogue-123.aodn.org.au" ); 
 		c.enableSelfSignedSSL(); 
 
 		// GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
@@ -390,6 +429,7 @@ class Client1
     .addContent(new Element("password").setText("admin"));
   */
 
+/*
 		 // rename to template,
 		String template = 
 		  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
@@ -424,7 +464,7 @@ class Client1
 		String request = Misc.transform ( transformer, doc ); 
 
 
-    request = "username=admin&password=rqpxNDd8BS";
+    request = "username=admin1&password=rqpxNDd8BS";
 
     System.out.println( request);
 
@@ -441,10 +481,14 @@ class Client1
 
  
 //		String path = baseURL + "/geonetwork/login.jsp"; 
+*/
               
-		String x = c.executePost( path, request ); 
+		c.login( "user", "pass" ); 
 
 
+    String result = c.get( "/geonetwork/srv/en/xml.group.list" ) ; 
+ 
+    System.out.println( "result is " + result ); 
 	}	
 
 }
