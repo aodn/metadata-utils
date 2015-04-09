@@ -231,17 +231,24 @@ public class PostgresEditor
 		);
 
 		String query = "SELECT id,uuid,data FROM metadata ";
+
+		// uuid or all
 		if(cmd.hasOption("uuid")) {
 			query += " where uuid = '" + cmd.getOptionValue("uuid") + "'";
 		}
-
-		else if(cmd.hasOption("stdout") || cmd.hasOption( "update")) {
+		else if(cmd.hasOption("all")) {
 			;
 		}
 		else {
-			throw new Exception( "Options should include -uuid, -all or -stdout" );
+			throw new Exception( "Options should include one of -uuid or -all" );
 		}
 
+/*
+		// we could get rid of stdout
+		if( !( cmd.hasOption("stdout") || cmd.hasOption( "update")) ) {
+			throw new Exception( "Options should include one of -stdout or -update" );
+		}
+*/
 
         PreparedStatement stmt = conn.prepareStatement( query );
         ResultSet rs = stmt.executeQuery();
@@ -258,12 +265,15 @@ public class PostgresEditor
 			String uuid = (String) rs.getObject("uuid");
 			String data = (String) rs.getObject("data");
 
+			System.out.println( "id " + id + ", uuid " + uuid );
+
+
 			if( transformer != null ) {
 				data = Misc.transform( transformer, data);
 			}
 
 			if( cmd.hasOption("stdout")) {
-				System.out.println( "id " + id + "\nuuid " + uuid + "\n" + data);
+				System.out.println( data);
 			}
 
 			if( cmd.hasOption("update")) {
@@ -272,11 +282,16 @@ public class PostgresEditor
 				updateStmt.setInt(2, id );
 				updateStmt.executeUpdate();
 				// close...?
+				updateStmt.close();
 			}
 
             ++count;
-			break;
         }
+
+
+		stmt.close();
+		rs.close();
+		conn.close();
 
         System.out.println( "records processed " + count );
 	}
