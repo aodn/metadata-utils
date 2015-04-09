@@ -266,28 +266,37 @@ class HttpProxy
   
 
   // should be called get...
-  public String get( String url ) throws Exception
+  public String get( String url_ ) throws Exception
   {
-    URL obj = new URL( baseURL + url);
-    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+    HttpURLConnection connection = null;  
+    try {
  
-    // optional default is GET
-    connection.setRequestMethod("GET");
- 
-    //add request header
-    // connection.setRequestProperty("User-Agent", USER_AGENT);
+      URL url = new URL( baseURL + url_ );
+      connection = (HttpURLConnection) url.openConnection();
+   
+      // optional default is GET
+      connection.setRequestMethod("GET");
+   
+      //add request header
+      // connection.setRequestProperty("User-Agent", USER_AGENT);
 
-    connection.setRequestProperty("Cookie", "JSESSIONID=" + sessionID );
- 
-    int responseCode = connection.getResponseCode();
-    if( responseCode != 200 ) {
-        throw new BadHttpReturnCode( "bad return code" ); 
+      connection.setRequestProperty("Cookie", "JSESSIONID=" + sessionID );
+   
+      int responseCode = connection.getResponseCode();
+      if( responseCode != 200 ) {
+          throw new BadHttpReturnCode( "bad return code" ); 
+      }
+
+      // System.out.println("\nSending 'GET' request to URL : " + url);
+      // System.out.println("Response Code : " + responseCode);
+
+      return globInputStream( connection.getInputStream() );
+      }
+      finally {
+        if(connection != null) {
+          connection.disconnect(); 
+        }
     }
-
-    // System.out.println("\nSending 'GET' request to URL : " + url);
-    // System.out.println("Response Code : " + responseCode);
-
-    return globInputStream( connection.getInputStream() );
   }
 
 
@@ -295,10 +304,7 @@ class HttpProxy
   // should return a string...
   public String getRecord( String uuid ) throws Exception 
   {
-    // String path = baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid; 
-    return this.get( baseURL + "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid ) ; 
-    // System.out.print( result );
-    // return result ; 
+    return this.get( "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid ) ; 
   }
 
 
