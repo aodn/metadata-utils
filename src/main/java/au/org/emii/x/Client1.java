@@ -330,37 +330,40 @@ class HttpProxy
       connection = (HttpURLConnection)url.openConnection();
       connection.setRequestMethod("POST");
       
-      connection.setRequestProperty("Content-Type", "application/xml");
+      /*connection.setRequestProperty("Content-Type", "application/xml");
       connection.setRequestProperty("Content-Length", "" + Integer.toString( data.getBytes().length));
-      connection.setRequestProperty("Content-Language", "UTF8");  
+      connection.setRequestProperty("Content-Language", "en-US");  
+      */
       // connection.setInstanceFollowRedirects(true );
+      connection.setRequestProperty("Content-Type", "text/xml");
+      connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
+      connection.setRequestProperty("Content-Language", "en-US");
 
-      // System.out.println( "setting session id to " + sessionID );
+
 
       // String cookies_ = "JSESSIONID=" + sessionID + ";HttpOnly;";  
       String cookies_ = "JSESSIONID=" + sessionID ;  
+
+      System.out.println( "setting cookies to " + cookies_ );
      connection.setRequestProperty("Cookie", cookies_ );
 
       connection.setUseCaches (false);
       connection.setDoInput(true);
       connection.setDoOutput(true);
 
+      connection .connect();  
 
-//       connection.setRequestProperty("Cookie", URLEncoder.encode( cookies_ , "UTF-8"));
-//     connection .connect();  
-
- //      connection.setRequestProperty( cookies_  );
-
+      // connection.setRequestProperty("Cookie", URLEncoder.encode( cookies_ , "UTF-8"));
+      // connection.setRequestProperty( cookies_  );
 
       // do request
       writeOutputStream( connection.getOutputStream(), data ); 
 
-
-      System.out.println( connection.getResponseCode() );
+      System.out.println( "response code " + connection.getResponseCode() );
+      System.out.println( "response message " + connection.getResponseMessage() );
 
       String newUrl = connection.getHeaderField("location");
       System.out.println("newUrl: "+ newUrl );
-
 
 
 /*
@@ -372,7 +375,9 @@ class HttpProxy
 */
 
       // get response 
-//      String response = globInputStream( connection.getInputStream() );
+      String response = globInputStream( connection.getInputStream() );
+      System.out.println( "globbed " + response);
+ 
  
       // response code is 302 here, should be checking goes to non-long redirect... 
 
@@ -382,11 +387,7 @@ class HttpProxy
       // this.sessionID = cookies.get( "JSESSIONID" );
       // String newUrl = connection.getHeaderField("location");
       // System.out.println("newUrl: "+ newUrl );
-
-
  //     System.out.println(response.toString());
-       
-
       /* System.out.println("here1" );
             System.out.println(response.toString());
             System.out.println( connection.getResponseCode() );
@@ -523,16 +524,22 @@ class HttpProxy
 
       System.out.println("doing login" );
 
-      String request = "username=admin&password=rqpxNDd8BS";
+      String data = "username=admin&password=rqpxNDd8BS";
 
       //Create connection
       URL url = new URL ( baseURL + "/geonetwork/j_spring_security_check" );
       connection = (HttpURLConnection)url.openConnection();
       connection.setRequestMethod("POST");
       // connection.setRequestProperty("Content-Type", "application/xml");
-      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+/*      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       connection.setRequestProperty("Content-Length", "" + Integer.toString( request.getBytes().length));
       connection.setRequestProperty("Content-Language", "UTF8");  
+*/
+      connection.setRequestProperty("Content-Type", "text/xml");
+      connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
+      connection.setRequestProperty("Content-Language", "en-US");
+
+
       // connection.setInstanceFollowRedirects(true );
 
       connection.setUseCaches (false);
@@ -540,7 +547,7 @@ class HttpProxy
       connection.setDoOutput(true);
 
       //Send request
-      writeOutputStream( connection.getOutputStream (), request ); 
+      writeOutputStream( connection.getOutputStream (), data ); 
 
       //Get Response    
       String response = globInputStream( connection.getInputStream() );
