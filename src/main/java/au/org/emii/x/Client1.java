@@ -122,42 +122,6 @@ import org.xml.sax.InputSource;
 // http://fandry.blogspot.com.au/2012/04/java-xslt-processing-with-saxon.html
 
 
-class BadCLIArgumentsException extends Exception
-{
-  public BadCLIArgumentsException( String message )
-  {
-    super(message);
-  }
-}
-
-class BadHttpReturnCode extends Exception
-{
-  public BadHttpReturnCode( String message )
-  {
-    super(message);
-  }
-}
-
-
-
-class  Helper
-{
-  // change name XMLofString 
-  public static Document xMLFromString(String xml) throws Exception
-  {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//    factory.setValidating(false);
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    InputSource is = new InputSource(new StringReader(xml));
-    return builder.parse(is);
-  }
-
-
-
-}
-
-
-
 class HttpProxy 
 {
   // private final static String USER_AGENT = "Mozilla/5.0";
@@ -242,43 +206,10 @@ class HttpProxy
   }
 
 
-
-  Map< String, String> extractCookies( String cookies )
-  {
-      // extract the cookies ...
-      Map< String, String> result = new HashMap< String, String>();
-
-      for( String part : cookies.split(";") )
-      {
-        // System.out.println("part: "+ part );
-        String[] keyvals = part.split("=");
-        // System.out.println("keyvals.length "+ keyvals.length ); 
-        if( keyvals.length == 1) {
-          result.put( keyvals[ 0], null );  
-        }
-        else if( keyvals.length == 2) {
-          result.put( keyvals[ 0], keyvals[ 1] );  
-        }
-      }
-
-    return result; 
-  }
-
- 
-
   // post, http://stackoverflow.com/questions/1359689/how-to-send-http-request-in-java 
-  // should be called get...
-
-  // we have to encode the xml values...
-  // or pass the node...
-  // or should it be a node...
-
-
+  
   // http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
 
-    // we can't really abstract out the connection handling, because the serveri
-    // may decide to disconnect us.
-  
 
   // should be called get...
   public String httpGet( String url_ ) throws Exception
@@ -296,30 +227,14 @@ class HttpProxy
       connection.setRequestProperty("Content-Language", "en-US");  
 
 
-   
-      //add request header
-      // connection.setRequestProperty("User-Agent", USER_AGENT);
-
-
-/*      String cookies = "JSESSIONID=" + sessionID + ";HttpOnly;";  
-      System.out.println( "get setting cookies " + cookies ); 
-      connection.setRequestProperty("Cookie", cookies );
-*/
-
+  
+      System.out.println( "setting cookie " + sessionID ); 
       connection.setRequestProperty("Cookie", sessionID );
 
       connection.connect();
 
       System.out.println( "response code " + connection.getResponseCode() ); 
    
-
-/*      if( responseCode != 200 ) {
-          throw new BadHttpReturnCode( "bad return code" ); 
-      }
-*/
-      // System.out.println("\nSending 'GET' request to URL : " + url);
-      // System.out.println("Response Code : " + responseCode);
-
       return globInputStream( connection.getInputStream() );
       }
       finally {
@@ -337,9 +252,9 @@ class HttpProxy
     HttpURLConnection connection = null;  
     try {
 
-      //Create connection
-      URL url = new URL ( baseURL + url_  );
-      connection = (HttpURLConnection)url.openConnection();
+      URL url = new URL( baseURL + url_ );
+      connection = (HttpURLConnection) url.openConnection();
+   
       connection.setRequestMethod("POST");
       
       /*connection.setRequestProperty("Content-Type", "application/xml");
@@ -353,9 +268,14 @@ class HttpProxy
       connection.setRequestProperty("Content-Language", "en-US");
 */
 
-      // we shouldn't have to url encode like this...
 
+
+      // data = URLEncoder.encode( data , "UTF-8");
+      // connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+      // we shouldn't have to url encode like this...
       connection.setRequestProperty("Content-Type", "application/xml;charset=UTF-8");
+
       connection.setRequestProperty("Content-Language", "en-US");  
       connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
 
@@ -462,81 +382,6 @@ class HttpProxy
 
 
 
-  // should'nt return anything
-  public void updateRecord( String uuid, String record ) throws Exception 
-  {
-    /*
-    /geonetwork/srv/eng/xml.metadata.update
-    <?xml version="1.0" encoding="UTF-8"?>
-    <request>
-      <id>11</id>
-      <version>1</version>
-      <data><![CDATA[
-        <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
-                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        ...
-              </gmd:DQ_DataQuality>
-          </gmd:dataQualityInfo>
-        </gmd:MD_Metadata>]]>
-      </data>
-    </request>
-    */
-
-    // rename to template,
-    String template = 
-      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
-      "<request>" + 
-      " <uuid/>" +
-      " <version>1</version>" + 
-      " <data/>" + 
-      "</request>" ; 
-
-    Document doc = Helper.xMLFromString( template);  
-
-    XPathFactory xPathfactory = XPathFactory.newInstance();
-
-    // substitute the data 
-    {
-      XPath xpath = xPathfactory.newXPath();
-      NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
-      CDATASection cdata = doc.createCDATASection( record );
-      myNodeList.item( 0).appendChild(cdata);
-    }
-
-    // substitute the uuid 
-    {
-      XPath xpath = xPathfactory.newXPath();
-      NodeList myNodeList = (NodeList) xpath.compile("//request/uuid").evaluate( doc, XPathConstants.NODESET); 
-      myNodeList.item(0).setTextContent( uuid);
-    }
-
-    String identity = 
-      "<xsl:stylesheet version=\"2.0\"" + 
-      " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
-      " <xsl:output omit-xml-declaration=\"no\" indent=\"yes\"" + 
-      " cdata-section-elements=\"data\"/>" +
-      " <xsl:strip-space elements=\"*\"/>" +
-      " <xsl:template match=\"node()|@*\">" +
-      "     <xsl:copy>" +
-      "       <xsl:apply-templates select=\"node()|@*\"/>" +
-      "     </xsl:copy>" +
-      " </xsl:template>" +
-      "</xsl:stylesheet>"
-      ;
-
-    Transformer transformer = Misc.getTransformerFromString( identity ); 
-
-    String result = Misc.transform ( transformer, doc ); 
-
-//    System.out.println( "here -> \n" + result ); 
-
-    this.httpPostXML( "/geonetwork/srv/eng/xml.metadata.update", result ); 
-
-  }
-
-
-
-
   public void login( String user, String pass ) 
     throws Exception
   {
@@ -622,65 +467,6 @@ class HttpProxy
 
 
 
-class Misc
-{
-
-  public Misc ()
-  { }
-
-
-  public static Transformer getTransformerFromFile( String filename )
-    throws FileNotFoundException, TransformerConfigurationException
-  {
-    final TransformerFactory tsf = TransformerFactory.newInstance();
-    final InputStream is  = new FileInputStream( filename );
-
-    return tsf.newTransformer(new StreamSource(is));
-  }
-
-
-  public static Transformer getTransformerFromString ( String input )
-    throws FileNotFoundException, TransformerConfigurationException
-  {
-    final TransformerFactory tsf = TransformerFactory.newInstance();
-
-    InputStream is = new ByteArrayInputStream( input.getBytes());//StandardCharsets.UTF_8));
-
-//    final InputStream is  = new StringInputStream( input );
-
-    return tsf.newTransformer(new StreamSource(is));
-  }
-
-
-
-  public static String transform ( Transformer transformer, Document xml )
-    throws TransformerException
-  {
-    //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
-      Writer writer = new StringWriter();
-      StreamResult result=new StreamResult( writer );
-
-      transformer.transform( new DOMSource(xml), result);
-
-      // System.out.println( writer.toString() );
-      return writer.toString();
-  }
-
-  /* TODO remove - shouldn't ever need string -> string transform */
-  public static String transform ( Transformer transformer, String xmlString)
-    throws TransformerException
-  {
-    final StringReader xmlReader = new StringReader(xmlString);
-    final StringWriter xmlWriter = new StringWriter();
-
-    transformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
-
-    return xmlWriter.toString();
-  }
-
-}
-
-
 
 
 
@@ -693,14 +479,7 @@ class Client1
   {
 
     //sendGet(); 
-    HttpProxy c = new HttpProxy( "https://catalogue-123.aodn.org.au" ); 
-//   HttpProxy c = new HttpProxy( "http://127.0.0.1:8081" ); 
-  
-    c.enableSelfSignedSSL(); 
-
-    // GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
-    System.out.println( " hi \n" ); 
-
+//    HttpProxy c = new HttpProxy( "https://catalogue-123.aodn.org.au" ); 
    /* 
     // Create request XML**
     Element request = new Element("request")
@@ -760,10 +539,6 @@ class Client1
 
  
 //    String path = baseURL + "/geonetwork/login.jsp"; 
-*/
-             
-    c.login( "admin", "rqpxNDd8BS" ); 
-
 
     // String result = c.httpGet( "/geonetwork/srv/en/xml.group.list" ) ; 
     // System.out.println( "result is " + result ); 
@@ -778,6 +553,15 @@ class Client1
 
  //   c. createUser( ); 
 
+
+*/
+
+    HttpProxy c = new HttpProxy( "https://catalogue-123.aodn.org.au" ); 
+    // HttpProxy c = new HttpProxy( "http://127.0.0.1:8081" ); 
+  
+    c.enableSelfSignedSSL(); 
+            
+    c.login( "admin", "rqpxNDd8BS" ); 
 
    
     // ///////////////////////////
@@ -795,6 +579,8 @@ class Client1
       "  <id>3</id>" + 
       "<request> " 
       ;
+
+    data = "";
 
     c.httpPostXML( "/geonetwork/srv/en/xml.usergroups.list", data ) ; 
 
