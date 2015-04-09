@@ -203,8 +203,6 @@ public class PostgresEditor
 	public static void main(String[] args)
 		throws Exception 
 	{
-    System.out.println( "whoot" );  
-
 		
 		Options options = new Options();
 		options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
@@ -283,6 +281,5 @@ public class PostgresEditor
         System.out.println( "records processed " + count );
 	}
 }
-
 
 
