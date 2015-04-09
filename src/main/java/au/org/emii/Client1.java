@@ -218,7 +218,10 @@ class HttpProxy
   // or should it be a node...
 
 
-  public static String executePost(String targetURL, String urlParameters) {
+	// http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
+
+    public static String executePost(String targetURL, String urlParameters) {
+
       URL url;
       HttpURLConnection connection = null;  
       try {
@@ -226,7 +229,10 @@ class HttpProxy
         url = new URL(targetURL);
         connection = (HttpURLConnection)url.openConnection();
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/xml");
+        // connection.setRequestProperty("Content-Type", "application/xml");
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+          
 
         connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
         connection.setRequestProperty("Content-Language", "UTF8");  
@@ -239,7 +245,12 @@ class HttpProxy
 */
 
 
-		connection.setInstanceFollowRedirects(true );
+/*
+       connection.setRequestProperty("username", "admin");  
+       connection.setRequestProperty("password", "rqpxNDd8BS");  
+*/
+
+        connection.setInstanceFollowRedirects(true );
 
         connection.setUseCaches (false);
         connection.setDoInput(true);
@@ -263,19 +274,19 @@ class HttpProxy
         rd.close();
 
 
-		//Obtenemos la cookie por si se necesita
-		String cookies = connection.getHeaderField("Set-Cookie");
-		System.out.println("Cookies: "+cookies);
+        //Obtenemos la cookie por si se necesita
+        String cookies = connection.getHeaderField("Set-Cookie");
+        System.out.println("Cookies: "+cookies);
 
 
-		String newUrl = connection.getHeaderField("location");
-		System.out.println("newUrl: "+ newUrl );
+        String newUrl = connection.getHeaderField("location");
+        System.out.println("newUrl: "+ newUrl );
 
-		System.out.println("here1" );
-		System.out.println(response.toString());
-  
-		System.out.println( connection.getResponseCode() );
-		System.out.println("here2" );
+        System.out.println("here1" );
+        System.out.println(response.toString());
+      
+        System.out.println( connection.getResponseCode() );
+        System.out.println("here2" );
 
         return response.toString();
 
@@ -375,15 +386,24 @@ class Client1
 		c.enableSelfSignedSSL(); 
 
 		// GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
-
-
 		System.out.println( " hi \n" ); 
+
+   /* 
+    // Create request XML**
+    Element request = new Element("request")
+    .addContent(new Element("username").setText("admin"))
+    .addContent(new Element("password").setText("admin"));
+  */
 
 		 // rename to template,
 		String template = 
 		  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
-		  "<request/>"  
-; 
+		  "<request>" + 
+		  "  <username>admin</username>" + 
+		  "  <password>rqpxNDd8BS</password>" + 
+      "</request>"  
+    ;
+
 
 		Document doc = GeonetworkServer.xMLFromString( template);  
 
@@ -406,13 +426,28 @@ class Client1
 
 		Transformer transformer = Misc.getTransformerFromString( identity ); 
 
-		String result = Misc.transform ( transformer, doc ); 
+		String request = Misc.transform ( transformer, doc ); 
+
+
+    request = "username=admin&password=rqpxNDd8BS";
+
+    System.out.println( request);
 
 
 		String baseURL = "https://catalogue-123.aodn.org.au" ; 
-		String path = baseURL + "/geonetwork/srv/eng/xml.metadata.update"; 
+//		String path = baseURL + "/geonetwork/srv/eng/xml.metadata.update"; 
+//		  String path = baseURL + "/geonetwork/srv/eng/xml.user.login"; 
 
-		String x = c.executePost( path, result ); 
+// https://catalogue-123.aodn.org.au/geonetwork/j_spring_security_check?redirectUrl=/srv/eng/main.home
+
+//		  String path = baseURL + "/geonetwork/srv/en/xml.user.login"; 
+
+		  String path = baseURL + "/geonetwork/j_spring_security_check"; 
+
+ 
+//		String path = baseURL + "/geonetwork/login.jsp"; 
+              
+		String x = c.executePost( path, request ); 
 
 
 	}	
