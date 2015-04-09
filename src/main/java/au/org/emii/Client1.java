@@ -139,31 +139,6 @@ class BadHttpReturnCode extends Exception
 
 
 
-
-class SimpleNamespaceContext implements NamespaceContext {
-
-    private final Map<String, String> PREF_MAP = new HashMap<String, String>();
-
-    public SimpleNamespaceContext(final Map<String, String> prefMap) {
-        PREF_MAP.putAll(prefMap);       
-    }
-
-    public String getNamespaceURI(String prefix) {
-        return PREF_MAP.get(prefix);
-    }
-
-    public String getPrefix(String uri) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Iterator getPrefixes(String uri) {
-        throw new UnsupportedOperationException();
-    }
-
-}
-
-
-
 class HttpProxy 
 {
 	private final static String USER_AGENT = "Mozilla/5.0";
@@ -220,6 +195,11 @@ class HttpProxy
 
 	// http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
 
+
+
+    // we can't really abstract out the connection handling, because the serveri
+    // may decide to disconnect us.
+   
     public static String executePost(String targetURL, String urlParameters) {
 
       URL url;
@@ -232,23 +212,20 @@ class HttpProxy
         // connection.setRequestProperty("Content-Type", "application/xml");
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-          
-
         connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
         connection.setRequestProperty("Content-Language", "UTF8");  
-/*
-    con.setRequestMethod("POST");
-    con.setRequestProperty("Content-Type", "application/xml");
-    con.setRequestProperty("Content-Length", "" + Integer.toString( xml.getBytes().length));
-    // con.setRequestProperty("Content-Language", "en-US");  
-    con.setRequestProperty("Content-Language", "en-US");  
-*/
+        /*
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/xml");
+            con.setRequestProperty("Content-Length", "" + Integer.toString( xml.getBytes().length));
+            // con.setRequestProperty("Content-Language", "en-US");  
+            con.setRequestProperty("Content-Language", "en-US");  
+        */
 
-
-/*
-       connection.setRequestProperty("username", "admin");  
-       connection.setRequestProperty("password", "rqpxNDd8BS");  
-*/
+        /*
+            connection.setRequestProperty("username", "admin");  
+            connection.setRequestProperty("password", "rqpxNDd8BS");  
+        */
 
         connection.setInstanceFollowRedirects(true );
 
@@ -273,10 +250,28 @@ class HttpProxy
         }
         rd.close();
 
-
         //Obtenemos la cookie por si se necesita
-        String cookies = connection.getHeaderField("Set-Cookie");
-        System.out.println("Cookies: "+cookies);
+//        String cookies = connection.getHeaderField("Set-Cookie");
+//         System.out.println("Cookies: "+cookies);
+
+
+        // extract the cookies ...
+        Map< String, String> cookies = new HashMap< String, String>();
+
+        for( String part : connection.getHeaderField("Set-Cookie").split(";") )
+        {
+          System.out.println("part: "+ part );
+          String[] keyvals = part.split("=");
+          // System.out.println("keyvals.length "+ keyvals.length ); 
+          if( keyvals.length == 2) {
+            cookies.put( keyvals[ 0], null );  
+          }
+          else if( keyvals.length == 2) {
+            cookies.put( keyvals[ 0], keyvals[ 1] );  
+          }
+        }
+
+        System.out.println( "JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
 
 
         String newUrl = connection.getHeaderField("location");
