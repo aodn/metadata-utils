@@ -1,5 +1,11 @@
 /*
 java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Client1
+
+
+Cookies code,
+
+	http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
+
 */
 
 package au.org.emii;
@@ -233,13 +239,14 @@ class HttpProxy
 */
 
 
+		connection.setInstanceFollowRedirects(true );
+
         connection.setUseCaches (false);
         connection.setDoInput(true);
         connection.setDoOutput(true);
 
         //Send request
-        DataOutputStream wr = new DataOutputStream (
-                    connection.getOutputStream ());
+        DataOutputStream wr = new DataOutputStream ( connection.getOutputStream ());
         wr.writeBytes (urlParameters);
         wr.flush ();
         wr.close ();
@@ -254,6 +261,11 @@ class HttpProxy
           response.append('\r');
         }
         rd.close();
+
+
+		//Obtenemos la cookie por si se necesita
+		String cookies = connection.getHeaderField("Set-Cookie");
+		System.out.println("Cookies: "+cookies);
 
 
 		System.out.println("here1" );
