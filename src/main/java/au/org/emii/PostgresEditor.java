@@ -1,6 +1,9 @@
 /*
 
-java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u geonetwork -p geonetwork   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -t trans-2.0.xslt   -stdout
+# Update all records
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://10.11.12.13:5432/geonetwork -u geonetwork -p geonetwork    -t trans-2.0.xslt   -all -update
+
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://10.11.12.13:5432/geonetwork -u geonetwork -p geonetwork   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -t trans-2.0.xslt   -stdout
 
 */
 
