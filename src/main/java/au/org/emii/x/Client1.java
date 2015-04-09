@@ -1,14 +1,14 @@
 /*
-java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Client1
 
+  java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.x.Client1
 
 Cookies code,
 
-	http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
+  http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
 
 */
 
-package au.org.emii;
+package au.org.emii.x;
 
 
 import java.io.File;
@@ -122,22 +122,19 @@ import org.xml.sax.InputSource;
 
 class BadCLIArgumentsException extends Exception
 {
-	public BadCLIArgumentsException( String message )
-	{
-		super(message);
-	}
+  public BadCLIArgumentsException( String message )
+  {
+    super(message);
+  }
 }
 
 class BadHttpReturnCode extends Exception
 {
-	public BadHttpReturnCode( String message )
-	{
-		super(message);
-	}
+  public BadHttpReturnCode( String message )
+  {
+    super(message);
+  }
 }
-
-
-
 
 
 
@@ -147,7 +144,7 @@ class BadHttpReturnCode extends Exception
 
 class HttpProxy 
 {
-	// private final static String USER_AGENT = "Mozilla/5.0";
+  // private final static String USER_AGENT = "Mozilla/5.0";
 
   String sessionID; 
   String baseURL;
@@ -158,8 +155,7 @@ class HttpProxy
     this.sessionID = null;
   }
 
-
-  
+ 
 
   public void enableSelfSignedSSL() throws Exception
   {
@@ -208,7 +204,7 @@ class HttpProxy
   // or should it be a node...
 
 
-	// http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
+  // http://stackoverflow.com/questions/18701167/problems-handling-http-302-in-java-with-httpurlconnection
 
     // we can't really abstract out the connection handling, because the serveri
     // may decide to disconnect us.
@@ -217,39 +213,45 @@ class HttpProxy
   // should be called get...
   public String get( String url ) throws Exception
   {
-		URL obj = new URL( baseURL + url);
-		HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+    URL obj = new URL( baseURL + url);
+    HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
  
-		// optional default is GET
-		connection.setRequestMethod("GET");
+    // optional default is GET
+    connection.setRequestMethod("GET");
  
-		//add request header
-		// connection.setRequestProperty("User-Agent", USER_AGENT);
+    //add request header
+    // connection.setRequestProperty("User-Agent", USER_AGENT);
 
     connection.setRequestProperty("Cookie", "JSESSIONID=" + sessionID );
  
-		int responseCode = connection.getResponseCode();
+    int responseCode = connection.getResponseCode();
     if( responseCode != 200 ) {
         throw new BadHttpReturnCode( "bad return code" ); 
     }
 
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
- 
-		BufferedReader in = new BufferedReader( new InputStreamReader(connection.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
- 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
- 
-		// print result
-    // System.out.println(response.toString());
-		return response.toString();
+    System.out.println("\nSending 'GET' request to URL : " + url);
+    System.out.println("Response Code : " + responseCode);
+
+    return globInputStream( connection.getInputStream() );
   }
 
+  public String globInputStream( InputStream is  )
+    throws IOException
+  {
+    // this shit should be factored... slurpInputStream  
+    BufferedReader in = new BufferedReader( new InputStreamReader( is )); //connection.getInputStream()));
+    String inputLine;
+    StringBuffer response = new StringBuffer();
+ 
+    while ((inputLine = in.readLine()) != null) {
+      response.append(inputLine);
+    }
+    in.close();
+ 
+    // print result
+    // System.out.println(response.toString());
+    return response.toString();
+  }
 
  
   public void login( String user, String pass ) {
@@ -348,38 +350,38 @@ class HttpProxy
 class Misc
 {
 
-	public Misc ()
-	{ }
+  public Misc ()
+  { }
 
 
-	public static Transformer getTransformerFromFile( String filename )
-		throws FileNotFoundException, TransformerConfigurationException
-	{
-		final TransformerFactory tsf = TransformerFactory.newInstance();
-		final InputStream is  = new FileInputStream( filename );
+  public static Transformer getTransformerFromFile( String filename )
+    throws FileNotFoundException, TransformerConfigurationException
+  {
+    final TransformerFactory tsf = TransformerFactory.newInstance();
+    final InputStream is  = new FileInputStream( filename );
 
-		return tsf.newTransformer(new StreamSource(is));
-	}
+    return tsf.newTransformer(new StreamSource(is));
+  }
 
 
-	public static Transformer getTransformerFromString ( String input )
-		throws FileNotFoundException, TransformerConfigurationException
-	{
-		final TransformerFactory tsf = TransformerFactory.newInstance();
+  public static Transformer getTransformerFromString ( String input )
+    throws FileNotFoundException, TransformerConfigurationException
+  {
+    final TransformerFactory tsf = TransformerFactory.newInstance();
 
     InputStream is = new ByteArrayInputStream( input.getBytes());//StandardCharsets.UTF_8));
 
-//		final InputStream is  = new StringInputStream( input );
+//    final InputStream is  = new StringInputStream( input );
 
-		return tsf.newTransformer(new StreamSource(is));
-	}
+    return tsf.newTransformer(new StreamSource(is));
+  }
 
 
 
-	public static String transform ( Transformer transformer, Document xml )
-		throws TransformerException
+  public static String transform ( Transformer transformer, Document xml )
+    throws TransformerException
   {
-  	  //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
+    //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
       Writer writer = new StringWriter();
       StreamResult result=new StreamResult( writer );
 
@@ -390,16 +392,16 @@ class Misc
   }
 
   /* TODO remove - shouldn't ever need string -> string transform */
-	public static String transform ( Transformer transformer, String xmlString)
-		throws TransformerException
-	{
-		final StringReader xmlReader = new StringReader(xmlString);
-		final StringWriter xmlWriter = new StringWriter();
+  public static String transform ( Transformer transformer, String xmlString)
+    throws TransformerException
+  {
+    final StringReader xmlReader = new StringReader(xmlString);
+    final StringWriter xmlWriter = new StringWriter();
 
-		transformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
+    transformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
 
-		return xmlWriter.toString();
-	}
+    return xmlWriter.toString();
+  }
 
 }
 
@@ -411,16 +413,16 @@ class Misc
 class Client1
 {
 
-	public static void main(String[] args)
-		throws Exception
-	{
+  public static void main(String[] args)
+    throws Exception
+  {
 
-		//sendGet(); 
-		HttpProxy c = new HttpProxy( "https://catalogue-123.aodn.org.au" ); 
-		c.enableSelfSignedSSL(); 
+    //sendGet(); 
+    HttpProxy c = new HttpProxy( "https://catalogue-123.aodn.org.au" ); 
+    c.enableSelfSignedSSL(); 
 
-		// GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
-		System.out.println( " hi \n" ); 
+    // GeonetworkServer g = new GeonetworkServer( c, "https://catalogue-123.aodn.org.au" ); 
+    System.out.println( " hi \n" ); 
 
    /* 
     // Create request XML**
@@ -430,38 +432,38 @@ class Client1
   */
 
 /*
-		 // rename to template,
-		String template = 
-		  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
-		  "<request>" + 
-		  "  <username>admin</username>" + 
-		  "  <password>rqpxNDd8BS</password>" + 
+     // rename to template,
+    String template = 
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
+      "<request>" + 
+      "  <username>admin</username>" + 
+      "  <password>rqpxNDd8BS</password>" + 
       "</request>"  
     ;
 
 
-		Document doc = GeonetworkServer.xMLFromString( template);  
+    Document doc = GeonetworkServer.xMLFromString( template);  
 
-		XPathFactory xPathfactory = XPathFactory.newInstance();
+    XPathFactory xPathfactory = XPathFactory.newInstance();
 
 
-		String identity = 
-		  "<xsl:stylesheet version=\"2.0\"" + 
-		  " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
-		  " <xsl:output omit-xml-declaration=\"no\" indent=\"yes\"" + 
-		  " cdata-section-elements=\"data\"/>" +
-		  " <xsl:strip-space elements=\"*\"/>" +
-		  " <xsl:template match=\"node()|@*\">" +
-		  "     <xsl:copy>" +
-		  "       <xsl:apply-templates select=\"node()|@*\"/>" +
-		  "     </xsl:copy>" +
-		  " </xsl:template>" +
-		  "</xsl:stylesheet>"
-		  ;
+    String identity = 
+      "<xsl:stylesheet version=\"2.0\"" + 
+      " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
+      " <xsl:output omit-xml-declaration=\"no\" indent=\"yes\"" + 
+      " cdata-section-elements=\"data\"/>" +
+      " <xsl:strip-space elements=\"*\"/>" +
+      " <xsl:template match=\"node()|@*\">" +
+      "     <xsl:copy>" +
+      "       <xsl:apply-templates select=\"node()|@*\"/>" +
+      "     </xsl:copy>" +
+      " </xsl:template>" +
+      "</xsl:stylesheet>"
+      ;
 
-		Transformer transformer = Misc.getTransformerFromString( identity ); 
+    Transformer transformer = Misc.getTransformerFromString( identity ); 
 
-		String request = Misc.transform ( transformer, doc ); 
+    String request = Misc.transform ( transformer, doc ); 
 
 
     request = "username=admin1&password=rqpxNDd8BS";
@@ -469,26 +471,26 @@ class Client1
     System.out.println( request);
 
 
-		String baseURL = "https://catalogue-123.aodn.org.au" ; 
-//		String path = baseURL + "/geonetwork/srv/eng/xml.metadata.update"; 
-//		  String path = baseURL + "/geonetwork/srv/eng/xml.user.login"; 
+    String baseURL = "https://catalogue-123.aodn.org.au" ; 
+//    String path = baseURL + "/geonetwork/srv/eng/xml.metadata.update"; 
+//      String path = baseURL + "/geonetwork/srv/eng/xml.user.login"; 
 
 // https://catalogue-123.aodn.org.au/geonetwork/j_spring_security_check?redirectUrl=/srv/eng/main.home
 
-//		  String path = baseURL + "/geonetwork/srv/en/xml.user.login"; 
+//      String path = baseURL + "/geonetwork/srv/en/xml.user.login"; 
 
-		  String path = baseURL + "/geonetwork/j_spring_security_check"; 
+      String path = baseURL + "/geonetwork/j_spring_security_check"; 
 
  
-//		String path = baseURL + "/geonetwork/login.jsp"; 
+//    String path = baseURL + "/geonetwork/login.jsp"; 
 */
               
-		c.login( "user", "pass" ); 
+    c.login( "user", "pass" ); 
 
 
     String result = c.get( "/geonetwork/srv/en/xml.group.list" ) ; 
  
     System.out.println( "result is " + result ); 
-	}	
+  } 
 
 }
