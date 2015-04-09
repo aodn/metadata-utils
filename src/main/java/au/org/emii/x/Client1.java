@@ -522,7 +522,7 @@ class HttpProxy
     HttpURLConnection connection = null;  
     try {
 
-      System.out.println("doing login" );
+      System.out.println("*** doing login" );
 
       String data = "username=admin&password=rqpxNDd8BS";
 
@@ -531,14 +531,15 @@ class HttpProxy
       connection = (HttpURLConnection)url.openConnection();
       connection.setRequestMethod("POST");
       // connection.setRequestProperty("Content-Type", "application/xml");
-/*      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-      connection.setRequestProperty("Content-Length", "" + Integer.toString( request.getBytes().length));
-      connection.setRequestProperty("Content-Language", "UTF8");  
-*/
+      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+      connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
+      connection.setRequestProperty("Content-Language", "en-US");  
+
+/*
       connection.setRequestProperty("Content-Type", "text/xml");
       connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
       connection.setRequestProperty("Content-Language", "en-US");
-
+*/
 
       // connection.setInstanceFollowRedirects(true );
 
