@@ -29,6 +29,7 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.net.URLEncoder ; 
 
 
 import java.io.BufferedReader;
@@ -139,7 +140,21 @@ class BadHttpReturnCode extends Exception
 
 
 
+class  Helper
+{
+  // change name XMLofString 
+  public static Document xMLFromString(String xml) throws Exception
+  {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//    factory.setValidating(false);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    InputSource is = new InputSource(new StringReader(xml));
+    return builder.parse(is);
+  }
 
+
+
+}
 
 
 
@@ -235,7 +250,7 @@ class HttpProxy
 
       for( String part : cookies.split(";") )
       {
-        System.out.println("part: "+ part );
+        // System.out.println("part: "+ part );
         String[] keyvals = part.split("=");
         // System.out.println("keyvals.length "+ keyvals.length ); 
         if( keyvals.length == 1) {
@@ -266,7 +281,7 @@ class HttpProxy
   
 
   // should be called get...
-  public String get( String url_ ) throws Exception
+  public String httpGet( String url_ ) throws Exception
   {
     HttpURLConnection connection = null;  
     try {
@@ -280,7 +295,10 @@ class HttpProxy
       //add request header
       // connection.setRequestProperty("User-Agent", USER_AGENT);
 
-      connection.setRequestProperty("Cookie", "JSESSIONID=" + sessionID );
+
+      String cookies = "JSESSIONID=" + sessionID + ";HttpOnly;";  
+      System.out.println( "get setting cookies " + cookies ); 
+      connection.setRequestProperty("Cookie", cookies );
    
       int responseCode = connection.getResponseCode();
       if( responseCode != 200 ) {
@@ -300,11 +318,196 @@ class HttpProxy
   }
 
 
+  public void httpPostXML( String url_, String data ) 
+    throws Exception
+  {
+    // URL url;
+    HttpURLConnection connection = null;  
+    try {
+
+      //Create connection
+      URL url = new URL ( baseURL + url_  );
+      connection = (HttpURLConnection)url.openConnection();
+      connection.setRequestMethod("POST");
+      
+      connection.setRequestProperty("Content-Type", "application/xml");
+      connection.setRequestProperty("Content-Length", "" + Integer.toString( data.getBytes().length));
+      connection.setRequestProperty("Content-Language", "UTF8");  
+      // connection.setInstanceFollowRedirects(true );
+
+      // System.out.println( "setting session id to " + sessionID );
+
+      // String cookies_ = "JSESSIONID=" + sessionID + ";HttpOnly;";  
+      String cookies_ = "JSESSIONID=" + sessionID ;  
+     connection.setRequestProperty("Cookie", cookies_ );
+
+      connection.setUseCaches (false);
+      connection.setDoInput(true);
+      connection.setDoOutput(true);
+
+
+//       connection.setRequestProperty("Cookie", URLEncoder.encode( cookies_ , "UTF-8"));
+//     connection .connect();  
+
+ //      connection.setRequestProperty( cookies_  );
+
+
+      // do request
+      writeOutputStream( connection.getOutputStream(), data ); 
+
+
+      System.out.println( connection.getResponseCode() );
+
+      String newUrl = connection.getHeaderField("location");
+      System.out.println("newUrl: "+ newUrl );
+
+
+
+/*
+      Map< String, String> cookies = extractCookies( connection.getHeaderField("Set-Cookie") ); 
+      for( String key : cookies.keySet()  )
+      {
+          System.out.println( "response cookie " + key + "=" + cookies.get( key )  ) ;  
+      }
+*/
+
+      // get response 
+//      String response = globInputStream( connection.getInputStream() );
+ 
+      // response code is 302 here, should be checking goes to non-long redirect... 
+
+      // Map< String, String> cookies = extractCookies( connection.getHeaderField("Set-Cookie") ); 
+      // set the session id...
+      // System.out.println( "JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
+      // this.sessionID = cookies.get( "JSESSIONID" );
+      // String newUrl = connection.getHeaderField("location");
+      // System.out.println("newUrl: "+ newUrl );
+
+
+ //     System.out.println(response.toString());
+       
+
+      /* System.out.println("here1" );
+            System.out.println(response.toString());
+            System.out.println( connection.getResponseCode() );
+            System.out.println("here2" );
+      */
+    } finally {
+
+      if(connection != null) {
+        connection.disconnect(); 
+      }
+    }
+  }
+
+
+
+
+
 
   // should return a string...
-  public String getRecord( String uuid ) throws Exception 
+  public String getRecord( String uuid ) 
+    throws Exception 
   {
-    return this.get( "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid ) ; 
+    return this.httpGet( "/geonetwork/srv/eng/xml.metadata.get?uuid=" + uuid ) ; 
+  }
+
+
+  public void createUser( )
+    throws Exception 
+  {
+
+    System.out.println( "*** create user" ); 
+
+    String template = 
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
+      "<request>" + 
+      " <operation>newuser</operation>" +
+      " <username>fuck</username>" +
+      " <password>fuck</password>" +
+      " <profile>Editor</profile>" +
+      " <name>Samantha</name>" +
+      " <city>Amsterdam</city>" +
+      " <country>Netherlands</country>" +
+      " <email>Netherlands</email>" +
+      " <data/>" + 
+      "</request>" ; 
+
+      this.httpPostXML( "/geonetwork/srv/en/user.update", template ); 
+  }
+
+
+
+  // should'nt return anything
+  public void updateRecord( String uuid, String record ) throws Exception 
+  {
+    /*
+    /geonetwork/srv/eng/xml.metadata.update
+    <?xml version="1.0" encoding="UTF-8"?>
+    <request>
+      <id>11</id>
+      <version>1</version>
+      <data><![CDATA[
+        <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        ...
+              </gmd:DQ_DataQuality>
+          </gmd:dataQualityInfo>
+        </gmd:MD_Metadata>]]>
+      </data>
+    </request>
+    */
+
+    // rename to template,
+    String template = 
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
+      "<request>" + 
+      " <uuid/>" +
+      " <version>1</version>" + 
+      " <data/>" + 
+      "</request>" ; 
+
+    Document doc = Helper.xMLFromString( template);  
+
+    XPathFactory xPathfactory = XPathFactory.newInstance();
+
+    // substitute the data 
+    {
+      XPath xpath = xPathfactory.newXPath();
+      NodeList myNodeList = (NodeList) xpath.compile("//request/data").evaluate( doc, XPathConstants.NODESET); 
+      CDATASection cdata = doc.createCDATASection( record );
+      myNodeList.item( 0).appendChild(cdata);
+    }
+
+    // substitute the uuid 
+    {
+      XPath xpath = xPathfactory.newXPath();
+      NodeList myNodeList = (NodeList) xpath.compile("//request/uuid").evaluate( doc, XPathConstants.NODESET); 
+      myNodeList.item(0).setTextContent( uuid);
+    }
+
+    String identity = 
+      "<xsl:stylesheet version=\"2.0\"" + 
+      " xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">" + 
+      " <xsl:output omit-xml-declaration=\"no\" indent=\"yes\"" + 
+      " cdata-section-elements=\"data\"/>" +
+      " <xsl:strip-space elements=\"*\"/>" +
+      " <xsl:template match=\"node()|@*\">" +
+      "     <xsl:copy>" +
+      "       <xsl:apply-templates select=\"node()|@*\"/>" +
+      "     </xsl:copy>" +
+      " </xsl:template>" +
+      "</xsl:stylesheet>"
+      ;
+
+    Transformer transformer = Misc.getTransformerFromString( identity ); 
+
+    String result = Misc.transform ( transformer, doc ); 
+
+//    System.out.println( "here -> \n" + result ); 
+
+    this.httpPostXML( "/geonetwork/srv/eng/xml.metadata.update", result ); 
+
   }
 
 
@@ -317,6 +520,9 @@ class HttpProxy
     // URL url;
     HttpURLConnection connection = null;  
     try {
+
+      System.out.println("doing login" );
+
       String request = "username=admin&password=rqpxNDd8BS";
 
       //Create connection
@@ -344,12 +550,12 @@ class HttpProxy
       Map< String, String> cookies = extractCookies( connection.getHeaderField("Set-Cookie") ); 
 
       // set the session id...
-      System.out.println( "JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
+      System.out.println( "got JSESSIONID is " + cookies.get( "JSESSIONID" ) ); 
       this.sessionID = cookies.get( "JSESSIONID" );
 
 
       String newUrl = connection.getHeaderField("location");
-      System.out.println("newUrl: "+ newUrl );
+      System.out.println("login redirect newUrl: "+ newUrl );
 
       /* System.out.println("here1" );
             System.out.println(response.toString());
@@ -518,14 +724,20 @@ class Client1
     c.login( "user", "pass" ); 
 
 
-    String result = c.get( "/geonetwork/srv/en/xml.group.list" ) ; 
-    System.out.println( "result is " + result ); 
+//    String result = c.httpGet( "/geonetwork/srv/en/xml.group.list" ) ; 
+    // System.out.println( "result is " + result ); 
 
 
-    String record = c.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
-    System.out.println( "record is " + record ); 
+//    String record = c.getRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" );
+    //// System.out.println( "record is " + record ); 
 
+//      System.out.println("updating record" );
+ //   c.updateRecord( "4402cb50-e20a-44ee-93e6-4728259250d2" , record ); 
  
+
+    c. createUser( ); 
+ 
+
   } 
 
 }

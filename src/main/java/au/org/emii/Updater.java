@@ -569,10 +569,7 @@ class GeonetworkServer
   public static Document xMLFromString(String xml) throws Exception
   {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-
 //    factory.setValidating(false);
-
     DocumentBuilder builder = factory.newDocumentBuilder();
     InputSource is = new InputSource(new StringReader(xml));
     return builder.parse(is);
