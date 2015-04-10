@@ -51,8 +51,10 @@ java -jar saxon9he.jar  ./argo.xml   trans.xslt  | less
 ---
 
 # copy
+
 ssh catalogue-123.aodn.org.au
-sudo -u postgres pg_dump -Fc geonetwork
+sudo -u postgres pg_dump -Fc geonetwork > geonetwork.dump
+
 
 # local
 rsync -avzP catalogue-123.aodn.org.au:~/geonetwork/geonetwork.dump .
@@ -69,3 +71,25 @@ sudo -u postgres psql -d geonetwork -c 'grant all on schema public  to meteo '
 sudo -u postgres psql -d geonetwork -c 'grant all on all tables in schema public to meteo ' 
 
 
+--
+# copy
+
+ssh  imosmest.aodn.org.au
+sudo -u postgres pg_dump -Fc imosmest | less > imosmest.dump
+rsync -avzP  imosmest.aodn.org.au:~/imosmest.dump .
+
+
+# restore
+
+sudo -u postgres psql -c "create role imosmest password 'imosmest' "
+# sudo -u postgres pg_restore imosmest.dump -C  -d postgres
+
+sudo -u postgres psql -c "drop database imosmest "
+sudo -u postgres psql -c "create database imosmest "
+sudo -u postgres psql -d imosmest  -c "create extension postgis "
+sudo -u postgres pg_restore /vagrant/imosmest.dump | less
+sudo -u postgres pg_restore /vagrant/imosmest.dump -d imosmest
+
+lots of errors but we get the metadata column. eg.,
+
+sudo -u postgres psql -d imosmest -c 'select data from metadata limit 1 '
