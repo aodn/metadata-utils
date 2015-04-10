@@ -119,7 +119,7 @@
     </xsl:template -->
 
 
-     <xsl:template match="gmd:identificationInfo/mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons">
+     <xsl:template match="/mcp:MD_Metadata/gmd:identificationInfo/mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons">
 
 		<mcp:MD_Commons mcp:commonsType="Creative Commons" gco:isoType="gmd:MD_Constraints">
              <mcp:jurisdictionLink>
