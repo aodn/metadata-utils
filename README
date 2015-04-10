@@ -1,10 +1,12 @@
 
 java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.WebEditor
 
-java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u geonetwork -p geonetwork   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -t trans-2.0.xslt   -stdout
+# 
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://10.11.12.13:5432/geonetwork -u geonetwork -p geonetwork   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -t trans-2.0.xslt   -stdout
 
+# 
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://10.11.12.13:5432/imosmest -u imosmest -p imosmest   -uuid b53339be-94b6-4b70-a4a3-c77f15e557f0  -t trans-1.4.xslt     -stdout  | less 
 
-java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://10.11.12.13:5432/imosmest -u imosmest -p imosmest   -uuid b53339be-94b6-4b70-a4a3-c77f15e557f0  -t trans-1.4.xslt     -stdout  | les
  
 -----
 get xml,
