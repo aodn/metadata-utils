@@ -56,6 +56,8 @@ sudo -u postgres pg_dump -Fc geonetwork
 
 # local
 rsync -avzP catalogue-123.aodn.org.au:~/geonetwork/geonetwork.dump .
+---
+sudo /etc/init.d/tomcat7_geonetwork_123  stop
 
 sudo -u postgres psql  -c 'drop database geonetwork '
 sudo -u postgres pg_restore /vagrant/geonetwork.dump  -C  -d postgres

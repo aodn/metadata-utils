@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -14,12 +13,12 @@
 
   <xsl:output method="xml" indent="yes"/>
 
-	<!--  
+	<!--
 		this needs to be changed.
 
 		-->
 
-	
+
 	<xsl:variable name="imosContact">
 		<gmd:contact>
 		  <gmd:CI_ResponsibleParty>
@@ -92,7 +91,7 @@
 	</xsl:variable>
 
 
-	<xsl:variable name="imosLicense">
+	<xsl:variable name="imosCommons">
 		<mcp:MD_Commons mcp:commonsType="Creative Commons" gco:isoType="gmd:MD_Constraints">
              <mcp:jurisdictionLink>
 				  <gmd:URL>http://creativecommons.org/international/</gmd:URL>
@@ -116,6 +115,21 @@
 	</xsl:variable>
 
 
+	<xsl:variable name="imosCredit1">
+		<gmd:credit>
+			<gco:CharacterString>Integrated Marine Observing System (IMOS). IMOS is a national collaborative research infrastructure, supported by Australian Government.</gco:CharacterString>
+		</gmd:credit>
+	</xsl:variable>
+
+
+	<xsl:variable name="imosCredit2">
+		<gmd:credit>
+			<gco:CharacterString>Funded by the National Collaborative Research Infrastructure Strategy (NCRIS)</gco:CharacterString>
+		</gmd:credit>
+	</xsl:variable>
+
+
+
 
 	<xsl:template match="@*|node()">
         <xsl:copy>
@@ -124,8 +138,7 @@
     </xsl:template>
 
 
-
-	<xsl:template match="/mcp:MD_Metadata/gmd:contact"> 
+	<xsl:template match="/mcp:MD_Metadata/gmd:contact">
 
 		<xsl:choose>
           <xsl:when test="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString[matches( lower-case(text()), 'emii|imos' )]">
@@ -136,14 +149,14 @@
           </xsl:otherwise>
         </xsl:choose>
 
-	</xsl:template> 
+	</xsl:template>
 
 
      <xsl:template match="/mcp:MD_Metadata/gmd:identificationInfo/mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons">
 
 		<xsl:choose>
           <xsl:when test="mcp:attributionConstraints/gco:CharacterString[matches( lower-case(text()), 'emii|imos' )]">
-            <xsl:copy-of select="$imosLicense"/>
+            <xsl:copy-of select="$imosCommons"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:copy-of select="."/>
@@ -151,6 +164,26 @@
         </xsl:choose>
 
     </xsl:template>
+
+
+	<xsl:template match="/mcp:MD_Metadata/gmd:identificationInfo/mcp:MD_DataIdentification/gmd:credit">
+
+		<xsl:choose>
+          <xsl:when test="gco:CharacterString[matches( text(), '^.*IMOS is supported by the Australian Government.*$' )]">
+            <xsl:copy-of select="$imosCredit1"/>
+          </xsl:when>
+
+          <xsl:when test="gco:CharacterString[matches( text(), '^Funded by the .* and the Super Science Initiative.*$' )]">
+            <xsl:copy-of select="$imosCredit2"/>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <xsl:copy-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
+
+    </xsl:template>
+
 
 </xsl:stylesheet>
 
