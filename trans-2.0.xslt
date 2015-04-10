@@ -14,7 +14,7 @@
 
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:variable name="imosContact">
+  <xsl:variable name="imosMetadataContact">
 	<gmd:contact>
 	  <gmd:CI_ResponsibleParty>
 		<gmd:organisationName>
@@ -137,7 +137,7 @@
 
 		<xsl:choose>
 		  <xsl:when test="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString[matches( lower-case(text()), 'emii|imos' )]">
-			<xsl:copy-of select="$imosContact"/>
+			<xsl:copy-of select="$imosMetadataContact"/>
 		  </xsl:when>
 		  <xsl:otherwise>
 			<xsl:copy-of select="."/>
