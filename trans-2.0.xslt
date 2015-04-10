@@ -24,7 +24,9 @@
 		this needs to be changed.
 
 		-->
-     <xsl:template match="gmd:contact">  
+
+	
+	<xsl:variable name="imosContact">
 		<gmd:contact>
 		  <gmd:CI_ResponsibleParty>
 			<gmd:organisationName>
@@ -93,6 +95,12 @@
 			</gmd:role>
 		  </gmd:CI_ResponsibleParty>
 		</gmd:contact>
+	</xsl:variable>
+
+
+
+     <xsl:template match="/mcp:MD_Metadata/gmd:contact">  
+		<xsl:copy-of select="$imosContact" />
     </xsl:template>
 
 
