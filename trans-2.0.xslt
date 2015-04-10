@@ -99,12 +99,16 @@
 
 
 
-	<xsl:template match="/mcp:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString[contains( text(), 'eMIi' )]">  
+	<xsl:template match="/mcp:MD_Metadata/gmd:contact"> 
 
-		<xsl:copy-of select="." />
-
-			FUCK
-
+		<xsl:choose>
+          <xsl:when test="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString[matches( lower-case(text()), 'emii|imos' )]">
+            <xsl:copy-of select="$imosContact"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
 
 	</xsl:template> 
 
