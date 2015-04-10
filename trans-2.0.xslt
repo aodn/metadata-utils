@@ -99,9 +99,12 @@
 
 
 
-	<xsl:template match="/mcp:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString">  
+	<xsl:template match="/mcp:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString[contains( text(), 'eMIi' )]">  
 
 		<xsl:copy-of select="." />
+
+			FUCK
+
 
 	</xsl:template> 
 
