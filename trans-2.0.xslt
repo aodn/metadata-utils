@@ -99,9 +99,17 @@
 
 
 
-     <xsl:template match="/mcp:MD_Metadata/gmd:contact">  
+	<xsl:template match="/mcp:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString">  
+
+		<xsl:copy-of select="." />
+
+	</xsl:template> 
+
+
+
+     <!-- xsl:template match="/mcp:MD_Metadata/gmd:contact">  
 		<xsl:copy-of select="$imosContact" />
-    </xsl:template>
+    </xsl:template -->
 
 
      <xsl:template match="gmd:identificationInfo/mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons">
