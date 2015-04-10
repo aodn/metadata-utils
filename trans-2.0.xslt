@@ -19,7 +19,11 @@
             <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
     </xsl:template>
- 
+
+	<!--  
+		this needs to be changed.
+
+		-->
      <xsl:template match="gmd:contact">  
 		<gmd:contact>
 		  <gmd:CI_ResponsibleParty>
@@ -85,7 +89,7 @@
 			  </gmd:CI_Contact>
 			</gmd:contactInfo>
 			<gmd:role>
-			  <gmd:CI_RoleCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+			  <gmd:CI_RoleCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">distributor</gmd:CI_RoleCode>
 			</gmd:role>
 		  </gmd:CI_ResponsibleParty>
 		</gmd:contact>
@@ -107,8 +111,11 @@
              <mcp:licenseName>
                  <gco:CharacterString>Attribution 4.0 International</gco:CharacterString>
              </mcp:licenseName>
+			  <mcp:attributionConstraints>
+				<gco:CharacterString>The citation in a list of references is: "IMOS [year-of-data-download], [Title], [data-access-URL], accessed [date-of-access]."</gco:CharacterString>
+			  </mcp:attributionConstraints>
              <mcp:attributionConstraints>
-                 <gco:CharacterString>Any users of IMOS data are required to clearly acknowledge the source of the material derived from IMOS in the format: "Data was sourced from the Integrated Marine Observing System (IMOS) - IMOS is a national collaborative research infrastructure, supported by the Australian Government." If relevant, also credit other organisations involved in collection of this particular datastream (as listed in 'credit' in the metadata record).</gco:CharacterString>
+                 <gco:CharacterString>WHOOT Any users of IMOS data are required to clearly acknowledge the source of the material derived from IMOS in the format: "Data was sourced from the Integrated Marine Observing System (IMOS) - IMOS is a national collaborative research infrastructure, supported by the Australian Government." If relevant, also credit other organisations involved in collection of this particular datastream (as listed in 'credit' in the metadata record).</gco:CharacterString>
              </mcp:attributionConstraints>
          </mcp:MD_Commons>
 
