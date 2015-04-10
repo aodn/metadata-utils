@@ -84,7 +84,7 @@
 			  </gmd:CI_Contact>
 			</gmd:contactInfo>
 			<gmd:role>
-			  <gmd:CI_RoleCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">distributor</gmd:CI_RoleCode>
+			  <gmd:CI_RoleCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="distributor">distributor</gmd:CI_RoleCode>
 			</gmd:role>
 		  </gmd:CI_ResponsibleParty>
 		</gmd:contact>
