@@ -237,8 +237,12 @@ class HttpProxy
       connection.connect();
 
       System.out.println( "response code " + connection.getResponseCode() ); 
+
+      String s = globInputStream( connection.getInputStream() );
+
+      System.out.println( "response " + s ); 
    
-      return globInputStream( connection.getInputStream() );
+      return s;
       }
       finally {
         if(connection != null) {
@@ -591,7 +595,7 @@ public class WebEditor
 */
     // ///////////////////////////
     System.out.println( "*** doing xml.usergroups.list "  ) ; 
-    c.httpGet( "/geonetwork/srv/en/xml.usergroups.list" ) ; 
+    c.httpGet( "/geonetwork/srv/en/xml.usergroups.list?id=3" ) ; 
 
 
     // ///////////////////////////
