@@ -281,7 +281,7 @@ class HttpProxy
       connection.setRequestProperty("User-Agent", "Mozilla/5.0");  
       connection.setRequestProperty("Content-Type", "application/xml;charset=UTF-8");
 
-      connection.setRequestProperty("Content-Language", "en-US");  
+//      connection.setRequestProperty("Content-Language", "en-US");  
       connection.setRequestProperty("Content-Length", Integer.toString( data.getBytes().length) );
 
 
@@ -304,13 +304,14 @@ class HttpProxy
         connection .setRequestProperty("Authorization", "Basic " + authStringEnc);
 
       }
+      else {
+        // use session id cookie
+        System.out.println( "setting session cookie " + sessionID );
+        connection.setRequestProperty("Cookie", sessionID );
+      }
 
-      // use session id cookie
-      System.out.println( "setting session cookie " + sessionID );
-      connection.setRequestProperty("Cookie", sessionID );
 
-
-      connection.setUseCaches (false);
+     // connection.setUseCaches (false);
       connection.setDoInput(true);
       connection.setDoOutput(true);
 
@@ -424,6 +425,7 @@ class HttpProxy
       connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       connection.setRequestProperty("Content-Language", "en-US");  
 
+      connection.setRequestProperty( "Accept", "application/octet-stream" );
 
 
 /*
@@ -581,16 +583,15 @@ public class WebEditor
     c.enableSelfSignedSSL(); 
 
             
-    c.login( "admin", "rqpxNDd8BS" ); 
+    c.login( "admin", "rqpxNDd8BS" );  // 10.11.12.13
 
-//    c.login( "admin", "QhbHVQ75R9uP" ); 
+//    c.login( "admin", "QhbHVQ75R9uP" );  // production 
 
  /*  
+*/
     // ///////////////////////////
     System.out.println( "*** doing xml.usergroups.list "  ) ; 
-
     c.httpGet( "/geonetwork/srv/en/xml.usergroups.list" ) ; 
-*/
 
 
     // ///////////////////////////
