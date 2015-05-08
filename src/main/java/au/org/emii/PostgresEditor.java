@@ -237,10 +237,10 @@ public class PostgresEditor
         options.addOption("uuid", true, "metadata record uuid");
         options.addOption("help", false, "show help");
         options.addOption("t", true, "xslt file for transform");
-        options.addOption("stdout", false, "dump raw result to stdout");
-        options.addOption("stdout2", false, "dump transformed record to stdout");
-        options.addOption("update", false, "actually update the record");
-        options.addOption("all", false, "update all records");
+        options.addOption("stdout", false, "dump with context fields to stdout");
+        options.addOption("stdout2", false, "dump to stdout");
+        options.addOption("update", false, "actually update the record in db");
+        options.addOption("all", false, "do all records");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse( options, args);
