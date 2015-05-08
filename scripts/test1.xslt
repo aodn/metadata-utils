@@ -21,17 +21,14 @@
 
 
   	<xsl:template match="mcp:MD_Metadata/gmd:contact">
-
       <xsl:choose>
         <xsl:when test="matches( /root/context/isharvested, 'n' )">
-        <!-- xsl:when test="1=1"-->
             WHOOT1
         </xsl:when>
         <xsl:otherwise>
-            WHOOT2
+			<xsl:copy-of select="."/>
         </xsl:otherwise>
       </xsl:choose>
-
     </xsl:template>
 
 
