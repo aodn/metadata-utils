@@ -288,14 +288,20 @@ public class PostgresEditor
 
 
 
-            document.removeChild( record ); 
+
 
 
             // add the root element node
             Element root = document.createElement("root");
+            document.removeChild( record ); 
             document.appendChild( root );
 
+            Element context = document.createElement("context");
+            root.appendChild( context);
+
             root.appendChild( record);
+
+
 
             //  Transformer transformer = Updater1.getTransformerFromString ( identity ); 
             Writer writer = new StringWriter();
@@ -310,8 +316,6 @@ public class PostgresEditor
             // return writer.toString();
 
 
-
-
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
                 for(int i=1; i<=columns; i++){
@@ -324,6 +328,10 @@ public class PostgresEditor
                         v = "record...";
                     else 
                         v = value.toString(); 
+
+
+ 
+
                     System.out.println( name + " " + v );
                 }
             }
