@@ -170,6 +170,8 @@ class Misc
 
 
   /* TODO remove - shouldn't ever need string -> string transform */
+
+/*
     public static String transform ( Transformer transformer, String xmlString)
         throws TransformerException
     {
@@ -180,7 +182,7 @@ class Misc
 
         return xmlWriter.toString();
     }
-
+*/
 }
 
 
@@ -283,12 +285,9 @@ public class PostgresEditor
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is );
            Node record = document.getFirstChild();
-/*
-            // create new root 
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = dbf.newDocumentBuilder();
-            Document doc = builder.newDocument();
-*/
+
+
+
             document.removeChild( record ); 
 
 
@@ -329,10 +328,14 @@ public class PostgresEditor
                 }
             }
 
+            // TODO run the transform...
+/*
             if( transformer != null ) {
                 data = Misc.transform( transformer, data);
             }
+*/
 
+            // TODO remove this, should use the identity transform 
             if( cmd.hasOption("stdout")) {
                 System.out.println( data);
             }
