@@ -37,10 +37,10 @@
     </xsl:template>
 
 
-  	<xsl:template match="/root/mcp:MD_Metadata/gmd:contact">
+  	<xsl:template match="mcp:MD_Metadata/gmd:contact">
 
       <xsl:choose>
-        <xsl:when test="matches( /root/context/isharvested, 'y' )">
+        <xsl:when test="matches( /root/context/isharvested, 'n' )">
         <!-- xsl:when test="1=1"-->
             WHOOT1
         </xsl:when>
