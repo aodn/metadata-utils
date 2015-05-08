@@ -289,13 +289,15 @@ public class PostgresEditor
             DocumentBuilder builder = dbf.newDocumentBuilder();
             Document doc = builder.newDocument();
 */
-//            document.removeChild( record ); 
+            document.removeChild( record ); 
 
-/*
+
             // add the root element node
-            Element element = doc.createElement("root");
-            doc.appendChild( record);
-*/
+            Element root = document.createElement("root");
+            document.appendChild( root );
+
+            root.appendChild( record);
+
             //  Transformer transformer = Updater1.getTransformerFromString ( identity ); 
             Writer writer = new StringWriter();
             StreamResult result=new StreamResult( writer );
