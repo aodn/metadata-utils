@@ -16,9 +16,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.io.ByteArrayInputStream; 
+import java.io.ByteArrayInputStream;
 
-import java.nio.charset.StandardCharsets; 
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -64,7 +64,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import javax.xml.transform.OutputKeys; 
+import javax.xml.transform.OutputKeys;
 
 import javax.xml.namespace.NamespaceContext;
 
@@ -78,8 +78,8 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
-import javax.xml.xpath.XPathFactory; 
-import javax.xml.xpath.XPath; 
+import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 
 import javax.xml.xpath.XPathConstants;
@@ -90,7 +90,7 @@ import javax.xml.transform.dom.DOMSource ;
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.net.URL;
- 
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -114,9 +114,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException; 
+import org.xml.sax.SAXParseException;
 
-import org.xml.sax.InputSource; 
+import org.xml.sax.InputSource;
 
 
 
@@ -132,7 +132,7 @@ class Misc
     public static Transformer getTransformerFromFile( String filename )
         throws FileNotFoundException, TransformerConfigurationException
     {
-        // TODO this is terrible, should work with a stream, and let the caller set this up. 
+        // TODO this is terrible, should work with a stream, and let the caller set this up.
         // similarly for the next function
         final TransformerFactory tsf = TransformerFactory.newInstance();
         final InputStream is  = new FileInputStream( filename );
@@ -158,7 +158,7 @@ class Misc
     public static String transform ( Transformer transformer, Document xml )
         throws TransformerException
   {
-      //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
+      //    Transformer transformer = Updater1.getTransformerFromString ( identity );
       Writer writer = new StringWriter();
       StreamResult result=new StreamResult( writer );
 
@@ -190,7 +190,7 @@ class Misc
 
 
 
-public class PostgresEditor 
+public class PostgresEditor
 {
 
 
@@ -213,9 +213,9 @@ public class PostgresEditor
 
 
     public static void main(String[] args)
-        throws Exception 
+        throws Exception
     {
-        
+
         Options options = new Options();
         options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
         options.addOption("u", true, "user");
@@ -280,56 +280,51 @@ public class PostgresEditor
             // System.out.println( "id " + id + ", uuid " + uuid );
 
             // context stuff...
-            {
 
             // decode record
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is );
-           Node record = document.getFirstChild();
+            Node record = document.getFirstChild();
 
 
 
-
-
-
-            // add the root element node
+            // create new root element
             Element root = document.createElement("root");
-            document.removeChild( record ); 
+            document.removeChild( record );
             document.appendChild( root );
 
+            // append new context and record
             Element context = document.createElement("context");
             root.appendChild( context);
-
             root.appendChild( record);
 
-
+            // loop db table vars and add to context 
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
             for(int i=1; i<=columns; i++)  {
                 String name =  md.getColumnName(i);
+
+                if(name.equals("data"))
+                    continue;
+
                 Object value = rs.getObject(i);
-                String v = "";
+                String formattedValue = "";
                 if(value == null)
-                    v = "";
-                else if(name.equals( "data")) 
-                    v = "record...";
-                else 
-                    v = value.toString(); 
+                    formattedValue = "";
+                else
+                    formattedValue = value.toString();
 
                 Element node = document.createElement(name);
-
-                Text value_ =  document.createTextNode( v );
-
-                node.appendChild( value_ ) ; 
+                Text nodeValue = document.createTextNode( formattedValue );
+                node.appendChild(nodeValue);
 
                 context.appendChild( node );
- 
-
-                System.out.println( name + " " + v );
+                // System.out.println( name + " " + v );
             }
 
 
-            //  Transformer transformer = Updater1.getTransformerFromString ( identity ); 
+            // do transform
+            //  Transformer transformer = Updater1.getTransformerFromString ( identity );
             Writer writer = new StringWriter();
             StreamResult result=new StreamResult( writer );
             transformer.transform( new DOMSource( document ), result);
@@ -338,24 +333,13 @@ public class PostgresEditor
             System.out.println( writer.toString() );
             System.out.println( "***** here2" );
 
-            }
-
-
-
-
-
-            // TODO run the transform...
 /*
-            if( transformer != null ) {
-                data = Misc.transform( transformer, data);
-            }
-*/
 
-            // TODO remove this, should use the identity transform 
+            // TODO remove this, should use the identity transform
             if( cmd.hasOption("stdout")) {
                 System.out.println( data);
             }
-
+*/
             if( cmd.hasOption("update")) {
                 PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ;
                 updateStmt.setString(1, data );
