@@ -11,15 +11,48 @@
   exclude-result-prefixes="xsl mcp gco gmd gmx geonet"
 >
 
-  <xsl:output method="xml" indent="yes"/>
+    <xsl:output method="xml" indent="yes"/>
+
+    <!-- xsl:template match="/root/context/isharvested">
+      <xsl:choose>
+          <xsl:when test="matches(. ,'n')">
+
+            WHOOT
+              <xsl:copy>
+                  <xsl:apply-templates select="@*|node()"/>
+              </xsl:copy>
+
+
+          </xsl:when>
+
+          <xsl:otherwise>
+          </xsl:otherwise>
+      </xsl:choose>
+    </xsl:template -->
+
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+
+
+  	<xsl:template match="/root/mcp:MD_Metadata/gmd:contact">
+
+      <xsl:choose>
+        <xsl:when test="matches( /root/context/isharvested, 'y' )">
+        <!-- xsl:when test="1=1"-->
+            WHOOT1
+        </xsl:when>
+        <xsl:otherwise>
+            WHOOT2
+        </xsl:otherwise>
+      </xsl:choose>
+
+	</xsl:template>
 
 
 
-        <xsl:template match="@*|node()">
-            <xsl:copy>
-                <xsl:apply-templates select="@*|node()"/>
-            </xsl:copy>
-        </xsl:template>
 
 
 

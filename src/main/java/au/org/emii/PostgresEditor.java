@@ -333,6 +333,9 @@ public class PostgresEditor
             System.out.println( writer.toString() );
             System.out.println( "***** here2" );
 
+
+            // TODO pull out record or leave ? 
+
 /*
 
             // TODO remove this, should use the identity transform
