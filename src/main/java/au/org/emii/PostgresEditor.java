@@ -237,7 +237,8 @@ public class PostgresEditor
         options.addOption("uuid", true, "metadata record uuid");
         options.addOption("help", false, "show help");
         options.addOption("t", true, "xslt file for transform");
-        options.addOption("stdout", false, "dump result to stdout");
+        options.addOption("stdout", false, "dump raw result to stdout");
+        options.addOption("stdout2", false, "dump transformed record to stdout");
         options.addOption("update", false, "actually update the record");
         options.addOption("all", false, "update all records");
 
@@ -361,11 +362,22 @@ public class PostgresEditor
                 identity.transform( new DOMSource( document ), new StreamResult( writer ));
                 System.out.println( writer.toString() );
             }
+    
 
+            // pick out the recod
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            Node myNode = (Node) xpath.compile("//root/record/*").evaluate( document, XPathConstants.NODE);           
+            Writer writer = new StringWriter();
+            identity.transform( new DOMSource( myNode), new StreamResult( writer ));
+            data = writer.toString();
 
+            if( cmd.hasOption("stdout2")) {
+                System.out.println( data );
+            }
 
 
             if( cmd.hasOption("update")) {
+
                 PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ;
                 updateStmt.setString(1, data );
                 updateStmt.setInt(2, id );
