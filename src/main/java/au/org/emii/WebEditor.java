@@ -11,79 +11,30 @@ Cookies code,
 package au.org.emii;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.io.ByteArrayInputStream; 
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.net.URLEncoder ; 
 
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.OutputStream;
-import java.io.FileInputStream;
-import java.io.File;
 import java.io.InputStream ;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Writer;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.IOException;
 
 import java.sql.*;
-import java.sql.SQLException;
 
-import java.util.Properties;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import javax.xml.transform.OutputKeys; 
-
-import javax.xml.namespace.NamespaceContext;
+import javax.xml.transform.Transformer;
 
 
 import org.apache.commons.cli.*;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.xml.xpath.XPathFactory; 
-import javax.xml.xpath.XPath; 
-import javax.xml.xpath.XPathExpression;
-
-import javax.xml.xpath.XPathConstants;
-
-import javax.xml.transform.dom.DOMSource ;
-
 
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
@@ -99,26 +50,8 @@ import javax.net.ssl.X509TrustManager;
 
 import java.security.cert.X509Certificate;
 
-import org.w3c.dom.Document;
 
 
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-
-
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException; 
-
-import org.xml.sax.InputSource; 
-
-
-
-import org.apache.commons.codec.binary.Base64;
 
 
 // xslt examples,

@@ -119,6 +119,17 @@
         </executions>
       </plugin>
 
+      <!-- http://stackoverflow.com/questions/8975096/maven-checkstyle-configlocation-ignored -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.15</version>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>
+
+
     </plugins>
   </build>
 
