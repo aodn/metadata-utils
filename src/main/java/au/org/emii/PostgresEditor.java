@@ -26,6 +26,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.CDATASection;
@@ -138,6 +139,19 @@ class Misc
         final InputStream is  = new FileInputStream( filename );
 
         return tsf.newTransformer(new StreamSource(is));
+    }
+
+    public static Transformer getIdentityTransformer()
+        throws FileNotFoundException, TransformerConfigurationException
+    {
+ 
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        return transformer; 
     }
 
 /*
@@ -270,6 +284,9 @@ public class PostgresEditor
         if( cmd.hasOption("t")) {
             transformer = Misc.getTransformerFromFile( cmd.getOptionValue("t") );
         }
+        else {
+            transformer = Misc.getIdentityTransformer(); 
+        }
 
         int count = 0;
         while ( rs.next() )
@@ -327,26 +344,32 @@ public class PostgresEditor
                 // System.out.println( name + " " + v );
             }
 
-
+/*
             // do transform
             //  Transformer transformer = Updater1.getTransformerFromString ( identity );
             Writer writer = new StringWriter();
             StreamResult result=new StreamResult( writer );
             transformer.transform( new DOMSource( document ), result);
-            // dump to stdout
-            System.out.println( "***** here1" );
-            System.out.println( writer.toString() );
-            System.out.println( "***** here2" );
+*/
+
+            DOMResult output = new DOMResult();
+            transformer.transform( new DOMSource( document ), output);
+            document = (Document) output.getNode();
 
 
-            // TODO pull out record or leave ? 
 
-/*
+            Writer writer = new StringWriter();
+            StreamResult result=new StreamResult( writer );
+
+            // TODO setup identity once...
+            Misc.getIdentityTransformer().transform( new DOMSource( document ), result);
+
+
             // TODO remove this, should use the identity transform
             if( cmd.hasOption("stdout")) {
-                System.out.println( data);
+                System.out.println( writer.toString() );
             }
-*/
+
             if( cmd.hasOption("update")) {
                 PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ;
                 updateStmt.setString(1, data );
