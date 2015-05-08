@@ -122,38 +122,40 @@ import org.xml.sax.InputSource;
 class Misc
 {
 
-	public Misc ()
-	{ }
+    public Misc ()
+    { }
 
 
-	public static Transformer getTransformerFromFile( String filename )
-		throws FileNotFoundException, TransformerConfigurationException
-	{
-		final TransformerFactory tsf = TransformerFactory.newInstance();
-		final InputStream is  = new FileInputStream( filename );
+    public static Transformer getTransformerFromFile( String filename )
+        throws FileNotFoundException, TransformerConfigurationException
+    {
+        // TODO this is terrible, should work with a stream, and let the caller set this up. 
+        // similarly for the next function
+        final TransformerFactory tsf = TransformerFactory.newInstance();
+        final InputStream is  = new FileInputStream( filename );
 
-		return tsf.newTransformer(new StreamSource(is));
-	}
+        return tsf.newTransformer(new StreamSource(is));
+    }
 
 
-	public static Transformer getTransformerFromString ( String input )
-		throws FileNotFoundException, TransformerConfigurationException
-	{
-		final TransformerFactory tsf = TransformerFactory.newInstance();
+    public static Transformer getTransformerFromString ( String input )
+        throws FileNotFoundException, TransformerConfigurationException
+    {
+        final TransformerFactory tsf = TransformerFactory.newInstance();
 
     InputStream is = new ByteArrayInputStream( input.getBytes());//StandardCharsets.UTF_8));
 
-//		final InputStream is  = new StringInputStream( input );
+//      final InputStream is  = new StringInputStream( input );
 
-		return tsf.newTransformer(new StreamSource(is));
-	}
+        return tsf.newTransformer(new StreamSource(is));
+    }
 
 
 
-	public static String transform ( Transformer transformer, Document xml )
-		throws TransformerException
+    public static String transform ( Transformer transformer, Document xml )
+        throws TransformerException
   {
-  	  //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
+      //    Transformer transformer = Updater1.getTransformerFromString ( identity ); 
       Writer writer = new StringWriter();
       StreamResult result=new StreamResult( writer );
 
@@ -164,16 +166,16 @@ class Misc
   }
 
   /* TODO remove - shouldn't ever need string -> string transform */
-	public static String transform ( Transformer transformer, String xmlString)
-		throws TransformerException
-	{
-		final StringReader xmlReader = new StringReader(xmlString);
-		final StringWriter xmlWriter = new StringWriter();
+    public static String transform ( Transformer transformer, String xmlString)
+        throws TransformerException
+    {
+        final StringReader xmlReader = new StringReader(xmlString);
+        final StringWriter xmlWriter = new StringWriter();
 
-		transformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
+        transformer.transform(new StreamSource(xmlReader), new StreamResult(xmlWriter));
 
-		return xmlWriter.toString();
-	}
+        return xmlWriter.toString();
+    }
 
 }
 
@@ -186,118 +188,137 @@ public class PostgresEditor
 
 
     private static Connection getConn( String url, String user, String pass)
-		throws SQLException
-	{
-		Properties props = new Properties();
+        throws SQLException
+    {
+        Properties props = new Properties();
 
-		props.setProperty("user", user );
-		props.setProperty("password",pass );
+        props.setProperty("user", user );
+        props.setProperty("password",pass );
 
-		// props.setProperty("search_path","soop_sst,public");
-		props.setProperty("ssl","true");
-		props.setProperty("sslfactory","org.postgresql.ssl.NonValidatingFactory");
-		props.setProperty("driver","org.postgresql.Driver" );
+        // props.setProperty("search_path","soop_sst,public");
+        props.setProperty("ssl","true");
+        props.setProperty("sslfactory","org.postgresql.ssl.NonValidatingFactory");
+        props.setProperty("driver","org.postgresql.Driver" );
 
-		return DriverManager.getConnection(url, props);
-	}
+        return DriverManager.getConnection(url, props);
+    }
 
 
 
-	public static void main(String[] args)
-		throws Exception 
-	{
-		
-		Options options = new Options();
-		options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
-		options.addOption("u", true, "user");
-		options.addOption("p", true, "password");
-		options.addOption("uuid", true, "metadata record uuid");
-		options.addOption("help", false, "show help");
-		options.addOption("t", true, "xslt file for transform");
-		options.addOption("stdout", false, "dump result to stdout");
-		options.addOption("update", false, "actually update the record");
-		options.addOption("all", false, "update all records");
+    public static void main(String[] args)
+        throws Exception 
+    {
+        
+        Options options = new Options();
+        options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
+        options.addOption("u", true, "user");
+        options.addOption("p", true, "password");
+        options.addOption("uuid", true, "metadata record uuid");
+        options.addOption("help", false, "show help");
+        options.addOption("t", true, "xslt file for transform");
+        options.addOption("stdout", false, "dump result to stdout");
+        options.addOption("update", false, "actually update the record");
+        options.addOption("all", false, "update all records");
 
-		CommandLineParser parser = new DefaultParser();
-		CommandLine cmd = parser.parse( options, args);
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse( options, args);
 
-		if(cmd.hasOption("help") || !cmd.hasOption("url") || !cmd.hasOption("u") || !cmd.hasOption("u")) {
-			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp( "Updater", options );
-			return;
-		}
+        if(cmd.hasOption("help") || !cmd.hasOption("url") || !cmd.hasOption("u") || !cmd.hasOption("u")) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp( "Updater", options );
+            return;
+        }
 
-		Connection conn = getConn(
-			cmd.getOptionValue("url"),
-			cmd.getOptionValue("u"),
-			cmd.getOptionValue("p")
-		);
+        Connection conn = getConn(
+            cmd.getOptionValue("url"),
+            cmd.getOptionValue("u"),
+            cmd.getOptionValue("p")
+        );
 
-		String query = "SELECT id,uuid,data FROM metadata ";
+        // String query = "SELECT id,uuid,data FROM metadata ";
+        String query = "SELECT * FROM metadata ";
 
-		// uuid or all
-		if(cmd.hasOption("uuid")) {
-			query += " where uuid = '" + cmd.getOptionValue("uuid") + "'";
-		}
-		else if(cmd.hasOption("all")) {
-			;
-		}
-		else {
-			throw new Exception( "Options should include one of -uuid or -all" );
-		}
+        // uuid or all
+        if(cmd.hasOption("uuid")) {
+            query += " where uuid = '" + cmd.getOptionValue("uuid") + "'";
+        }
+        else if(cmd.hasOption("all")) {
+            ;
+        }
+        else {
+            throw new Exception( "Options should include one of -uuid or -all" );
+        }
 
 /*
-		// we could get rid of stdout
-		if( !( cmd.hasOption("stdout") || cmd.hasOption( "update")) ) {
-			throw new Exception( "Options should include one of -stdout or -update" );
-		}
+        // we could get rid of stdout
+        if( !( cmd.hasOption("stdout") || cmd.hasOption( "update")) ) {
+            throw new Exception( "Options should include one of -stdout or -update" );
+        }
 */
 
         PreparedStatement stmt = conn.prepareStatement( query );
         ResultSet rs = stmt.executeQuery();
 
-		Transformer transformer = null;
-		if( cmd.hasOption("t")) {
-			transformer = Misc.getTransformerFromFile( cmd.getOptionValue("t") );
-		}
+        Transformer transformer = null;
+        if( cmd.hasOption("t")) {
+            transformer = Misc.getTransformerFromFile( cmd.getOptionValue("t") );
+        }
 
         int count = 0;
         while ( rs.next() )
         {
-			int id = (Integer) rs.getObject("id");
-			String uuid = (String) rs.getObject("uuid");
-			String data = (String) rs.getObject("data");
+            int id = rs.getInt("id");
+            String data = rs.getString("data");
+            // String uuid = (String) rs.getObject("uuid");
+            // System.out.println( "id " + id + ", uuid " + uuid );
 
-			System.out.println( "id " + id + ", uuid " + uuid );
+            // context stuff...
+            {
+            ResultSetMetaData md = rs.getMetaData();
+            int columns = md.getColumnCount();
+                for(int i=1; i<=columns; i++){
+                    String name =  md.getColumnName(i);
+                    Object value = rs.getObject(i);
+                    String v = "";
+                    if(value == null)
+                        v = "null";
+                    else if(name.equals( "data")) 
+                        v = "record...";
+                    else 
+                        v = value.toString(); 
+                    System.out.println( name + " " + v );
+                }
+            }
 
 
-			if( transformer != null ) {
-				data = Misc.transform( transformer, data);
-			}
+            if( transformer != null ) {
+                data = Misc.transform( transformer, data);
+            }
 
-			if( cmd.hasOption("stdout")) {
-				System.out.println( data);
-			}
+            if( cmd.hasOption("stdout")) {
+                System.out.println( data);
+            }
 
-			if( cmd.hasOption("update")) {
-				PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ;
-				updateStmt.setString(1, data );
-				updateStmt.setInt(2, id );
-				updateStmt.executeUpdate();
-				// close...?
-				updateStmt.close();
-			}
+            if( cmd.hasOption("update")) {
+                PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ;
+                updateStmt.setString(1, data );
+                updateStmt.setInt(2, id );
+                updateStmt.executeUpdate();
+                // close...?
+                // TODO should be finally.
+                updateStmt.close();
+            }
 
             ++count;
         }
 
 
-		stmt.close();
-		rs.close();
-		conn.close();
+        stmt.close();
+        rs.close();
+        conn.close();
 
         System.out.println( "records processed " + count );
-	}
+    }
 }
 
 

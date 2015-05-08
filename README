@@ -1,4 +1,25 @@
 
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:5432/imosmest -u imosmest -p 1MOSM3ST   -stdout
+
+
+
+
+rsync -avzP  ./geonetwork_updater   imosmest.aodn.org.au 
+
+$ sudo -u postgres pg_dump -Fc geonetwork > geonetwork.dump
+$ git clone http://github.com/julian1/geonetwork_updater .
+rsync -avzP  target/myartifcat-1.0.0.jar  catalogue-123.aodn.org.au:~/
+mkdir target
+mv myupdater target
+
+# test
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u geonetwork -p     geonetwork   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2   -stdout
+
+# do the update
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u geonetwork -p geonetwork -all -t trans-2.0.xslt  -update
+
+-----
+
 java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.WebEditor
 
 # 
@@ -27,10 +48,6 @@ need to specify the actual xslt transform to use ...
 mvn clean install
 
 # dump record to stdout
-java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u meteo -p meteo  -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -stdout
-
-# perform the update in geonetwork
-java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u meteo -p meteo  -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -t trans.xslt  -stdout
 
 # perform the update in geonetwork
 java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.Updater -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u meteo -p meteo  -uuid 4402cb50-e20a-44ee-93e6-4728259250d2  -t trans.xslt  -update
