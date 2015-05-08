@@ -32,6 +32,7 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 
 import java.io.BufferedReader;
@@ -302,39 +303,46 @@ public class PostgresEditor
             root.appendChild( record);
 
 
+            ResultSetMetaData md = rs.getMetaData();
+            int columns = md.getColumnCount();
+            for(int i=1; i<=columns; i++)  {
+                String name =  md.getColumnName(i);
+                Object value = rs.getObject(i);
+                String v = "";
+                if(value == null)
+                    v = "";
+                else if(name.equals( "data")) 
+                    v = "record...";
+                else 
+                    v = value.toString(); 
+
+                Element node = document.createElement(name);
+
+                Text value_ =  document.createTextNode( v );
+
+                node.appendChild( value_ ) ; 
+
+                context.appendChild( node );
+ 
+
+                System.out.println( name + " " + v );
+            }
+
 
             //  Transformer transformer = Updater1.getTransformerFromString ( identity ); 
             Writer writer = new StringWriter();
             StreamResult result=new StreamResult( writer );
             transformer.transform( new DOMSource( document ), result);
-
-
+            // dump to stdout
             System.out.println( "***** here1" );
             System.out.println( writer.toString() );
-
             System.out.println( "***** here2" );
-            // return writer.toString();
 
-
-            ResultSetMetaData md = rs.getMetaData();
-            int columns = md.getColumnCount();
-                for(int i=1; i<=columns; i++){
-                    String name =  md.getColumnName(i);
-                    Object value = rs.getObject(i);
-                    String v = "";
-                    if(value == null)
-                        v = "null";
-                    else if(name.equals( "data")) 
-                        v = "record...";
-                    else 
-                        v = value.toString(); 
-
-
- 
-
-                    System.out.println( name + " " + v );
-                }
             }
+
+
+
+
 
             // TODO run the transform...
 /*
