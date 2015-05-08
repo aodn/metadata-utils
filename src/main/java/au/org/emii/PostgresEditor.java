@@ -18,6 +18,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.io.ByteArrayInputStream; 
 
+import java.nio.charset.StandardCharsets; 
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -29,7 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
+import org.w3c.dom.Node;
 
 
 import java.io.BufferedReader;
@@ -137,7 +139,7 @@ class Misc
         return tsf.newTransformer(new StreamSource(is));
     }
 
-
+/*
     public static Transformer getTransformerFromString ( String input )
         throws FileNotFoundException, TransformerConfigurationException
     {
@@ -164,6 +166,8 @@ class Misc
       // System.out.println( writer.toString() );
       return writer.toString();
   }
+*/
+
 
   /* TODO remove - shouldn't ever need string -> string transform */
     public static String transform ( Transformer transformer, String xmlString)
@@ -274,6 +278,29 @@ public class PostgresEditor
 
             // context stuff...
             {
+
+            // decode record
+            InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is );
+            Node record = document.getFirstChild();
+
+/*
+            // create new root 
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+            Document doc = builder.newDocument();
+*/
+
+
+            document.removeChild( record ); 
+
+/*
+            // add the root element node
+            Element element = doc.createElement("root");
+            doc.appendChild( record);
+
+*/
+
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
                 for(int i=1; i<=columns; i++){
@@ -289,7 +316,6 @@ public class PostgresEditor
                     System.out.println( name + " " + v );
                 }
             }
-
 
             if( transformer != null ) {
                 data = Misc.transform( transformer, data);
