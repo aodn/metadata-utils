@@ -293,10 +293,15 @@ public class PostgresEditor
             document.removeChild( record );
             document.appendChild( root );
 
-            // append new context and record
+            // add context
             Element context = document.createElement("context");
             root.appendChild( context);
-            root.appendChild( record);
+
+            // record node.
+            Element recordNode = document.createElement("record");
+            recordNode.appendChild(record);
+            root.appendChild( recordNode);
+
 
             // loop db table vars and add to context 
             ResultSetMetaData md = rs.getMetaData();
@@ -337,7 +342,6 @@ public class PostgresEditor
             // TODO pull out record or leave ? 
 
 /*
-
             // TODO remove this, should use the identity transform
             if( cmd.hasOption("stdout")) {
                 System.out.println( data);
