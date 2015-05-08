@@ -282,24 +282,34 @@ public class PostgresEditor
             // decode record
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is );
-            Node record = document.getFirstChild();
-
+           Node record = document.getFirstChild();
 /*
             // create new root 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = dbf.newDocumentBuilder();
             Document doc = builder.newDocument();
 */
-
-
-            document.removeChild( record ); 
+//            document.removeChild( record ); 
 
 /*
             // add the root element node
             Element element = doc.createElement("root");
             doc.appendChild( record);
-
 */
+            //  Transformer transformer = Updater1.getTransformerFromString ( identity ); 
+            Writer writer = new StringWriter();
+            StreamResult result=new StreamResult( writer );
+            transformer.transform( new DOMSource( document ), result);
+
+
+            System.out.println( "***** here1" );
+            System.out.println( writer.toString() );
+
+            System.out.println( "***** here2" );
+            // return writer.toString();
+
+
+
 
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
