@@ -1,4 +1,34 @@
 
+## Build
+
+mvn clean install
+
+## Examples
+
+    # Get help
+    java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -help
+        usage: Updater
+     -all          update all records
+     -help         show help
+     -p <arg>      password
+     -stdout       dump raw result to stdout
+     -stdout2      dump transformed record to stdout
+     -t <arg>      xslt file for transform
+     -u <arg>      user
+     -update       actually update the record
+     -url <arg>    jdbc connection string, eg.
+                   jdbc:postgresql://127.0.0.1/geonetwork
+     -uuid <arg>   metadata record uuid
+
+
+    # Dump to stdout
+    java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u geonetwork -p     geonetwork -all    -t scripts/test1.xslt -stdout 2>&1 | less
+
+    # Options
+
+
+------
+
 java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:5432/imosmest -u imosmest -p 1MOSM3ST   -stdout
 
 
@@ -45,7 +75,6 @@ need to specify the actual xslt transform to use ...
 - and an option to limit to a particular uuid 
 
 
-mvn clean install
 
 # dump record to stdout
 
