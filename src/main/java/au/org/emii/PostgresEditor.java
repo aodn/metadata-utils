@@ -280,12 +280,17 @@ public class PostgresEditor
         PreparedStatement stmt = conn.prepareStatement( query );
         ResultSet rs = stmt.executeQuery();
 
+
+        // setup the identity transform
+        Transformer identity = Misc.getIdentityTransformer(); 
+
+
         Transformer transformer = null;
         if( cmd.hasOption("t")) {
             transformer = Misc.getTransformerFromFile( cmd.getOptionValue("t") );
         }
         else {
-            transformer = Misc.getIdentityTransformer(); 
+            transformer = identity; 
         }
 
         int count = 0;
@@ -303,8 +308,6 @@ public class PostgresEditor
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is );
             Node record = document.getFirstChild();
 
-
-
             // create new root element
             Element root = document.createElement("root");
             document.removeChild( record );
@@ -314,19 +317,19 @@ public class PostgresEditor
             Element context = document.createElement("context");
             root.appendChild( context);
 
-            // record node.
+            // add record
             Element recordNode = document.createElement("record");
             recordNode.appendChild(record);
             root.appendChild( recordNode);
 
 
-            // loop db table vars and add to context 
+            // loop resultset and and add db fields context 
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
             for(int i=1; i<=columns; i++)  {
                 String name =  md.getColumnName(i);
 
-                if(name.equals("data"))
+                if(name.equals("data")) // ignore the actual record
                     continue;
 
                 Object value = rs.getObject(i);
@@ -341,34 +344,26 @@ public class PostgresEditor
                 node.appendChild(nodeValue);
 
                 context.appendChild( node );
-                // System.out.println( name + " " + v );
             }
 
-/*
-            // do transform
-            //  Transformer transformer = Updater1.getTransformerFromString ( identity );
-            Writer writer = new StringWriter();
-            StreamResult result=new StreamResult( writer );
-            transformer.transform( new DOMSource( document ), result);
-*/
 
+            // do the transform
             DOMResult output = new DOMResult();
             transformer.transform( new DOMSource( document ), output);
             document = (Document) output.getNode();
 
 
-
-            Writer writer = new StringWriter();
-            StreamResult result=new StreamResult( writer );
-
-            // TODO setup identity once...
-            Misc.getIdentityTransformer().transform( new DOMSource( document ), result);
-
-
+            
             // TODO remove this, should use the identity transform
             if( cmd.hasOption("stdout")) {
+                //  format the output
+                Writer writer = new StringWriter();
+                identity.transform( new DOMSource( document ), new StreamResult( writer ));
                 System.out.println( writer.toString() );
             }
+
+
+
 
             if( cmd.hasOption("update")) {
                 PreparedStatement updateStmt = conn.prepareStatement( "update metadata set data=? where id=?" ) ;
