@@ -2,7 +2,9 @@
 
 <xsl:stylesheet version="2.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:mcp="http://schemas.aodn.org.au/mcp-2.0"
+    
+    xmlns:mcp="http://bluenet3.antcrc.utas.edu.au/mcp"
+    
     xmlns:gco="http://www.isotc211.org/2005/gco"
     xmlns:gmd="http://www.isotc211.org/2005/gmd"
     xmlns:gmx="http://www.isotc211.org/2005/gmx"
@@ -93,7 +95,7 @@
     
     <xsl:template match="mcp:MD_Metadata/gmd:contact">       
         <xsl:choose>
-            <xsl:when test="../gmd:identificationInfo/mcp:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString[contains( text(), 'IMOS AUV Campaign')]">
+            <xsl:when test="../gmd:identificationInfo/mcp:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString[contains( text(), 'Argo Australia float')]">
                 <xsl:choose>
                     <xsl:when test="gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString[matches(lower-case(text()), 'emii|imos|integrated marine observing system|emarine information infrastructure')]">
                         <xsl:copy-of select="$imosMetadataContact"/>
