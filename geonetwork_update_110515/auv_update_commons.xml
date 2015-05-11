@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:mcp="http://schemas.aodn.org.au/mcp-2.0"
+    xmlns:gco="http://www.isotc211.org/2005/gco"
+    xmlns:gmd="http://www.isotc211.org/2005/gmd"
+    xmlns:gmx="http://www.isotc211.org/2005/gmx"
+    xmlns:geonet="http://www.fao.org/geonetwork"
+    
+    exclude-result-prefixes="xsl mcp gco gmd gmx geonet"
+    >
+    
+    
+    <xsl:output method="xml" indent="yes"/>
+    
+    <xsl:variable name="imosCommons">
+        <mcp:MD_Commons mcp:commonsType="Creative Commons" gco:isoType="gmd:MD_Constraints">
+            <mcp:jurisdictionLink>
+                <gmd:URL>http://creativecommons.org/international/</gmd:URL>
+            </mcp:jurisdictionLink>
+            <mcp:licenseLink>
+                <gmd:URL>http://creativecommons.org/licenses/by/4.0/</gmd:URL>
+            </mcp:licenseLink>
+            <mcp:imageLink>
+                <gmd:URL>http://i.creativecommons.org/l/by/4.0/88x31.png</gmd:URL>
+            </mcp:imageLink>
+            <mcp:licenseName>
+                <gco:CharacterString>Attribution 4.0 International</gco:CharacterString>
+            </mcp:licenseName>
+            <mcp:attributionConstraints>
+                <gco:CharacterString>The citation in a list of references is: "IMOS [year-of-data-download], [Title], [data-access-URL], accessed [date-of-access]."</gco:CharacterString>
+            </mcp:attributionConstraints>
+            <mcp:attributionConstraints>
+                <gco:CharacterString>Any users of IMOS data are required to clearly acknowledge the source of the material derived from IMOS in the format: "Data was sourced from the Integrated Marine Observing System (IMOS) - IMOS is a national collaborative research infrastructure, supported by the Australian Government." If relevant, also credit other organisations involved in collection of this particular datastream (as listed in 'credit' in the metadata record).</gco:CharacterString>
+            </mcp:attributionConstraints>
+        </mcp:MD_Commons>
+    </xsl:variable>
+    
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="mcp:MD_Metadata/gmd:identificationInfo/mcp:MD_DataIdentification/gmd:resourceConstraints/mcp:MD_Commons">       
+        <xsl:choose>
+            <xsl:when test="../../gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString[contains( text(), 'IMOS AUV Campaign')]">
+                <xsl:choose>
+                    <xsl:when test="mcp:attributionConstraints/gco:CharacterString[matches(lower-case(text()), 'emii|imos|integrated marine observing system|emarine information infrastructure')]">
+                        <xsl:copy-of select="$imosCommons"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:copy-of select="."/>
+                    </xsl:otherwise>
+                </xsl:choose>               
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>       
+    </xsl:template>
+    
+</xsl:stylesheet>
+
