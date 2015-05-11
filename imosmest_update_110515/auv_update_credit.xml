@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    
+    xmlns:mcp="http://bluenet3.antcrc.utas.edu.au/mcp"
+    
+    xmlns:gco="http://www.isotc211.org/2005/gco"
+    xmlns:gmd="http://www.isotc211.org/2005/gmd"
+    xmlns:gmx="http://www.isotc211.org/2005/gmx"
+    xmlns:geonet="http://www.fao.org/geonetwork"
+    
+    exclude-result-prefixes="xsl mcp gco gmd gmx geonet"
+    >
+    
+    
+    <xsl:output method="xml" indent="yes"/>
+    
+    <xsl:variable name="imosCredit1">
+        <gmd:credit>
+            <gco:CharacterString>Integrated Marine Observing System (IMOS). IMOS is a national collaborative research infrastructure, supported by Australian Government.</gco:CharacterString>
+        </gmd:credit>
+    </xsl:variable> 
+    
+    <xsl:variable name="imosCredit2">
+        <gmd:credit>
+            <gco:CharacterString>CSIRO Oceans and Atmosphere Flagship</gco:CharacterString>
+        </gmd:credit>
+    </xsl:variable>
+    
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="mcp:MD_Metadata/gmd:identificationInfo/mcp:MD_DataIdentification/gmd:credit">      
+        <xsl:choose>
+            <xsl:when test="../gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString[contains( text(), 'IMOS AUV Campaign')]">
+                <xsl:choose>
+                    <xsl:when test="gco:CharacterString[contains(text(), 'IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy (NCRIS) and the Super Science Initiative (SSI)')]">
+                        <xsl:copy-of select="$imosCredit1"/>
+                    </xsl:when>                  
+                    <xsl:otherwise>
+                        <xsl:copy-of select="."/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+        
+    </xsl:template>
+    
+</xsl:stylesheet>
+
