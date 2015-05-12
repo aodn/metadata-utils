@@ -25,7 +25,7 @@
         <xsl:choose>
             <xsl:when test="../gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString[contains( text(), 'Argo Australia float')]">
                 <xsl:choose>
-                    <xsl:when test="gco:CharacterString[contains(text(), 'Funded by the National Collaborative Research Infrastructure Strategy (NCRIS) and the Super Science Initiative (SSI)')]"/>
+                    <xsl:when test="gco:CharacterString[contains(text(), 'Funded by the National Collaborative Research Infrastructure Strategy (NCRIS)')]"/>
                     <xsl:otherwise>
                         <xsl:copy-of select="."/>
                     </xsl:otherwise>
