@@ -14,7 +14,7 @@ usage: Updater
  -all          do all records
  -help         show help
  -p <arg>      password
- -stdout       dump to stdout with context fields
+ -stdout       dump to stdout with additional record context fields
  -stdout2      dump to stdout
  -t <arg>      xslt file for transform
  -u <arg>      user
@@ -43,29 +43,5 @@ java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor  -url jdbc:po
 #### Transform and update all records
 ```
 java -cp ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:5432/geonetwork -u geonetwork -p geonetwork -all -t scripts/test1.xslt -update
-```
-
-
-
-#### example how to copy db
-```
-ssh catalogue-123.aodn.org.au
-sudo -u postgres pg_dump -Fc geonetwork > geonetwork.dump
-```
-
-#### local
-
-```
-rsync -avzP catalogue-123.aodn.org.au ... geonetwork.dump .
----
-sudo /etc/init.d/tomcat7_geonetwork_123  stop
-
-sudo -u postgres psql  -c 'drop database geonetwork '
-sudo -u postgres pg_restore /vagrant/geonetwork.dump  -C  -d postgres
-
-# or if production,
-sudo -u postgres pg_restore  -O -x ./geonetwork.dump  -C  -d postgres
-# 
-
 ```
 
