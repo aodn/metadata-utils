@@ -1,5 +1,5 @@
 
-### GeoNetwork record XSLT editor
+### GeoNetwork XSLT record editor
 
 ### Build
 
@@ -30,7 +30,7 @@ ssh -L :9000:localhost:5432  10.11.12.13
 java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:9000/geonetwork -u geonetwork -p geonetwork -all   -stdout
 ```
 
-#### Dump untransformed Argo record to stdout
+#### Dump specific untransformed record (Argo) to stdout
 ```
 java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor  -url jdbc:postgresql://127.0.0.1:9000/geonetwork -u geonetwork -p geonetwork -uuid 4402cb50-e20a-44ee-93e6-4728259250d2    -stdout   
 ```
