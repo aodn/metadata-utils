@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:mcp="http://schemas.aodn.org.au/mcp-2.0"
+    xmlns:gco="http://www.isotc211.org/2005/gco"
+    xmlns:gmd="http://www.isotc211.org/2005/gmd"
+    xmlns:gmx="http://www.isotc211.org/2005/gmx"
+    xmlns:geonet="http://www.fao.org/geonetwork"
+
+    exclude-result-prefixes="xsl mcp gco gmd gmx geonet"
+    >
+
+    <!--
+        eg. <gmd:URL>http://vocab.aodn.org.au/discovery_parameter/entity/373</gmd:URL>
+        to  <gmd:URL>http://vocab.aodn.org.au/def/discovery_parameter/entity/373</gmd:URL>
+    -->
+
+    <xsl:output method="xml" indent="yes"/>
+
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="//mcp:vocabularyTermURL/gmd:URL">
+        <xsl:choose>
+            <xsl:when test="matches(text(), 'http://vocab.aodn.org.au')">
+                <gmd:URL><xsl:value-of select='replace(., "^(http://vocab.aodn.org.au/)","$1def/")'/></gmd:URL>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+</xsl:stylesheet>
+
