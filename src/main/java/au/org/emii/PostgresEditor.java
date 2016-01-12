@@ -98,8 +98,8 @@ public class PostgresEditor {
         options.addOption("uuid", true, "metadata record uuid");
         options.addOption("help", false, "show help");
         options.addOption("t", true, "xslt file for transform");
-        options.addOption("stdout", false, "dump with context fields to stdout");
-        options.addOption("stdout2", false, "dump to stdout");
+        options.addOption("stdout", false, "dump raw record to stoud");
+        options.addOption("stdout_with_context", false, "dump to stdout");
         options.addOption("update", false, "actually update the record in db");
         options.addOption("all", false, "do all records");
 
@@ -113,10 +113,10 @@ public class PostgresEditor {
         }
 
         Connection conn = getConn(
-                              cmd.getOptionValue("url"),
-                              cmd.getOptionValue("u"),
-                              cmd.getOptionValue("p")
-                          );
+            cmd.getOptionValue("url"),
+            cmd.getOptionValue("u"),
+            cmd.getOptionValue("p")
+        );
 
         // String query = "SELECT id,uuid,data FROM metadata ";
         String query = "SELECT * FROM metadata ";
@@ -146,6 +146,8 @@ public class PostgresEditor {
             transformer = identity;
         }
 
+        // TODO this crap really wants to be factored, so we pass the action and the transformer in...
+        // loop records
         int count = 0;
         while(rs.next()) {
             int id = rs.getInt("id");
@@ -154,6 +156,8 @@ public class PostgresEditor {
             // System.out.println( "id " + id + ", uuid " + uuid );
 
             // context stuff...
+
+            // TODO - and maybe factor this to avoid setting up the context fields when they're not needed
 
             // decode record
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
@@ -175,7 +179,7 @@ public class PostgresEditor {
             root.appendChild(recordNode);
 
 
-            // loop resultset and and add db fields context
+            // loop fields and add to the context
             ResultSetMetaData md = rs.getMetaData();
             int columns = md.getColumnCount();
             for(int i=1; i<=columns; i++)  {
@@ -199,48 +203,50 @@ public class PostgresEditor {
             }
 
 
-            // do the transform
+            // perform requested transform
             DOMResult output = new DOMResult();
             transformer.transform(new DOMSource(document), output);
             document = (Document) output.getNode();
 
 
+            // we'll do validation here,,,
 
-            if(cmd.hasOption("stdout")) {
-                //  format the output
+            if(cmd.hasOption("stdout_with_context")) {
+                // emit with all context fields
                 Writer writer = new StringWriter();
                 identity.transform(new DOMSource(document), new StreamResult(writer));
-                System.out.println(writer.toString());
-            }
-
-
-            // pick out the recod
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
-            Writer writer = new StringWriter();
-            identity.transform(new DOMSource(myNode), new StreamResult(writer));
-            data = writer.toString();
-
-            if(cmd.hasOption("stdout2")) {
+                data = writer.toString();
                 System.out.println(data);
             }
 
+            else if(cmd.hasOption("stdout") || cmd.hasOption("update")) {
+                // pick out the transformed record
+                XPath xpath = XPathFactory.newInstance().newXPath();
+                Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
 
-            if(cmd.hasOption("update")) {
+                // emit without context fields
+                Writer writer = new StringWriter();
+                identity.transform(new DOMSource(myNode), new StreamResult(writer));
+                data = writer.toString();
 
-                PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=? where id=?");
-                updateStmt.setString(1, data);
-                updateStmt.setInt(2, id);
-                updateStmt.executeUpdate();
-                // close...?
-                // TODO should be finally.
-                updateStmt.close();
+                if(cmd.hasOption("stdout")) {
+                    System.out.println(data);
+                } 
+                else if(cmd.hasOption("update")) {
+                    PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=? where id=?");
+                    updateStmt.setString(1, data);
+                    updateStmt.setInt(2, id);
+                    updateStmt.executeUpdate();
+                    // close...?
+                    // TODO should be finally.
+                    updateStmt.close();
+                }
             }
 
             ++count;
         }
 
-        // TODO finally
+        // TODO finally, using...
         stmt.close();
         rs.close();
         conn.close();
