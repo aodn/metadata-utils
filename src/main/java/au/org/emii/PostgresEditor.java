@@ -34,6 +34,12 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathConstants;
 
+import javax.xml.XMLConstants;
+import javax.xml.validation.*;
+import java.io.File;
+import org.xml.sax.SAXException;
+
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -46,6 +52,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 
+// TODO perhaps change name to Main to make easier to call from cli? 
 
 public class PostgresEditor {
 
@@ -155,9 +162,8 @@ public class PostgresEditor {
             // String uuid = (String) rs.getObject("uuid");
             // System.out.println( "id " + id + ", uuid " + uuid );
 
-            // context stuff...
 
-            // TODO - and maybe factor this to avoid setting up the context fields when they're not needed
+            // TODO - should factor db and xml processing into separate classes/methods
 
             // decode record
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
@@ -208,8 +214,39 @@ public class PostgresEditor {
             transformer.transform(new DOMSource(document), output);
             document = (Document) output.getNode();
 
+            // TODO better names
+            // pick out the transformed record
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
 
             // we'll do validation here,,,
+
+/*
+    URL schemaFile = new URL("http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd");
+Source xmlFile = new StreamSource(new File("web.xml"));
+SchemaFactory schemaFactory = SchemaFactory
+    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+Schema schema = schemaFactory.newSchema(schemaFile);
+Validator validator = schema.newValidator();
+try {
+  validator.validate(xmlFile);
+  System.out.println(xmlFile.getSystemId() + " is valid");
+} catch (SAXException e) {
+  System.out.println(xmlFile.getSystemId() + " is NOT valid");
+  System.out.println("Reason: " + e.getLocalizedMessage());
+}
+*/
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
+            Validator validator = schema.newValidator();
+
+            try {
+                validator.validate( new DOMSource(myNode) );
+                System.out.println( " is valid");
+            } catch (SAXException e) {
+                System.out.println( "NOT valid");
+                System.out.println("Reason: " + e.getLocalizedMessage());
+            }
 
             if(cmd.hasOption("stdout_with_context")) {
                 // emit with all context fields
@@ -220,9 +257,6 @@ public class PostgresEditor {
             }
 
             else if(cmd.hasOption("stdout") || cmd.hasOption("update")) {
-                // pick out the transformed record
-                XPath xpath = XPathFactory.newInstance().newXPath();
-                Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
 
                 Writer writer = new StringWriter();
                 identity.transform(new DOMSource(myNode), new StreamResult(writer));
@@ -239,7 +273,7 @@ public class PostgresEditor {
                     updateStmt.setInt(2, id);
                     updateStmt.executeUpdate();
                     // close...?
-                    // TODO should be finally.
+                    // TODO should be finally, using.
                     updateStmt.close();
                 }
             }
