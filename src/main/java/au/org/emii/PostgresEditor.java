@@ -35,18 +35,29 @@ import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathConstants;
 
 import javax.xml.XMLConstants;
-import javax.xml.validation.*;
+// import javax.xml.validation.*;
 import java.io.File;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import java.io.StringReader; 
 
+import org.xml.sax.ErrorHandler;
+//import org.xml.sax.InputSource;
+// import org.xml.sax.SAXException;
+// import org.xml.sax.SAXParseException;
+// import org.xml.sax.XMLReader;
 
 import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Binder;
+
+// import javax.xml.bind.Validator;
+import javax.xml.validation.Validator;
+
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Schema;
 
 
 import org.w3c.dom.Document;
@@ -61,6 +72,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 
+/*
 class StudentValidationEventHandler implements ValidationEventHandler {
 
    public boolean handleEvent(ValidationEvent event) {
@@ -77,7 +89,34 @@ class StudentValidationEventHandler implements ValidationEventHandler {
       System.out.println("   Url:  " + event.getLocator().getURL());
       return true;
    }
+} */
+
+
+class MyErrorHandler implements ErrorHandler {
+
+  public void warning(SAXParseException e) throws SAXException {
+    show("Warning", e);
+//    throw (e);
+  }
+
+  public void error(SAXParseException e) throws SAXException {
+    show("Error", e);
+//    throw (e);
+  }
+
+  public void fatalError(SAXParseException e) throws SAXException {
+    show("Fatal Error", e);
+//    throw (e);
+  }
+
+  private void show(String type, SAXParseException e) {
+    System.out.println(type + ": " + e.getMessage());
+    System.out.println("Line " + e.getLineNumber() + " Column " + e.getColumnNumber());
+    System.out.println("System ID: " + e.getSystemId());
+  }
 }
+
+
 
 // TODO perhaps change name to Main to make easier to call from cli? 
 
@@ -274,10 +313,14 @@ try {
                 Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
                 Validator validator = schema.newValidator();
 
+                // validator.setEventHandler( null );// new StudentValidationEventHandler() );
+                // validator.setErrorHandler( null );// new StudentValidationEventHandler() );
+                validator.setErrorHandler(  new MyErrorHandler() );
 
 
+                validator.validate( new StreamSource(new StringReader(data)) );
 
-                try {
+/*                try {
                     // it would be nice to output line numbers, but not sure we have that information...
                     // validator.validate(  new DOMSource(myNode)  );
                     validator.validate( new StreamSource(new StringReader(data)) );
@@ -291,6 +334,7 @@ try {
                 catch (SAXException e) {
                     System.out.println(  " Reason: " + e.getLocalizedMessage());
                 }
+*/
             }
 
             // validator...  Validator
