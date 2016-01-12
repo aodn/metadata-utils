@@ -251,23 +251,16 @@ try {
 
                 try {
                     // it would be nice to output line numbers, but not sure we have that information...
-
                     // validator.validate(  new DOMSource(myNode)  );
                     validator.validate( new StreamSource(new StringReader(data)) );
-
                     System.out.println( " is valid");
                 }
                 catch( SAXParseException e ) {
                     int line = e.getLineNumber();
                     int col = e.getColumnNumber();
-                    // System.out.println( "*** parse exception line " + line + ", col " + col );
-
                     System.out.println( line + ":" + col + " Reason: " + e.getLocalizedMessage());
                 }
                 catch (SAXException e) {
-                    // System.out.println( "NOT valid");
-                    // System.out.println("Reason: " + e.getLocalizedMessage());
-
                     System.out.println(  " Reason: " + e.getLocalizedMessage());
                 }
             }
@@ -277,8 +270,7 @@ try {
                 // emit with all context fields
                 Writer writer2 = new StringWriter();
                 identity.transform(new DOMSource(document), new StreamResult(writer2));
-                data = writer.toString();
-                System.out.println(data);
+                System.out.println( writer2.toString());
             }
 
             else if(cmd.hasOption("stdout") || cmd.hasOption("update")) {
