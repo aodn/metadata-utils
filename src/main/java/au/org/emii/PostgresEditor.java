@@ -42,6 +42,13 @@ import org.xml.sax.SAXParseException;
 import java.io.StringReader; 
 
 
+import javax.xml.bind.ValidationEvent;
+import javax.xml.bind.ValidationEventHandler;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Binder;
+
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -53,6 +60,24 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
+
+class StudentValidationEventHandler implements ValidationEventHandler {
+
+   public boolean handleEvent(ValidationEvent event) {
+      System.out.println("\nEvent");
+      System.out.println("Severity:  " + event.getSeverity());
+      System.out.println("Message:  " + event.getMessage());
+      System.out.println("Linked Exception:  " + event.getLinkedException());
+      System.out.println("LOCATOR");
+      System.out.println("   Line Number:  " + event.getLocator().getLineNumber());
+      System.out.println("   Column Number:  " + event.getLocator().getColumnNumber());
+      System.out.println("   Offset:  " + event.getLocator().getOffset());
+      System.out.println("   Object:  " + event.getLocator().getObject());
+      System.out.println("   Node:  " + event.getLocator().getNode());
+      System.out.println("   Url:  " + event.getLocator().getURL());
+      return true;
+   }
+}
 
 // TODO perhaps change name to Main to make easier to call from cli? 
 
@@ -249,6 +274,9 @@ try {
                 Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
                 Validator validator = schema.newValidator();
 
+
+
+
                 try {
                     // it would be nice to output line numbers, but not sure we have that information...
                     // validator.validate(  new DOMSource(myNode)  );
@@ -265,6 +293,8 @@ try {
                 }
             }
 
+            // validator...  Validator
+
 
             if(cmd.hasOption("stdout_with_context")) {
                 // emit with all context fields
@@ -272,7 +302,6 @@ try {
                 identity.transform(new DOMSource(document), new StreamResult(writer2));
                 System.out.println( writer2.toString());
             }
-
             else if(cmd.hasOption("stdout") || cmd.hasOption("update")) {
 
                 if(cmd.hasOption("stdout")) {
