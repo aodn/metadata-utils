@@ -287,21 +287,6 @@ public class PostgresEditor {
 
             // we'll do validation here,,,
 
-/*
-    URL schemaFile = new URL("http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd");
-Source xmlFile = new StreamSource(new File("web.xml"));
-SchemaFactory schemaFactory = SchemaFactory
-    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-Schema schema = schemaFactory.newSchema(schemaFile);
-Validator validator = schema.newValidator();
-try {
-  validator.validate(xmlFile);
-  System.out.println(xmlFile.getSystemId() + " is valid");
-} catch (SAXException e) {
-  System.out.println(xmlFile.getSystemId() + " is NOT valid");
-  System.out.println("Reason: " + e.getLocalizedMessage());
-}
-*/
             // the double-handling here is to enable us to extract line numbers
             Writer writer = new StringWriter();
             identity.transform(new DOMSource(myNode), new StreamResult(writer));
@@ -313,31 +298,9 @@ try {
                 Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
                 Validator validator = schema.newValidator();
 
-                // validator.setEventHandler( null );// new StudentValidationEventHandler() );
-                // validator.setErrorHandler( null );// new StudentValidationEventHandler() );
                 validator.setErrorHandler(  new MyErrorHandler() );
-
-
                 validator.validate( new StreamSource(new StringReader(data)) );
-
-/*                try {
-                    // it would be nice to output line numbers, but not sure we have that information...
-                    // validator.validate(  new DOMSource(myNode)  );
-                    validator.validate( new StreamSource(new StringReader(data)) );
-                    System.out.println( " is valid");
-                }
-                catch( SAXParseException e ) {
-                    int line = e.getLineNumber();
-                    int col = e.getColumnNumber();
-                    System.out.println( line + ":" + col + " Reason: " + e.getLocalizedMessage());
-                }
-                catch (SAXException e) {
-                    System.out.println(  " Reason: " + e.getLocalizedMessage());
-                }
-*/
             }
-
-            // validator...  Validator
 
 
             if(cmd.hasOption("stdout_with_context")) {
