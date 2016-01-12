@@ -49,7 +49,7 @@ import org.apache.commons.cli.Options;
 
 public class PostgresEditor {
 
-    private static Transformer getTransformerFromFile(String filename) 
+    private static Transformer getTransformerFromFile(String filename)
         throws FileNotFoundException, TransformerConfigurationException {
 
         // TODO this is terrible, should work with a stream, and let the caller set this up.
@@ -224,15 +224,16 @@ public class PostgresEditor {
                 XPath xpath = XPathFactory.newInstance().newXPath();
                 Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
 
-                // emit without context fields
                 Writer writer = new StringWriter();
                 identity.transform(new DOMSource(myNode), new StreamResult(writer));
                 data = writer.toString();
 
                 if(cmd.hasOption("stdout")) {
+                    // emit without context fields
                     System.out.println(data);
-                } 
+                }
                 else if(cmd.hasOption("update")) {
+                    // update the db
                     PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=? where id=?");
                     updateStmt.setString(1, data);
                     updateStmt.setInt(2, id);
