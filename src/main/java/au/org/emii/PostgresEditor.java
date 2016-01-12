@@ -238,13 +238,12 @@ try {
   System.out.println("Reason: " + e.getLocalizedMessage());
 }
 */
+            // the double-handling here is to enable us to extract line numbers
+            Writer writer = new StringWriter();
+            identity.transform(new DOMSource(myNode), new StreamResult(writer));
+            data = writer.toString();
+
             if(true) {
-                // think we have to write it to String and read again... in order to pick out the line number 
-
-                Writer writer = new StringWriter();
-                identity.transform(new DOMSource(myNode), new StreamResult(writer));
-                data = writer.toString();
-
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
@@ -252,43 +251,29 @@ try {
 
                 try {
                     // it would be nice to output line numbers, but not sure we have that information...
-                    // validator.validate(   new DOMSource( new StreamSource( data )) );
-                    // validator.validate(   new StreamSource( data ) );
-
-//                    new StreamSource(new StringReader(data));                    
-
- //                   validator.validate(  new DOMSource(myNode)  );
-                    validator.validate(   new StreamSource(new StringReader(data))  );
-
+                    // validator.validate(  new DOMSource(myNode)  );
+                    validator.validate( new StreamSource(new StringReader(data)) );
                     System.out.println( " is valid");
                 }
                 catch( SAXParseException e ) {
                     int line = e.getLineNumber();
                     int col = e.getColumnNumber();
-                    System.out.println( "*** parse exception line " + line + ", col " + col );
-
-                    System.out.println("Reason: " + e.getLocalizedMessage());
+                    System.out.println( line + ":" + col + " Reason: " + e.getLocalizedMessage());
                 }
                 catch (SAXException e) {
-                    System.out.println( "NOT valid");
-                    System.out.println("Reason: " + e.getLocalizedMessage());
+                    System.out.println(  " Reason: " + e.getLocalizedMessage());
                 }
             }
 
 
             if(cmd.hasOption("stdout_with_context")) {
                 // emit with all context fields
-                Writer writer = new StringWriter();
-                identity.transform(new DOMSource(document), new StreamResult(writer));
-                data = writer.toString();
-                System.out.println(data);
+                Writer writer2 = new StringWriter();
+                identity.transform(new DOMSource(document), new StreamResult(writer2));
+                System.out.println( writer2.toString());
             }
 
             else if(cmd.hasOption("stdout") || cmd.hasOption("update")) {
-
-                Writer writer = new StringWriter();
-                identity.transform(new DOMSource(myNode), new StreamResult(writer));
-                data = writer.toString();
 
                 if(cmd.hasOption("stdout")) {
                     // emit without context fields
