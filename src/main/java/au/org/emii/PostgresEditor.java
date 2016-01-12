@@ -38,6 +38,7 @@ import javax.xml.XMLConstants;
 import javax.xml.validation.*;
 import java.io.File;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 
 import org.w3c.dom.Document;
@@ -236,17 +237,29 @@ try {
   System.out.println("Reason: " + e.getLocalizedMessage());
 }
 */
-            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
-            Validator validator = schema.newValidator();
+            if(true) { 
+                SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
+                Validator validator = schema.newValidator();
 
-            try {
-                validator.validate( new DOMSource(myNode) );
-                System.out.println( " is valid");
-            } catch (SAXException e) {
-                System.out.println( "NOT valid");
-                System.out.println("Reason: " + e.getLocalizedMessage());
+                try {
+                    // it would be nice to output line numbers, but not sure we have that information...
+                    validator.validate( new DOMSource(myNode) );
+                    System.out.println( " is valid");
+                }
+                catch( SAXParseException e ) {
+                    int line = e.getLineNumber();
+                    int col = e.getColumnNumber();
+                    System.out.println( "*** parse exception line " + line );
+
+                    System.out.println("Reason: " + e.getLocalizedMessage());
+                }
+                catch (SAXException e) {
+                    System.out.println( "NOT valid");
+                    System.out.println("Reason: " + e.getLocalizedMessage());
+                }
             }
+
 
             if(cmd.hasOption("stdout_with_context")) {
                 // emit with all context fields
