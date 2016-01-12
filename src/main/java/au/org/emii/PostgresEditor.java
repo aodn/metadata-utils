@@ -39,6 +39,7 @@ import javax.xml.validation.*;
 import java.io.File;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import java.io.StringReader; 
 
 
 import org.w3c.dom.Document;
@@ -237,20 +238,34 @@ try {
   System.out.println("Reason: " + e.getLocalizedMessage());
 }
 */
-            if(true) { 
+            if(true) {
+                // think we have to write it to String and read again... in order to pick out the line number 
+
+                Writer writer = new StringWriter();
+                identity.transform(new DOMSource(myNode), new StreamResult(writer));
+                data = writer.toString();
+
+
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
                 Validator validator = schema.newValidator();
 
                 try {
                     // it would be nice to output line numbers, but not sure we have that information...
-                    validator.validate( new DOMSource(myNode) );
+                    // validator.validate(   new DOMSource( new StreamSource( data )) );
+                    // validator.validate(   new StreamSource( data ) );
+
+//                    new StreamSource(new StringReader(data));                    
+
+ //                   validator.validate(  new DOMSource(myNode)  );
+                    validator.validate(   new StreamSource(new StringReader(data))  );
+
                     System.out.println( " is valid");
                 }
                 catch( SAXParseException e ) {
                     int line = e.getLineNumber();
                     int col = e.getColumnNumber();
-                    System.out.println( "*** parse exception line " + line );
+                    System.out.println( "*** parse exception line " + line + ", col " + col );
 
                     System.out.println("Reason: " + e.getLocalizedMessage());
                 }
