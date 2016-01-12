@@ -238,12 +238,12 @@ try {
   System.out.println("Reason: " + e.getLocalizedMessage());
 }
 */
-            if(true) {
+            // the double-handling here is to enable us to extract line numbers
+            Writer writer = new StringWriter();
+            identity.transform(new DOMSource(myNode), new StreamResult(writer));
+            data = writer.toString();
 
-                // the double-handling here is to enable us to extract line numbers
-                Writer writer = new StringWriter();
-                identity.transform(new DOMSource(myNode), new StreamResult(writer));
-                data = writer.toString();
+            if(true) {
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
@@ -275,17 +275,13 @@ try {
 
             if(cmd.hasOption("stdout_with_context")) {
                 // emit with all context fields
-                Writer writer = new StringWriter();
-                identity.transform(new DOMSource(document), new StreamResult(writer));
+                Writer writer2 = new StringWriter();
+                identity.transform(new DOMSource(document), new StreamResult(writer2));
                 data = writer.toString();
                 System.out.println(data);
             }
 
             else if(cmd.hasOption("stdout") || cmd.hasOption("update")) {
-
-                Writer writer = new StringWriter();
-                identity.transform(new DOMSource(myNode), new StreamResult(writer));
-                data = writer.toString();
 
                 if(cmd.hasOption("stdout")) {
                     // emit without context fields
