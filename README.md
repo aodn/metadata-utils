@@ -20,21 +20,21 @@
 java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -help
 
 usage: Updater
- -all                   apply actions on all metadata records
- -help                  show help
- -pass <arg>            password
- -stdout                dump raw metadata record to stdout
- -stdout_with_context   dump metadata record with additional context
-                        fields to stdout
- -transform <arg>       stylesheet xslt file to use for transform
- -update                perform inplace update of the metadata record
- -url <arg>             jdbc connection string, eg.
-                        jdbc:postgresql://127.0.0.1/geonetwork
- -user <arg>            user
- -uuid <arg>            apply action to specific metadata record
- -validate <arg>        schema xsd file to use for validation
-
+ -all               apply actions on all metadata records
+ -context           Make additional metadata fields such as record uuid
+                    available to stylesheet
+ -help              show help
+ -pass <arg>        password
+ -stdout            dump raw metadata record to stdout
+ -transform <arg>   stylesheet xslt file to use for transform
+ -update            perform inplace update of the metadata record
+ -url <arg>         jdbc connection string, eg.
+                    jdbc:postgresql://127.0.0.1/geonetwork
+ -user <arg>        user
+ -uuid <arg>        apply action to specific metadata record
+ -validate <arg>    schema xsd file to use for validation
 ```
+
 ### TODO Generate validation report across all records
 
 #### Dump Argo to stdout
