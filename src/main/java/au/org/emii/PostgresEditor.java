@@ -167,11 +167,11 @@ public class PostgresEditor {
         options.addOption("transform", true, "xslt file for transform");
         options.addOption("validate", true, "xsd file for validation");
 
-        options.addOption("stdout", false, "dump raw record to stoud");
-        options.addOption("stdout_with_context", false, "dump to stdout with additional context fields");
-        options.addOption("update", false, "actually update the record in db");
+        options.addOption("stdout", false, "dump raw metadata record to stdout");
+        options.addOption("stdout_with_context", false, "dump metadata record with additional context fields to stdout");
+        options.addOption("update", false, "perform inplace update of the metadata record");
 
-        options.addOption("title", false, "output id/uuid to stdout");
+        options.addOption("title", false, "output id/uuid of the metadata record to stdout");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);

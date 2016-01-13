@@ -53,7 +53,19 @@ java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
 
 ```
 
-#### Transform record from draft to mcp 2, and update
+#### Transform record from draft to mcp 2, and validate but don't update
+```
+java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
+  -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
+  -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
+  -title \
+  -transform ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/convert/from_mcp2_draft.xsl \
+  -validate  '../schema-plugins/iso19139.mcp-2.0/schema.xsd'
+
+```
+
+
+#### Transform record from draft to mcp 2, and do inplace update
 ```
 java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
@@ -84,7 +96,7 @@ java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
   -all -transform scripts/test1.xslt -stdout 2>&1 | less
 ```
 
-#### Transform records and update
+#### Transform records and inplace update
 ```
 java -cp ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
   -url jdbc:postgresql://127.0.0.1:5432/geonetwork \
