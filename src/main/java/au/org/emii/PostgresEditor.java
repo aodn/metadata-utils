@@ -164,8 +164,8 @@ public class PostgresEditor {
         options.addOption("all", false, "apply actions on all metadata records");
 
         options.addOption("help", false, "show help");
-        options.addOption("transform", true, "xslt file for transform");
-        options.addOption("validate", true, "xsd file for validation");
+        options.addOption("transform", true, "stylesheet xslt file to use for transform");
+        options.addOption("validate", true, "schema xsd file to use for validation");
 
         options.addOption("stdout", false, "dump raw metadata record to stdout");
         options.addOption("stdout_with_context", false, "dump metadata record with additional context fields to stdout");
