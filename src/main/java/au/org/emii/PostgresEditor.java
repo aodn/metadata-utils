@@ -142,7 +142,7 @@ public class PostgresEditor {
         Properties props = new Properties();
 
         props.setProperty("user", user);
-        props.setProperty("password",pass);
+        props.setProperty("password", pass);
 
         // props.setProperty("search_path","soop_sst,public");
         props.setProperty("ssl","true");
@@ -157,26 +157,36 @@ public class PostgresEditor {
     public static void main(String[] args) throws Exception {
 
         Options options = new Options();
-        options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
-        options.addOption("u", true, "user");
-        options.addOption("p", true, "password");
-        options.addOption("uuid", true, "specific metadata record uuid to operate on");
-        options.addOption("all", false, "all records");
 
         options.addOption("help", false, "show help");
-        options.addOption("transform", true, "xslt file for transform");
-        options.addOption("validate", true, "xsd file for validation");
 
-        options.addOption("stdout", false, "dump raw record to stoud");
-        options.addOption("stdout_with_context", false, "dump to stdout with additional context fields");
-        options.addOption("update", false, "actually update the record in db");
+        // connection credentials
+        options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
+        options.addOption("user", true, "user");
+        options.addOption("pass", true, "password");
 
-        options.addOption("title", false, "output id/uuid to stdout");
+        // selection
+        options.addOption("uuid", true, "apply actions to specific metadata record");
+        options.addOption("all", false, "apply actions to all metadata records");
+
+        // additional metadata context fields
+        options.addOption("context", false, "make additional metadata fields such as record uuid available to stylesheet");
+
+        // transform 
+        options.addOption("transform", true, "transform stylesheet xslt file to use");
+
+        // validation
+        options.addOption("validate", true, "validation schema xsd file to use");
+
+        // output
+        options.addOption("stdout", false, "dump result to stdout");
+        options.addOption("update", false, "perform inplace update of the metadata record");
+
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
-        if(cmd.hasOption("help") || !cmd.hasOption("url") || !cmd.hasOption("u") || !cmd.hasOption("u")) {
+        if(cmd.hasOption("help") || !cmd.hasOption("url") || !cmd.hasOption("user") || !cmd.hasOption("pass")) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Updater", options);
             return;
@@ -184,8 +194,8 @@ public class PostgresEditor {
 
         Connection conn = getConn(
             cmd.getOptionValue("url"),
-            cmd.getOptionValue("u"),
-            cmd.getOptionValue("p")
+            cmd.getOptionValue("user"),
+            cmd.getOptionValue("pass")
         );
 
         // String query = "SELECT id,uuid,data FROM metadata ";
@@ -225,56 +235,58 @@ public class PostgresEditor {
             String data = rs.getString("data");
             String uuid = (String) rs.getObject("uuid");
 
-            if(cmd.hasOption("title")) {
-                System.out.println( "-----------------------------------------" );
-                System.out.println( "id: " + id + " uuid: " + uuid );
-                System.out.println( "-----------------------------------------" );
-            }
-     
+            System.out.println( "----------------------------------------------------" );
+            System.out.println( "id: " + id + " uuid: " + uuid );
+            System.out.println( "----------------------------------------------------" );
+ 
 
             // TODO - should factor db and xml processing into separate classes/methods
 
             // decode record
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
-            Node record = document.getFirstChild();
 
-            // create new root element
-            Element root = document.createElement("root");
-            document.removeChild(record);
-            document.appendChild(root);
+            if(cmd.hasOption("context")) {
 
-            // add context
-            Element context = document.createElement("context");
-            root.appendChild(context);
+                Node record = document.getFirstChild();
 
-            // add record
-            Element recordNode = document.createElement("record");
-            recordNode.appendChild(record);
-            root.appendChild(recordNode);
+                // create new root element
+                Element root = document.createElement("root");
+                document.removeChild(record);
+                document.appendChild(root);
+
+                // add context
+                Element context = document.createElement("context");
+                root.appendChild(context);
+
+                // add record
+                Element recordNode = document.createElement("record");
+                recordNode.appendChild(record);
+                root.appendChild(recordNode);
 
 
-            // loop fields and add to the context
-            ResultSetMetaData md = rs.getMetaData();
-            int columns = md.getColumnCount();
-            for(int i=1; i<=columns; i++)  {
-                String name =  md.getColumnName(i);
+                // loop fields and add to the context
+                ResultSetMetaData md = rs.getMetaData();
+                int columns = md.getColumnCount();
+                for(int i=1; i<=columns; i++)  {
+                    String name =  md.getColumnName(i);
 
-                if(name.equals("data")) // ignore the actual record
-                    continue;
+                    if(name.equals("data")) // ignore the actual record
+                        continue;
 
-                Object value = rs.getObject(i);
-                String formattedValue = "";
-                if(value == null)
-                    formattedValue = "";
-                else
-                    formattedValue = value.toString();
+                    Object value = rs.getObject(i);
+                    String formattedValue = "";
+                    if(value == null)
+                        formattedValue = "";
+                    else
+                        formattedValue = value.toString();
 
-                Element node = document.createElement(name);
-                Text nodeValue = document.createTextNode(formattedValue);
-                node.appendChild(nodeValue);
+                    Element node = document.createElement(name);
+                    Text nodeValue = document.createTextNode(formattedValue);
+                    node.appendChild(nodeValue);
 
-                context.appendChild(node);
+                    context.appendChild(node);
+                }
             }
 
 
@@ -283,21 +295,24 @@ public class PostgresEditor {
             transformer.transform(new DOMSource(document), output);
             document = (Document) output.getNode();
 
-            // TODO better names
-            // pick out the transformed record
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
 
-            // we'll do validation here,,,
+            if(cmd.hasOption("context")) {
+                // TODO better names
+                // pick out the transformed record
+                XPath xpath = XPathFactory.newInstance().newXPath();
+                Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
+                document = (Document) myNode;
+            }
 
-            // the double-handling here is to enable us to extract line numbers
+
+            // the double-handling back to text is to enable us to extract line numbers
             Writer writer = new StringWriter();
-            identity.transform(new DOMSource(myNode), new StreamResult(writer));
+            identity.transform(new DOMSource(document), new StreamResult(writer));
             data = writer.toString();
 
             if(cmd.hasOption("validate")) {
                 String filename = cmd.getOptionValue("validate");
-                System.out.println( "validation xsd filename is " + filename );
+                System.out.println( "validation xsd filename '" + filename + "'" );
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 // Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
@@ -310,28 +325,22 @@ public class PostgresEditor {
             }
 
 
-            if(cmd.hasOption("stdout_with_context")) {
-                // emit with all context fields
-                Writer writer2 = new StringWriter();
-                identity.transform(new DOMSource(document), new StreamResult(writer2));
-                System.out.println( writer2.toString());
-            }
-            else if(cmd.hasOption("stdout") || cmd.hasOption("update")) {
 
-                if(cmd.hasOption("stdout")) {
-                    // emit without context fields
-                    System.out.println(data);
-                }
-                else if(cmd.hasOption("update")) {
-                    // update the db
-                    PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=? where id=?");
-                    updateStmt.setString(1, data);
-                    updateStmt.setInt(2, id);
-                    updateStmt.executeUpdate();
-                    // close...?
-                    // TODO should be finally, using.
-                    updateStmt.close();
-                }
+            if(cmd.hasOption("stdout")) {
+                // emit without context fields
+                System.out.println(data);
+            }
+            else if(cmd.hasOption("update")) {
+                // update the db
+                PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=? where id=?");
+                updateStmt.setString(1, data);
+                updateStmt.setInt(2, id);
+                updateStmt.executeUpdate();
+                // close...?
+                // TODO should be finally, using.
+                updateStmt.close();
+            } else {
+                // ok, don't output anything except that we processed the record 
             }
 
             ++count;
@@ -342,6 +351,7 @@ public class PostgresEditor {
         rs.close();
         conn.close();
 
+        System.out.println( "----------------------------------------------------" );
         System.out.println("records processed " + count);
     }
 }
