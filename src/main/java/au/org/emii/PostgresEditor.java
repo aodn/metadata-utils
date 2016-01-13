@@ -237,9 +237,11 @@ public class PostgresEditor {
             // decode record
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
-            Node record = document.getFirstChild();
 
             if( false ) {
+
+                Node record = document.getFirstChild();
+
                 // create new root element
                 Element root = document.createElement("root");
                 document.removeChild(record);
@@ -296,7 +298,7 @@ public class PostgresEditor {
 
             // we'll do validation here,,,
 
-            // the double-handling here is to enable us to extract line numbers
+            // the double-handling back to text is to enable us to extract line numbers
             Writer writer = new StringWriter();
             identity.transform(new DOMSource(document), new StreamResult(writer));
             data = writer.toString();
