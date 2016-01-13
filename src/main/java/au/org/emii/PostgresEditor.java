@@ -316,28 +316,22 @@ public class PostgresEditor {
             }
 
 
-            if(cmd.hasOption("stdout_with_context")) {
-                // emit with all context fields
-                Writer writer2 = new StringWriter();
-                identity.transform(new DOMSource(document), new StreamResult(writer2));
-                System.out.println( writer2.toString());
-            }
-            else if(cmd.hasOption("stdout") || cmd.hasOption("update")) {
 
-                if(cmd.hasOption("stdout")) {
-                    // emit without context fields
-                    System.out.println(data);
-                }
-                else if(cmd.hasOption("update")) {
-                    // update the db
-                    PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=? where id=?");
-                    updateStmt.setString(1, data);
-                    updateStmt.setInt(2, id);
-                    updateStmt.executeUpdate();
-                    // close...?
-                    // TODO should be finally, using.
-                    updateStmt.close();
-                }
+            if(cmd.hasOption("stdout")) {
+                // emit without context fields
+                System.out.println(data);
+            }
+            else if(cmd.hasOption("update")) {
+                // update the db
+                PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=? where id=?");
+                updateStmt.setString(1, data);
+                updateStmt.setInt(2, id);
+                updateStmt.executeUpdate();
+                // close...?
+                // TODO should be finally, using.
+                updateStmt.close();
+            } else {
+                // ok, 
             }
 
             ++count;
