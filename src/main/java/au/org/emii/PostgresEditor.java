@@ -160,13 +160,18 @@ public class PostgresEditor {
         options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
         options.addOption("u", true, "user");
         options.addOption("p", true, "password");
-        options.addOption("uuid", true, "metadata record uuid");
+        options.addOption("uuid", true, "specific metadata record uuid to operate on");
+        options.addOption("all", false, "all records");
+
         options.addOption("help", false, "show help");
-        options.addOption("t", true, "xslt file for transform");
+        options.addOption("transform", true, "xslt file for transform");
+        options.addOption("validate", true, "xsd file for validation");
+
         options.addOption("stdout", false, "dump raw record to stoud");
-        options.addOption("stdout_with_context", false, "dump to stdout");
+        options.addOption("stdout_with_context", false, "dump to stdout with additional context fields");
         options.addOption("update", false, "actually update the record in db");
-        options.addOption("all", false, "do all records");
+
+        options.addOption("title", false, "output id/uuid to stdout");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
@@ -186,6 +191,7 @@ public class PostgresEditor {
         // String query = "SELECT id,uuid,data FROM metadata ";
         String query = "SELECT * FROM metadata ";
 
+        // all is kind of implied - but good to be explicit
         // uuid or all
         if(cmd.hasOption("uuid")) {
             query += " where uuid = '" + cmd.getOptionValue("uuid") + "'";
@@ -205,8 +211,8 @@ public class PostgresEditor {
 
 
         Transformer transformer = null;
-        if(cmd.hasOption("t")) {
-            transformer = getTransformerFromFile(cmd.getOptionValue("t"));
+        if(cmd.hasOption("transform")) {
+            transformer = getTransformerFromFile(cmd.getOptionValue("transform"));
         } else {
             transformer = identity;
         }
@@ -217,9 +223,14 @@ public class PostgresEditor {
         while(rs.next()) {
             int id = rs.getInt("id");
             String data = rs.getString("data");
-            // String uuid = (String) rs.getObject("uuid");
-            // System.out.println( "id " + id + ", uuid " + uuid );
+            String uuid = (String) rs.getObject("uuid");
 
+            if(cmd.hasOption("title")) {
+                System.out.println( "-----------------------------------------" );
+                System.out.println( "id: " + id + " uuid: " + uuid );
+                System.out.println( "-----------------------------------------" );
+            }
+     
 
             // TODO - should factor db and xml processing into separate classes/methods
 
@@ -284,10 +295,13 @@ public class PostgresEditor {
             identity.transform(new DOMSource(myNode), new StreamResult(writer));
             data = writer.toString();
 
-            if(true) {
+            if(cmd.hasOption("validate")) {
+                String filename = cmd.getOptionValue("validate");
+                System.out.println( "validation xsd filename is " + filename );
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
+                // Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
+                Schema schema = schemaFactory.newSchema( new File( filename ) );
                 Validator validator = schema.newValidator();
 
                 validator.setErrorHandler(  new MyValidationErrorHandler() );
