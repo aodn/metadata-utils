@@ -239,42 +239,44 @@ public class PostgresEditor {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
             Node record = document.getFirstChild();
 
-            // create new root element
-            Element root = document.createElement("root");
-            document.removeChild(record);
-            document.appendChild(root);
+            if( false ) {
+                // create new root element
+                Element root = document.createElement("root");
+                document.removeChild(record);
+                document.appendChild(root);
 
-            // add context
-            Element context = document.createElement("context");
-            root.appendChild(context);
+                // add context
+                Element context = document.createElement("context");
+                root.appendChild(context);
 
-            // add record
-            Element recordNode = document.createElement("record");
-            recordNode.appendChild(record);
-            root.appendChild(recordNode);
+                // add record
+                Element recordNode = document.createElement("record");
+                recordNode.appendChild(record);
+                root.appendChild(recordNode);
 
 
-            // loop fields and add to the context
-            ResultSetMetaData md = rs.getMetaData();
-            int columns = md.getColumnCount();
-            for(int i=1; i<=columns; i++)  {
-                String name =  md.getColumnName(i);
+                // loop fields and add to the context
+                ResultSetMetaData md = rs.getMetaData();
+                int columns = md.getColumnCount();
+                for(int i=1; i<=columns; i++)  {
+                    String name =  md.getColumnName(i);
 
-                if(name.equals("data")) // ignore the actual record
-                    continue;
+                    if(name.equals("data")) // ignore the actual record
+                        continue;
 
-                Object value = rs.getObject(i);
-                String formattedValue = "";
-                if(value == null)
-                    formattedValue = "";
-                else
-                    formattedValue = value.toString();
+                    Object value = rs.getObject(i);
+                    String formattedValue = "";
+                    if(value == null)
+                        formattedValue = "";
+                    else
+                        formattedValue = value.toString();
 
-                Element node = document.createElement(name);
-                Text nodeValue = document.createTextNode(formattedValue);
-                node.appendChild(nodeValue);
+                    Element node = document.createElement(name);
+                    Text nodeValue = document.createTextNode(formattedValue);
+                    node.appendChild(nodeValue);
 
-                context.appendChild(node);
+                    context.appendChild(node);
+                }
             }
 
 
@@ -283,16 +285,20 @@ public class PostgresEditor {
             transformer.transform(new DOMSource(document), output);
             document = (Document) output.getNode();
 
-            // TODO better names
-            // pick out the transformed record
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
+            if( false ) {
+                // TODO better names
+                // pick out the transformed record
+                XPath xpath = XPathFactory.newInstance().newXPath();
+                Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
+                
+                document = (Document) myNode;
+            }
 
             // we'll do validation here,,,
 
             // the double-handling here is to enable us to extract line numbers
             Writer writer = new StringWriter();
-            identity.transform(new DOMSource(myNode), new StreamResult(writer));
+            identity.transform(new DOMSource(document), new StreamResult(writer));
             data = writer.toString();
 
             if(cmd.hasOption("validate")) {
