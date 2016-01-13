@@ -160,8 +160,8 @@ public class PostgresEditor {
         options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
         options.addOption("user", true, "user");
         options.addOption("pass", true, "password");
-        options.addOption("uuid", true, "specific metadata record uuid to operate on");
-        options.addOption("all", false, "all records");
+        options.addOption("uuid", true, "apply action to specific metadata record");
+        options.addOption("all", false, "apply actions on all metadata records");
 
         options.addOption("help", false, "show help");
         options.addOption("transform", true, "xslt file for transform");
