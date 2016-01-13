@@ -6,6 +6,7 @@
 #### TODO
 - maybe change name mest-cli-bulk-editor or mest-stylesheet-editor
 - support reading partial options (eg. Gn instance from file )
+- change artifact name from myartifact.jar
 
 ### Build
 
