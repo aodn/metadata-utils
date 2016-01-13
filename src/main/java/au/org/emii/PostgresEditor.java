@@ -75,43 +75,37 @@ import org.apache.commons.cli.Options;
 
 
 
-class MyErrorHandler implements ErrorHandler {
+class MyValidationErrorHandler implements ErrorHandler {
 
     // pass the uuid in to output better errors...
 
   public void warning(SAXParseException e) throws SAXException {
     show("Warning", e);
-//    throw (e);
   }
 
   public void error(SAXParseException e) throws SAXException {
     show("Error", e);
-//    throw (e);
   }
 
   public void fatalError(SAXParseException e) throws SAXException {
     show("Fatal Error", e);
-//    throw (e);
   }
 
   private void show(String type, SAXParseException e) {
-/*
-    System.out.println(type + ": " + e.getMessage());
-    System.out.println("Line " + e.getLineNumber() + " Column " + e.getColumnNumber());
-    System.out.println("System ID: " + e.getSystemId());
-*/
 
-    System.out.println( 
-        e.getLineNumber() 
-        + ":" 
-        + e.getColumnNumber() 
-        + " "
-        + type 
-        + " " 
-        + e.getMessage()
-    );
-
+      System.out.println( 
+          e.getLineNumber() 
+          + ":" 
+          + e.getColumnNumber() 
+          + " "
+          + type 
+          + " " 
+          + e.getMessage()
+          + " " 
+          + e.getSystemId()
+      );
   }
+
 }
 
 
@@ -296,8 +290,9 @@ public class PostgresEditor {
                 Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
                 Validator validator = schema.newValidator();
 
-                validator.setErrorHandler(  new MyErrorHandler() );
-                validator.validate( new StreamSource(new StringReader(data)) );
+                validator.setErrorHandler(  new MyValidationErrorHandler() );
+                validator.validate( new StreamSource(new StringReader(data)));
+                // validator.validate(  new DOMSource( myNode) );
             }
 
 
