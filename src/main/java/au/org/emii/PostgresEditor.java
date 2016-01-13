@@ -142,7 +142,7 @@ public class PostgresEditor {
         Properties props = new Properties();
 
         props.setProperty("user", user);
-        props.setProperty("password",pass);
+        props.setProperty("password", pass);
 
         // props.setProperty("search_path","soop_sst,public");
         props.setProperty("ssl","true");
@@ -158,8 +158,8 @@ public class PostgresEditor {
 
         Options options = new Options();
         options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
-        options.addOption("u", true, "user");
-        options.addOption("p", true, "password");
+        options.addOption("user", true, "user");
+        options.addOption("pass", true, "password");
         options.addOption("uuid", true, "specific metadata record uuid to operate on");
         options.addOption("all", false, "all records");
 
@@ -176,7 +176,7 @@ public class PostgresEditor {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
-        if(cmd.hasOption("help") || !cmd.hasOption("url") || !cmd.hasOption("u") || !cmd.hasOption("u")) {
+        if(cmd.hasOption("help") || !cmd.hasOption("url") || !cmd.hasOption("user") || !cmd.hasOption("pass")) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Updater", options);
             return;
@@ -184,8 +184,8 @@ public class PostgresEditor {
 
         Connection conn = getConn(
             cmd.getOptionValue("url"),
-            cmd.getOptionValue("u"),
-            cmd.getOptionValue("p")
+            cmd.getOptionValue("user"),
+            cmd.getOptionValue("pass")
         );
 
         // String query = "SELECT id,uuid,data FROM metadata ";
