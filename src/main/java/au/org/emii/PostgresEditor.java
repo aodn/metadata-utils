@@ -72,27 +72,12 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 
-/*
-class StudentValidationEventHandler implements ValidationEventHandler {
 
-   public boolean handleEvent(ValidationEvent event) {
-      System.out.println("\nEvent");
-      System.out.println("Severity:  " + event.getSeverity());
-      System.out.println("Message:  " + event.getMessage());
-      System.out.println("Linked Exception:  " + event.getLinkedException());
-      System.out.println("LOCATOR");
-      System.out.println("   Line Number:  " + event.getLocator().getLineNumber());
-      System.out.println("   Column Number:  " + event.getLocator().getColumnNumber());
-      System.out.println("   Offset:  " + event.getLocator().getOffset());
-      System.out.println("   Object:  " + event.getLocator().getObject());
-      System.out.println("   Node:  " + event.getLocator().getNode());
-      System.out.println("   Url:  " + event.getLocator().getURL());
-      return true;
-   }
-} */
 
 
 class MyErrorHandler implements ErrorHandler {
+
+    // pass the uuid in to output better errors...
 
   public void warning(SAXParseException e) throws SAXException {
     show("Warning", e);
@@ -110,9 +95,22 @@ class MyErrorHandler implements ErrorHandler {
   }
 
   private void show(String type, SAXParseException e) {
+/*
     System.out.println(type + ": " + e.getMessage());
     System.out.println("Line " + e.getLineNumber() + " Column " + e.getColumnNumber());
     System.out.println("System ID: " + e.getSystemId());
+*/
+
+    System.out.println( 
+        e.getLineNumber() 
+        + ":" 
+        + e.getColumnNumber() 
+        + " "
+        + type 
+        + " " 
+        + e.getMessage()
+    );
+
   }
 }
 
