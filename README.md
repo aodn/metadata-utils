@@ -16,6 +16,8 @@
 
 #### Get help
 ```
+java -cp  ./target/myartifcat-1.0.0.jar  au.org.emii.PostgresEditor  -help
+
 usage: Updater
  -all                   apply actions on all metadata records
  -help                  show help
