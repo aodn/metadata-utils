@@ -7,7 +7,6 @@
 - maybe change name mest-cli-bulk-editor or mest-stylesheet-editor
 - support reading partial options (eg. Gn instance from file )
 - change artifact name from myartifact.jar
-- always output title?
 - need switch to control whether stylesheet includes additional context fields
 
 ### Build
@@ -27,7 +26,6 @@ usage: Updater
  -stdout                dump raw metadata record to stdout
  -stdout_with_context   dump metadata record with additional context
                         fields to stdout
- -title                 output id/uuid of the metadata record to stdout
  -transform <arg>       stylesheet xslt file to use for transform
  -update                perform inplace update of the metadata record
  -url <arg>             jdbc connection string, eg.
@@ -44,7 +42,6 @@ usage: Updater
 java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor  \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
-  -title \
   -stdout
 ```
 
@@ -53,7 +50,6 @@ java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor  \
 java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
-  -title \
   -validate ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/schema.xsd
 ```
 
@@ -62,7 +58,6 @@ java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
 java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
-  -title \
   -transform ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/convert/from_mcp2_draft.xsl \
   -validate ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/schema.xsd
 ```
@@ -73,7 +68,6 @@ java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
 java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
-  -title \
   -transform ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/convert/from_mcp2_draft.xsl \
   -update
 ```
@@ -83,7 +77,6 @@ java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
 java -cp  ./target/myartifcat-1.0.0.jar au.org.emii.PostgresEditor \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
-  -title \
   -transform ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/convert/to19139.xsl \
   -validate ../mcp-2.0/iso19139/schema.xsd
 ```

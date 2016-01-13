@@ -157,21 +157,31 @@ public class PostgresEditor {
     public static void main(String[] args) throws Exception {
 
         Options options = new Options();
+
+        options.addOption("help", false, "show help");
+
+        // connection credentials
         options.addOption("url", true, "jdbc connection string, eg. jdbc:postgresql://127.0.0.1/geonetwork");
         options.addOption("user", true, "user");
         options.addOption("pass", true, "password");
+
+        // selection
         options.addOption("uuid", true, "apply action to specific metadata record");
         options.addOption("all", false, "apply actions on all metadata records");
 
-        options.addOption("help", false, "show help");
+        // additional metadata context fields
+        options.addOption("context", false, "Make additional metadata fields such as record uuid available to stylesheet");
+
+        // transform 
         options.addOption("transform", true, "stylesheet xslt file to use for transform");
+
+        // validation
         options.addOption("validate", true, "schema xsd file to use for validation");
 
+        // output
         options.addOption("stdout", false, "dump raw metadata record to stdout");
-        options.addOption("stdout_with_context", false, "dump metadata record with additional context fields to stdout");
         options.addOption("update", false, "perform inplace update of the metadata record");
 
-        options.addOption("title", false, "output id/uuid of the metadata record to stdout");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
@@ -225,12 +235,10 @@ public class PostgresEditor {
             String data = rs.getString("data");
             String uuid = (String) rs.getObject("uuid");
 
-            if(cmd.hasOption("title")) {
-                System.out.println( "-----------------------------------------" );
-                System.out.println( "id: " + id + " uuid: " + uuid );
-                System.out.println( "-----------------------------------------" );
-            }
-     
+            System.out.println( "----------------------------------------------------" );
+            System.out.println( "id: " + id + " uuid: " + uuid );
+            System.out.println( "----------------------------------------------------" );
+ 
 
             // TODO - should factor db and xml processing into separate classes/methods
 
@@ -238,7 +246,7 @@ public class PostgresEditor {
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
 
-            if( false ) {
+            if(cmd.hasOption("context")) {
 
                 Node record = document.getFirstChild();
 
@@ -287,16 +295,15 @@ public class PostgresEditor {
             transformer.transform(new DOMSource(document), output);
             document = (Document) output.getNode();
 
-            if( false ) {
+
+            if(cmd.hasOption("context")) {
                 // TODO better names
                 // pick out the transformed record
                 XPath xpath = XPathFactory.newInstance().newXPath();
                 Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
-                
                 document = (Document) myNode;
             }
 
-            // we'll do validation here,,,
 
             // the double-handling back to text is to enable us to extract line numbers
             Writer writer = new StringWriter();
@@ -305,7 +312,7 @@ public class PostgresEditor {
 
             if(cmd.hasOption("validate")) {
                 String filename = cmd.getOptionValue("validate");
-                System.out.println( "validation xsd filename is " + filename );
+                System.out.println( "validation xsd filename '" + filename + "'" );
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 // Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
@@ -333,7 +340,7 @@ public class PostgresEditor {
                 // TODO should be finally, using.
                 updateStmt.close();
             } else {
-                // ok, 
+                // ok, don't output anything except that we processed the record 
             }
 
             ++count;
@@ -344,6 +351,7 @@ public class PostgresEditor {
         rs.close();
         conn.close();
 
+        System.out.println( "----------------------------------------------------" );
         System.out.println("records processed " + count);
     }
 }
