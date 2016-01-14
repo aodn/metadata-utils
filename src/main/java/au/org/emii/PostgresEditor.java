@@ -166,17 +166,17 @@ public class PostgresEditor {
         options.addOption("pass", true, "password");
 
         // selection
-        options.addOption("uuid", true, "apply actions to specific metadata record");
-        options.addOption("all", false, "apply actions to all metadata records");
+        options.addOption("uuid", true, "etl applies to specific metadata record");
+        options.addOption("all", false, "etl applies to all metadata records");
 
         // additional metadata context fields
-        options.addOption("context", false, "make additional metadata fields such as record uuid available to stylesheet");
+        options.addOption("context", false, "expose additional metadata fields (eg. record uuid) to etl");
 
         // transform 
-        options.addOption("transform", true, "transform stylesheet xslt file to use");
+        options.addOption("transform", true, "transform stylesheet (.xslt) file to use");
 
         // validation
-        options.addOption("validate", true, "validation schema xsd file to use");
+        options.addOption("validate", true, "validation schema (.xsd) file to use");
 
         // output
         options.addOption("stdout", false, "dump result to stdout");

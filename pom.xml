@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.org.emii</groupId>
-  <artifactId>myartifcat</artifactId>
+  <artifactId>mafia</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
-  <name>My artifact (jar)</name>
+  <name>Mafia</name>
   <dependencies>
     <dependency>
       <groupId>net.sf.saxon</groupId>
@@ -62,7 +62,11 @@
           </execution>
         </executions>
       </plugin>
-      <!-- http://maven.apache.org/plugins/maven-shade-plugin/examples/executable-jar.html -->
+      <!-- 
+          http://maven.apache.org/plugins/maven-shade-plugin/examples/executable-jar.html 
+            and
+          http://stackoverflow.com/questions/1238145/how-to-run-a-jar-file
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -76,7 +80,7 @@
             <configuration>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.sonatype.haven.HavenCli</mainClass>
+                  <mainClass>au.org.emii.PostgresEditor</mainClass>
                 </transformer>
               </transformers>
               <createDependencyReducedPom>false</createDependencyReducedPom>
