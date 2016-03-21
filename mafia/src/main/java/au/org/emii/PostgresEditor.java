@@ -7,7 +7,8 @@ import java.io.Writer;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
+import java.io.File;
+import java.io.StringReader; 
 import java.nio.charset.StandardCharsets;
 
 import java.sql.Connection;
@@ -33,32 +34,21 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathConstants;
-
-import javax.xml.XMLConstants;
-// import javax.xml.validation.*;
-import java.io.File;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import java.io.StringReader; 
-
-import org.xml.sax.ErrorHandler;
-//import org.xml.sax.InputSource;
-// import org.xml.sax.SAXException;
-// import org.xml.sax.SAXParseException;
-// import org.xml.sax.XMLReader;
-
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Binder;
-
 // import javax.xml.bind.Validator;
 import javax.xml.validation.Validator;
 
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Schema;
+import javax.xml.XMLConstants;
 
+// import javax.xml.validation.*;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.ErrorHandler;
+// import org.xml.sax.InputSource;
+// import org.xml.sax.SAXException;
+// import org.xml.sax.SAXParseException;
+// import org.xml.sax.XMLReader;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
