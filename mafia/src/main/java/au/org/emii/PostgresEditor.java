@@ -179,7 +179,7 @@ public class PostgresEditor {
         options.addOption("validate", true, "validation schema (.xsd) file to use");
 
         // output
-        options.addOption("stdout", false, "dump result to stdout");
+        options.addOption("stdout", false, "output to stdout");
         options.addOption("update", false, "perform inplace update of the metadata record");
 
 

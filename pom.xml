@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.org.emii</groupId>
-    <artifactId>geoserver</artifactId>
+    <artifactId>top-level</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
@@ -12,6 +12,7 @@
 
     <modules>
          <module>mafia</module>
+         <module>validate</module>
     </modules>
 
 </project>

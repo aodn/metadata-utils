@@ -5,7 +5,9 @@ CLI tool for Iso19139 Administration
 
 
 ### TODO
-- test removal of saxon dependency
+- removal of saxon dependency.
+    Note need for factory.setNamespaceAware(true) in non-saxon implementation
+
 - support options read from a configuration file (eg. connection credentials)
 - factor transform/validation pipeline from database manipulation
 - review older examples
@@ -15,7 +17,18 @@ CLI tool for Iso19139 Administration
 ### Build
     mvn clean install
 
+
 ### Examples
+
+```
+java -jar ./validate/target/validate-1.0.0.jar \
+  -source ./resources/argo.xml \
+  -validate /home/meteo/imos/schema-plugins/iso19139.mcp-2.0/schema.xsd \
+  -transform resources/identity.xml \
+  | less
+```
+
+
 
 ##### Get help
 ```
