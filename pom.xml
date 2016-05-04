@@ -12,7 +12,7 @@
 
     <modules>
          <module>mafia</module>
-         <module>validate</module>
+         <!-- module>validate</module -->
     </modules>
 
 </project>
