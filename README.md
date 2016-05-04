@@ -20,14 +20,6 @@ CLI tool for Iso19139 Administration
 
 ### Examples
 
-```
-java -jar ./validate/target/validate-1.0.0.jar \
-  -source ./resources/argo.xml \
-  -validate /home/meteo/imos/schema-plugins/iso19139.mcp-2.0/schema.xsd \
-  -transform resources/identity.xml \
-  | less
-```
-
 
 
 ##### Get help
@@ -48,6 +40,16 @@ usage: Updater
  -user <arg>        user
  -uuid <arg>        etl applies to specific metadata record
  -validate <arg>    validation schema (.xsd) file to use
+```
+
+##### Apply explicit identity transform
+```
+TODO: Fixme!
+java -jar ./validate/target/validate-1.0.0.jar \
+  -source ./resources/argo.xml \
+  -validate /home/meteo/imos/schema-plugins/iso19139.mcp-2.0/schema.xsd \
+  -transform resources/identity.xml \
+  | less
 ```
 
 
@@ -105,11 +107,11 @@ java -jar ./target/mafia-1.0.0.jar \
   -validate ../mcp-2.0/iso19139/schema.xsd
 ```
 
-#### Older Examples,
-
 
 ##### Port forward vagrant box postgres instance and dump all records to stdout
 ```
+Fixme!
+
 ssh -L :9000:localhost:5432  10.11.12.13
 
 java -jar ./target/mafia-1.0.0.jar \
@@ -117,17 +119,4 @@ java -jar ./target/mafia-1.0.0.jar \
   -all -stdout
 ```
 
-##### Apply stylesheet to all records and dump to stdout
-```
-java -jar ./target/mafia-1.0.0.jar \
-  -url jdbc:postgresql://127.0.0.1:5432/geonetwork -user geonetwork -pass geonetwork \
-  -all -transform scripts/test1.xslt -stdout 2>&1 | less
-```
-
-##### Apply stylesheet to all records and perform in-place update
-```
-java -jar ./target/mafia-1.0.0.jar \
-  -url jdbc:postgresql://127.0.0.1:5432/geonetwork -user geonetwork -pass geonetwork \
-  -all -transform scripts/test1.xslt -update
-```
 
