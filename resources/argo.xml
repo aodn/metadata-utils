@@ -757,8 +757,7 @@
             <mcp:DP_DataParameter>
               <mcp:parameterName>
                 <mcp:DP_Term>
-                  <mcp:term>
-                    <gco:CharacterString>Temperature of the water body</gco:CharacterString>
+                  <mcp:term gco:nilReason="withheld">
                   </mcp:term>
                   <mcp:type>
                     <mcp:DP_TypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_TypeCode" codeListValue="longName">longName</mcp:DP_TypeCode>
