@@ -7,6 +7,10 @@
   <packaging>jar</packaging>
   <name>Mafia</name>
   <dependencies>
+    <!-- saxon is needed - otherwise namespaces are not outputted with default java implementation
+        - Also, saxon may already be on the class-loading path after manual installation creating confusion.
+        - Including the dependency directly in the pom guarantees availability.
+    -->
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
@@ -62,8 +66,8 @@
           </execution>
         </executions>
       </plugin>
-      <!-- 
-          http://maven.apache.org/plugins/maven-shade-plugin/examples/executable-jar.html 
+      <!--
+          http://maven.apache.org/plugins/maven-shade-plugin/examples/executable-jar.html
             and
           http://stackoverflow.com/questions/1238145/how-to-run-a-jar-file
       -->
