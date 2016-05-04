@@ -7,11 +7,11 @@
   <packaging>jar</packaging>
   <name>Mafia</name>
   <dependencies>
-    <!--dependency>
+    <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
       <version>9.4</version>
-    </dependency -->
+    </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
