@@ -62,7 +62,7 @@
                                     <gco:CharacterString>61 3 6226 7488</gco:CharacterString>
                                 </gmd:voice>
                                 <gmd:facsimile>
-                                    <gco:CharacterString>61 3 6226 2107 5</gco:CharacterString>
+                                    <gco:CharacterString>61 3 6226 2107</gco:CharacterString>
                                 </gmd:facsimile>
                             </gmd:CI_Telephone>
                         </gmd:phone>
