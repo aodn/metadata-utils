@@ -90,7 +90,10 @@
                 </gmd:CI_Contact>
             </gmd:contactInfo>
             <gmd:role>
-                <gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="distributor">distributor</gmd:CI_RoleCode>
+                <gmd:CI_RoleCode
+                        codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+                        codeListValue="distributor">distributor
+                </gmd:CI_RoleCode>
             </gmd:role>
         </gmd:CI_ResponsibleParty>
     </gmd:contact>

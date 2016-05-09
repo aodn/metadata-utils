@@ -11,8 +11,45 @@
 >
 
 
-    <xsl:import href="xslt/geonetwork_update_backlogs_324/aodnContact.xsl"/>
-    <xsl:import href="xslt/geonetwork_update_backlogs_324/aodnPointOfContact.xsl"/>
+    <xsl:variable name="aodnContact">
+        <gmd:contact>
+            <gmd:CI_ResponsibleParty>
+                <gmd:organisationName>
+                    <gco:CharacterString>Integrated Marine Observing System (IMOS)</gco:CharacterString>
+                </gmd:organisationName>
+                <gmd:positionName>
+                    <gco:CharacterString>Data Officer</gco:CharacterString>
+                </gmd:positionName>
+                <xsl:import href="xslt/geonetwork_update_backlogs_324/aodnContact.xsl"/>
+                <gmd:role>
+                    <gmd:CI_RoleCode
+                            codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+                            codeListValue="distributor">distributor
+                    </gmd:CI_RoleCode>
+                </gmd:role>
+            </gmd:CI_ResponsibleParty>
+        </gmd:contact>
+    </xsl:variable>
+
+    <xsl:variable name="aodnPointOfContact">
+        <gmd:pointOfContact>
+            <gmd:CI_ResponsibleParty>
+                <gmd:organisationName>
+                    <gco:CharacterString>Integrated Marine Observing System (IMOS)</gco:CharacterString>
+                </gmd:organisationName>
+                <gmd:positionName>
+                    <gco:CharacterString>Data Officer</gco:CharacterString>
+                </gmd:positionName>
+                <xsl:import href="xslt/geonetwork_update_backlogs_324/aodnPointOfContact.xsl"/>
+                <gmd:role>
+                    <gmd:CI_RoleCode
+                            codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+                            codeListValue="pointOfContact">pointOfContact
+                    </gmd:CI_RoleCode>
+                </gmd:role>
+            </gmd:CI_ResponsibleParty>
+        </gmd:pointOfContact>
+    </xsl:variable>
 
     <xsl:template match="node()|@*">
         <xsl:copy>
