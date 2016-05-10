@@ -285,15 +285,20 @@ public class PostgresEditor {
             transformer.transform(new DOMSource(document), output);
             document = (Document) output.getNode();
 
-
-            if(cmd.hasOption("context")) {
+            if(cmd.hasOption("context") && !cmd.hasOption("stdout")) {
                 // TODO better names
                 // pick out the transformed record
                 XPath xpath = XPathFactory.newInstance().newXPath();
                 Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
-                document = (Document) myNode;
-            }
 
+                // remove current children
+                while (document.getFirstChild() != null) {
+                    document.removeChild(document.getFirstChild());
+                }
+
+                // re-add the transformed record (only)
+                document.appendChild(myNode);
+            }
 
             // the double-handling back to text is to enable us to extract line numbers
             Writer writer = new StringWriter();
