@@ -17,6 +17,12 @@ CLI tool for Iso19139 Administration
 ### Build
     mvn clean install
 
+### Warning
+
+This utility performs no concurrent update checking so it is recommended to 
+shutdown the geonetwork instance which needs to be updated to prevent
+concurrent updates by the application
+
 
 ### Examples
 
