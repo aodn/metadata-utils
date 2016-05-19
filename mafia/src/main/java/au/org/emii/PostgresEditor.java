@@ -201,6 +201,7 @@ public class PostgresEditor {
             throw new Exception("Options should include one of -uuid or -all");
         }
 
+        query += " order by uuid";
 
         PreparedStatement stmt = conn.prepareStatement(query);
         ResultSet rs = stmt.executeQuery();
