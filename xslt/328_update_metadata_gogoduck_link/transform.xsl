@@ -18,7 +18,7 @@
     </xsl:template>
 
 
-    <xsl:template match="gmd:onLine/gmd:CI_OnlineResource[gmd:protocol/gco:CharacterString/text()='IMOS:AGGREGATION--gogoduck']/gmd:linkage/gmd:URL/text()">http://geoserver-123.aodn.org.au/geoserver/ows</xsl:template>
+    <xsl:template match="gmd:onLine/gmd:CI_OnlineResource[gmd:protocol/gco:CharacterString/text()='IMOS:AGGREGATION--gogoduck']/gmd:linkage/gmd:URL/text()">http://geoserver-wps.aodn.org.au/geoserver/ows</xsl:template>
     <xsl:template match="gco:CharacterString/text()[.='IMOS:AGGREGATION--gogoduck']">OGC:WPS--gogoduck</xsl:template>
 
 </xsl:stylesheet>
