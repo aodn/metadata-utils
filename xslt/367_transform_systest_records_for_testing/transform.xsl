@@ -15,6 +15,10 @@
 
     <xsl:variable name="urlSubstitutionSelector" select="string-join($urlSubstitutions/substitution/@match, '|')"/>
 
+    <xsl:variable name="geoserverWpsProtocol">
+        <gco:CharacterString>OGC:WPS--gogoduck</gco:CharacterString>
+    </xsl:variable>
+
     <!-- default action is to copy -->
 
     <xsl:template match="@*|node()">
@@ -25,12 +29,28 @@
 
     <!-- upgrade gogoduck V1 to gogoduck v2 -->
 
-    <xsl:template priority="10" match="gmd:onLine/gmd:CI_OnlineResource[gmd:protocol/gco:CharacterString/text()='IMOS:AGGREGATION--gogoduck']/gmd:linkage/gmd:URL">
-        <gmd:URL>http://geoserver-wps-systest.aodn.org.au/geoserver/wps</gmd:URL>
+    <xsl:template priority="10" match="gco:CharacterString[matches(text(),'IMOS:AGGREGATION--gogoduck')]">
+        <xsl:choose>
+            <xsl:when test="../../gmd:name/gco:CharacterString[matches(text(),'cars_world_monthly|cars_australia_weekly')]">
+                <xsl:copy-of select="."/>
+            </xsl:when>
+            <xsl:otherwise>
+                <gco:CharacterString>OGC:WPS--gogoduck</gco:CharacterString>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="gco:CharacterString/text()[.='IMOS:AGGREGATION--gogoduck']">OGC:WPS--gogoduck</xsl:template>
-    
+    <xsl:template priority="5" match="gmd:onLine/gmd:CI_OnlineResource[gmd:protocol/gco:CharacterString/text()='IMOS:AGGREGATION--gogoduck']/gmd:linkage/gmd:URL">
+        <xsl:choose>
+            <xsl:when test="../../gmd:name/gco:CharacterString[matches(text(),'cars_world_monthly|cars_australia_weekly')]">
+                <xsl:copy-of select="."/>
+            </xsl:when>
+            <xsl:otherwise>
+                <gmd:URL>http://geoserver-wps-systest.aodn.org.au/geoserver/</gmd:URL>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <!-- perform substitutions on any remaining matching url's -->
 
     <xsl:template match="gmd:URL[matches(., $urlSubstitutionSelector)]">
