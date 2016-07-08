@@ -42,7 +42,7 @@
                 <gco:CharacterString>imos:anmn_ts_timeseries_data</gco:CharacterString>
               </gmd:name>
               <gmd:description>
-                <gco:CharacterString>Moorings - velocity time-series</gco:CharacterString>
+                <gco:CharacterString>This is a WPS service that returns a zip file of subsetted NetCDF files matching a query.</gco:CharacterString>
               </gmd:description>
             </gmd:CI_OnlineResource>
           </gmd:onLine>
