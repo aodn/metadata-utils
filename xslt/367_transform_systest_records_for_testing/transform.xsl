@@ -7,12 +7,6 @@
     
     <!-- url substitutions to be performed -->
 
-    <xsl:variable name="urlSubstitutions">
-        <substitution match="https?://geoserver-123.aodn.org.au(:443)?" replaceWith="http://geoserver-systest.aodn.org.au"/>
-        <substitution match="https?://catalogue-imos.aodn.org.au(:443)?" replaceWith="http://catalogue-systest.aodn.org.au"/>
-        <substitution match="https?://thredds.aodn.org.au(:443)?" replaceWith="http://thredds-systest.aodn.org.au"/>
-    </xsl:variable>
-
     <xsl:variable name="urlSubstitutionSelector" select="string-join($urlSubstitutions/substitution/@match, '|')"/>
 
     <!-- default action is to copy -->
@@ -28,7 +22,7 @@
     <xsl:template priority="10" 
         match="gmd:CI_OnlineResource[gmd:protocol/*/text()='IMOS:AGGREGATION--gogoduck' and not(starts-with(gmd:name/*/text(), 'cars_'))]/*/gmd:URL">
         <xsl:element name="gmd:URL">
-            <xsl:text>http://geoserver-wps-systest.aodn.org.au/geoserver/wps</xsl:text>
+            <xsl:text>http://geoserver-wps.aodn.org.au/geoserver/wps</xsl:text>
         </xsl:element>
     </xsl:template>
     
@@ -43,7 +37,7 @@
         <xsl:copy xml:space="preserve"><xsl:apply-templates/>  <gmd:onLine>
             <gmd:CI_OnlineResource>
               <gmd:linkage>
-                <gmd:URL>http://geoserver-wps-systest.aodn.org.au/geoserver/wps</gmd:URL>
+                <gmd:URL>http://geoserver-wps.aodn.org.au/geoserver/wps</gmd:URL>
               </gmd:linkage>
               <gmd:protocol>
                 <gco:CharacterString>OGC:WPS--netcdf-subset-service</gco:CharacterString>
@@ -57,18 +51,6 @@
             </gmd:CI_OnlineResource>
           </gmd:onLine>
         </xsl:copy>
-    </xsl:template>
-
-    <!-- substitute production service endpoints with systest service endpoints -->
-
-    <xsl:template match="gmd:URL[matches(., $urlSubstitutionSelector)]">
-        <xsl:variable name="url" select="."/>
-
-        <xsl:for-each select="$urlSubstitutions/substitution">
-            <xsl:if test="matches(string($url), string(@match))">
-                <gmd:URL><xsl:value-of select="replace($url, string(@match), string(@replaceWith))"/></gmd:URL>
-            </xsl:if>
-        </xsl:for-each>
     </xsl:template>
 
 </xsl:stylesheet>
