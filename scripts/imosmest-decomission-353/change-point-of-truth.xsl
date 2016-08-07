@@ -21,7 +21,7 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="gmd:distributionInfo//gmd:CI_OnlineResource[gmd:protocol/gco:CharacterString[contains( text(), 'WWW:LINK-1.0-http--metadata-URL')] and gmd:linkage/gmd:URL[contains( text(), 'http://imosmest.aodn.org.au:80')]  ]/gmd:linkage/gmd:URL/text()">
+    <xsl:template match="gmd:distributionInfo//gmd:CI_OnlineResource[gmd:linkage/gmd:URL[contains( text(), 'http://imosmest.aodn.org.au:80')]  ]/gmd:linkage/gmd:URL/text()">
 
         <xsl:value-of select='replace(., "http://imosmest.aodn.org.au:80", "https://catalogue-imos.aodn.org.au")'/>
 
