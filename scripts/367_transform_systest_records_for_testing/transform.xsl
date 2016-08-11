@@ -39,7 +39,7 @@
 
     <!-- add netcdf subset service option to ANMN current velocity time series if not there already -->
 
-    <xsl:template match="gmd:MD_DigitalTransferOptions[//gmd:fileIdentifier/*/text() = 'ae86e2f5-eaaf-459e-a405-e654d85adb9c' and not(.//gmd:protocol/*/text()='OGC:WPS--netcdf-subset-service')]">
+    <xsl:template match="gmd:MD_DigitalTransferOptions[//gmd:fileIdentifier/*/text() = '7e13b5f3-4a70-4e31-9e95-335efa491c5c' and not(.//gmd:protocol/*/text()='OGC:WPS--netcdf-subset-service')]">
         <xsl:copy xml:space="preserve"><xsl:apply-templates/>  <gmd:onLine>
             <gmd:CI_OnlineResource>
               <gmd:linkage>
@@ -52,7 +52,7 @@
                 <gco:CharacterString>imos:anmn_ts_timeseries_data</gco:CharacterString>
               </gmd:name>
               <gmd:description>
-                <gco:CharacterString>Moorings - velocity time-series</gco:CharacterString>
+                <gco:CharacterString>This is a WPS service that returns a zip file of subsetted NetCDF files matching a query.</gco:CharacterString>
               </gmd:description>
             </gmd:CI_OnlineResource>
           </gmd:onLine>
