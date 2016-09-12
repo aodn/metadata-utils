@@ -26,7 +26,7 @@
     <!-- change gogoduck urls on systest to correct geoserver (excluding CARS) -->
 
     <xsl:template priority="10" 
-        match="gmd:CI_OnlineResource[gmd:protocol/*/text()='OGC:WPS--gogoduck' and not(starts-with(gmd:name/*/text(), 'cars_'))]/*/gmd:URL">
+        match="gmd:CI_OnlineResource[gmd:protocol/*/text()='OGC:WPS--gogoduck']/*/gmd:URL">
         <xsl:element name="gmd:URL">
             <xsl:text>http://geoserver-wps-systest.aodn.org.au/geoserver/wps</xsl:text>
         </xsl:element>
