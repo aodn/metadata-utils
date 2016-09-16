@@ -9,6 +9,7 @@
 
     <xsl:variable name="urlSubstitutions">
         <substitution match="https?://geoserver-123.aodn.org.au(:443)?" replaceWith="http://geoserver-systest.aodn.org.au"/>
+        <substitution match="https?://geoserver-wps.aodn.org.au(:443)?" replaceWith="http://geoserver-wps-systest.aodn.org.au"/>
         <substitution match="https?://catalogue-imos.aodn.org.au(:443)?" replaceWith="http://catalogue-systest.aodn.org.au"/>
         <substitution match="https?://thredds.aodn.org.au(:443)?" replaceWith="http://thredds-systest.aodn.org.au"/>
     </xsl:variable>
@@ -21,15 +22,6 @@
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
-    </xsl:template>
-
-    <!-- change gogoduck urls on systest to correct geoserver (excluding CARS) -->
-
-    <xsl:template priority="10" 
-        match="gmd:CI_OnlineResource[gmd:protocol/*/text()='OGC:WPS--gogoduck']/*/gmd:URL">
-        <xsl:element name="gmd:URL">
-            <xsl:text>http://geoserver-wps-systest.aodn.org.au/geoserver/wps</xsl:text>
-        </xsl:element>
     </xsl:template>
 
     <!-- substitute production service endpoints with systest service endpoints -->
