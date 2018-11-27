@@ -30,7 +30,7 @@ concurrent updates by the application
 
 ##### Get help
 ```
-java -jar ./target/mafia-1.0.0.jar -help
+java -jar ./mafia/target/mafia-1.0.0.jar -help
 
 usage: Updater
  -all               etl applies to all metadata records
@@ -61,7 +61,7 @@ java -jar ./validate/target/validate-1.0.0.jar \
 
 ##### Dump untransformed Argo record to stdout
 ```
-java -jar ./target/mafia-1.0.0.jar \
+java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
   -stdout
@@ -69,7 +69,7 @@ java -jar ./target/mafia-1.0.0.jar \
 
 ##### Validate Argo record against mcp-2 schema
 ```
-java -jar ./target/mafia-1.0.0.jar \
+java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
   -validate ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/schema.xsd
@@ -77,7 +77,7 @@ java -jar ./target/mafia-1.0.0.jar \
 
 ##### Validate all records against mcp-2 schema and generate report
 ```
-java -jar ./target/mafia-1.0.0.jar \
+java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -all \
   -validate ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/schema.xsd \
@@ -87,7 +87,7 @@ java -jar ./target/mafia-1.0.0.jar \
 
 ##### Transform Argo record from draft mcp-2 to mcp-2 and validate but do not update
 ```
-java -jar ./target/mafia-1.0.0.jar \
+java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
   -transform ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/convert/from_mcp2_draft.xsl \
@@ -97,7 +97,7 @@ java -jar ./target/mafia-1.0.0.jar \
 
 ##### Transform Argo record from draft mcp-2 to mcp-2 and perform in-place update
 ```
-java -jar ./target/mafia-1.0.0.jar \
+java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
   -transform ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/convert/from_mcp2_draft.xsl \
@@ -106,7 +106,7 @@ java -jar ./target/mafia-1.0.0.jar \
 
 ##### Transform Argo record from mcp-2 to iso19139 and validate
 ```
-java -jar ./target/mafia-1.0.0.jar \
+java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
   -uuid 4402cb50-e20a-44ee-93e6-4728259250d2 \
   -transform ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/convert/to19139.xsl \
@@ -120,7 +120,7 @@ Fixme!
 
 ssh -L :9000:localhost:5432  10.11.12.13
 
-java -jar ./target/mafia-1.0.0.jar \
+java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://127.0.0.1:9000/geonetwork -user geonetwork -pass geonetwork \
   -all -stdout
 ```
