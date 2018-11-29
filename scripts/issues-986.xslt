@@ -21,7 +21,7 @@
 
     <!-- substitute all old IMOS portal URL with prod portal URLs aodn/content#368 -->
     <xsl:template match="gmd:URL[matches(., 'imos.aodn.org.au/imos123*')]">
-        <gmd:URL><xsl:value-of select="replace(., 'imos.aodn.org.au/imos123', 'portal.aodn.org.au')"/></gmd:URL>
+        <gmd:URL><xsl:value-of select="replace(., 'imos.aodn.org.au/imos123/home', 'portal.aodn.org.au/search')"/></gmd:URL>
     </xsl:template>
 
     <!--replace imos.aodn.org.au/imos123 found in f439db64-5551-15d1-e043-08114f8ce23c-->
