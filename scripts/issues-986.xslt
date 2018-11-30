@@ -52,13 +52,9 @@
         <gco:CharacterString><xsl:value-of select="replace(., 'BODAAC help documentation', 'ncUrlList help documentation')"/></gco:CharacterString>
     </xsl:template>
 
-    <!--Update all IMOS phone numbers-->
-    <xsl:template match="gmd:voice[gco:CharacterString = '61 3 6226 7488']">
-        <gmd:voice>
-        <xsl:element name="gco:CharacterString">
-            <xsl:value-of select='string("61 3 6226 7549")'/>
-        </xsl:element>
-        </gmd:voice>
+    <!-- update phone numbers for imos collection-level records -->
+    <xsl:template match="gmd:CI_ResponsibleParty[gmd:organisationName/gco:CharacterString/text() = 'Integrated Marine Observing System (IMOS)']//gmd:voice/gco:CharacterString">
+      <gco:CharacterString>61 3 6226 7549</gco:CharacterString>
     </xsl:template>
 
     <xsl:template match="gmd:thesaurusName[gmd:CI_Citation/gmd:title/gco:CharacterString = 'water-bodies (internal use)' or gmd:CI_Citation/gmd:title/gco:CharacterString = 'land-masses (internal use)']">
