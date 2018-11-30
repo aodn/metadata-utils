@@ -61,4 +61,28 @@
         </gmd:voice>
     </xsl:template>
 
+    <xsl:template match="gmd:thesaurusName[gmd:CI_Citation/gmd:title/gco:CharacterString = 'water-bodies (internal use)' or gmd:CI_Citation/gmd:title/gco:CharacterString = 'land-masses (internal use)']">
+        <gmd:thesaurusName>
+            <gmd:CI_Citation>
+                <gmd:title>
+                    <gco:CharacterString>AODN Geographic Extents Vocabulary</gco:CharacterString>
+                </gmd:title>
+                <gmd:date>
+                    <gmd:CI_Date>
+                        <gmd:date>
+                            <gco:Date>2017-06-15</gco:Date>
+                        </gmd:date>
+                        <gmd:dateType>
+                            <gmd:CI_DateTypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</gmd:CI_DateTypeCode>
+                        </gmd:dateType>
+                    </gmd:CI_Date>
+                </gmd:date>
+                <gmd:otherCitationDetails>
+                    <gco:CharacterString>https://vocabs.ands.org.au/aodn-geographic-extents-vocabulary</gco:CharacterString>
+                </gmd:otherCitationDetails>
+            </gmd:CI_Citation>
+        </gmd:thesaurusName>
+    </xsl:template>
+
+
 </xsl:stylesheet>
