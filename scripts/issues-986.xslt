@@ -36,6 +36,12 @@
     </xsl:template>
 
     <!-- BODACC links aodn/content/issues/353-->
+    <xsl:variable name="unwantedBODACCWinDash" select="string('The BODAAC is a WFS service that returns a list of OpenDAP URLs matching a query.')"></xsl:variable>
+    <xsl:template match="gmd:CI_OnlineResource/gmd:description/gco:CharacterString[../../gmd:protocol/*/text()='IMOS:AGGREGATION—bodaac']" >
+        <gco:CharacterString><xsl:value-of select="replace(., $unwantedBODACCWinDash, 'The ncUrlList is a WFS service that returns a list of URLs matching a query.')"/></gco:CharacterString>
+    </xsl:template>
+
+    <!-- BODACC links aodn/content/issues/353-->
     <xsl:variable name="unwantedBODACC" select="string('The BODAAC is a WFS service that returns a list of OpenDAP URLs matching a query.')"></xsl:variable>
     <xsl:template match="gmd:CI_OnlineResource/gmd:description/gco:CharacterString[../../gmd:protocol/*/text()='IMOS:AGGREGATION--bodaac']" >
         <gco:CharacterString><xsl:value-of select="replace(., $unwantedBODACC, 'The ncUrlList is a WFS service that returns a list of URLs matching a query.')"/></gco:CharacterString>
