@@ -7,57 +7,75 @@
     https://github.com/aodn/backlog/issues/986
 
 -->
+    <xsl:template match="/">
+      <xsl:choose> 
+        <xsl:when test="exists(//gmd:CI_OnlineResource[gmd:protocol/*/text()='WWW:LINK-1.0-http--metadata-URL' and matches(gmd:linkage/*/text(), 'catalogue-imos.aodn.org.au')])">
+          <xsl:apply-templates select="." mode="imosRecord"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="." mode="other"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:template>   
+
     <!-- list of collections to exclude from WMS filter checking -->
     <xsl:variable name="excludedCollections">
         <collection match="default_excluded_layer"/>
     </xsl:variable>
 
     <!-- default action is to copy -->
-    <xsl:template match="@* | node()">
+    <xsl:template mode="imosRecord" match="@* | node()">
         <xsl:copy>
-            <xsl:apply-templates select="@* | node()"/>
+            <xsl:apply-templates mode="imosRecord" select="@* | node()"/>
         </xsl:copy>
     </xsl:template>
 
+    <xsl:template mode="other" match="@* | node()">
+        <xsl:copy>
+            <xsl:apply-templates mode="other" select="@* | node()"/>
+        </xsl:copy>
+    </xsl:template>
+
+
     <!-- substitute all old IMOS portal URL with prod portal URLs aodn/content#368 -->
-    <xsl:template match="gmd:URL[matches(., 'imos.aodn.org.au/imos123*')]">
+    <xsl:template mode="imosRecord" match="gmd:URL[matches(., 'imos.aodn.org.au/imos123*')]">
         <gmd:URL><xsl:value-of select="replace(., 'imos.aodn.org.au/imos123/home', 'portal.aodn.org.au/search')"/></gmd:URL>
     </xsl:template>
 
     <!--replace imos.aodn.org.au/imos123 found in f439db64-5551-15d1-e043-08114f8ce23c-->
-    <xsl:template match="gmd:dataSetURI/gco:CharacterString[matches(., 'imos.aodn.org.au/imos123')]">
+    <xsl:template mode="imosRecord" match="gmd:dataSetURI/gco:CharacterString[matches(., 'imos.aodn.org.au/imos123')]">
         <gco:CharacterString><xsl:value-of select="replace(., 'imos.aodn.org.au/imos123', 'portal.aodn.org.au')"/></gco:CharacterString>
     </xsl:template>
 
     <!-- substitute unwanted portal link descriptions aodn/content#368 -->
     <xsl:variable name="unwantedPortalLink" select="string('View and download this data through the interactive AODN Portal')"></xsl:variable>
-    <xsl:template match="gmd:description/gco:CharacterString[matches(., $unwantedPortalLink)]" priority="2">
+    <xsl:template mode="imosRecord" match="gmd:description/gco:CharacterString[matches(., $unwantedPortalLink)]" priority="2">
         <gco:CharacterString><xsl:value-of select="replace(., $unwantedPortalLink, 'View and download data though the AODN Portal')"/></gco:CharacterString>
     </xsl:template>
 
     <!-- BODACC links aodn/content/issues/353-->
     <xsl:variable name="unwantedBODACCWinDash" select="string('The BODAAC is a WFS service that returns a list of OpenDAP URLs matching a query.')"></xsl:variable>
-    <xsl:template match="gmd:CI_OnlineResource/gmd:description/gco:CharacterString[../../gmd:protocol/*/text()='IMOS:AGGREGATION—bodaac']" >
+    <xsl:template mode="imosRecord" match="gmd:CI_OnlineResource/gmd:description/gco:CharacterString[../../gmd:protocol/*/text()='IMOS:AGGREGATION—bodaac']" >
         <gco:CharacterString><xsl:value-of select="replace(., $unwantedBODACCWinDash, 'The ncUrlList is a WFS service that returns a list of URLs matching a query.')"/></gco:CharacterString>
     </xsl:template>
 
     <!-- BODACC links aodn/content/issues/353-->
     <xsl:variable name="unwantedBODACC" select="string('The BODAAC is a WFS service that returns a list of OpenDAP URLs matching a query.')"></xsl:variable>
-    <xsl:template match="gmd:CI_OnlineResource/gmd:description/gco:CharacterString[../../gmd:protocol/*/text()='IMOS:AGGREGATION--bodaac']" >
+    <xsl:template mode="imosRecord" match="gmd:CI_OnlineResource/gmd:description/gco:CharacterString[../../gmd:protocol/*/text()='IMOS:AGGREGATION--bodaac']" >
         <gco:CharacterString><xsl:value-of select="replace(., $unwantedBODACC, 'The ncUrlList is a WFS service that returns a list of URLs matching a query.')"/></gco:CharacterString>
     </xsl:template>
 
     <!-- BODACC links aodn/content/issues#353-->
-    <xsl:template match="gmd:CI_OnlineResource/gmd:description/gco:CharacterString[../../gmd:protocol/*/text()='WWW:LINK-1.0-http--link']" priority="3">
+    <xsl:template mode="imosRecord" match="gmd:CI_OnlineResource/gmd:description/gco:CharacterString[../../gmd:protocol/*/text()='WWW:LINK-1.0-http--link']" priority="3">
         <gco:CharacterString><xsl:value-of select="replace(., 'BODAAC help documentation', 'ncUrlList help documentation')"/></gco:CharacterString>
     </xsl:template>
 
     <!-- update phone numbers for imos collection-level records -->
-    <xsl:template match="gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[gmd:organisationName/gco:CharacterString/text() = 'Integrated Marine Observing System (IMOS)']//gmd:voice/gco:CharacterString">
+    <xsl:template mode="imosRecord" match="gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[gmd:organisationName/gco:CharacterString/text() = 'Integrated Marine Observing System (IMOS)']//gmd:voice/gco:CharacterString">
       <gco:CharacterString>61 3 6226 7549</gco:CharacterString>
     </xsl:template>
 
-    <xsl:template match="gmd:thesaurusName[gmd:CI_Citation/gmd:title/gco:CharacterString = 'water-bodies (internal use)' or gmd:CI_Citation/gmd:title/gco:CharacterString = 'land-masses (internal use)']">
+    <xsl:template mode="imosRecord" match="gmd:thesaurusName[gmd:CI_Citation/gmd:title/gco:CharacterString = 'water-bodies (internal use)' or gmd:CI_Citation/gmd:title/gco:CharacterString = 'land-masses (internal use)']">
         <gmd:thesaurusName>
             <gmd:CI_Citation>
                 <gmd:title>
@@ -79,6 +97,4 @@
             </gmd:CI_Citation>
         </gmd:thesaurusName>
     </xsl:template>
-
-
 </xsl:stylesheet>
