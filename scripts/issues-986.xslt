@@ -53,7 +53,7 @@
     </xsl:template>
 
     <!-- update phone numbers for imos collection-level records -->
-    <xsl:template match="gmd:CI_ResponsibleParty[gmd:organisationName/gco:CharacterString/text() = 'Integrated Marine Observing System (IMOS)']//gmd:voice/gco:CharacterString">
+    <xsl:template match="gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[gmd:organisationName/gco:CharacterString/text() = 'Integrated Marine Observing System (IMOS)']//gmd:voice/gco:CharacterString">
       <gco:CharacterString>61 3 6226 7549</gco:CharacterString>
     </xsl:template>
 
