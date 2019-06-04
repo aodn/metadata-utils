@@ -1,46 +1,48 @@
 #! /bin/bash
 
-# We are given a xml file and extract the geonetwork uuids from it to find records for updating
+# Given a list of uuids update records in geonetwork
 
-# $1 : show, trial, update, reindex
-# $2 : database host OR geonetwork host
-# $3 : database user
-# $4 : database password
+# $1 : show, trial, update, reindex (required)
+# $2 : file containing list of uuids (required)
+# $3 : database host OR geonetwork host (required)
+# $4 : database user
+# $5 : database password
+# $6 : transform xsl file
 
 action="$1";
 
-for uuid in $(grep "<identifier type=\"global\">" geoserver.imos.org.au_geoserver_wms.xml | cut -c39-74)
+for uuid in $(cat "$2")
   do
     case "$action" in
       show)
         # Display the records to be changed
         java -jar ../../mafia/target/mafia-1.0.0.jar \
-            -url jdbc:postgresql://"$2"/geonetwork_aodn \
-            -user "$3" -pass "$4" \
+            -url jdbc:postgresql://"$3"/geonetwork_aodn \
+            -user "$4" -pass "$5" \
             -uuid $uuid \
             -stdout
         ;;
       trial)
         # Display changes to records without updating
         java -jar ../../mafia/target/mafia-1.0.0.jar \
-            -url jdbc:postgresql://"$2"/geonetwork_aodn \
-            -user "$3" -pass "$4" \
+            -url jdbc:postgresql://"$3"/geonetwork_aodn \
+            -user "$4" -pass "$5" \
             -uuid $uuid \
-    	    -transform backlog-1105.xslt \
+    	    -transform "$6" \
             -stdout
         ;;
       update)
         # Update
         java -jar ../../mafia/target/mafia-1.0.0.jar \
-            -url jdbc:postgresql://"$2"/geonetwork_aodn \
-            -user "$3" -pass "$4" \
+            -url jdbc:postgresql://"$3"/geonetwork_aodn \
+            -user "$4" -pass "$5" \
             -uuid $uuid \
-            -transform backlog-1105.xslt \
+            -transform "$6" \
             -update
         ;;
       reindex)
         # Reindex records by http
-        geonetwork_host="$2";
+        geonetwork_host="$3";
         curl -X GET https://"$geonetwork_host"/geonetwork/srv/eng/metadata.show?uuid="$uuid" -o /dev/null
     esac
   done
