@@ -4,7 +4,7 @@
 
 # $1 : show, trial, update, reindex (required)
 # $2 : file containing list of uuids (required)
-# $3 : database host OR geonetwork host (required)
+# $3 : host and database (eg 6-aws-syd.emii.org.au/geonetwork_aodn) OR geonetwork host (required)
 # $4 : database user
 # $5 : database password
 # $6 : transform xsl file
@@ -17,7 +17,7 @@ for uuid in $(cat "$2")
       show)
         # Display the records to be changed
         java -jar ../../mafia/target/mafia-1.0.0.jar \
-            -url jdbc:postgresql://"$3"/geonetwork_aodn \
+            -url jdbc:postgresql://"$3" \
             -user "$4" -pass "$5" \
             -uuid $uuid \
             -stdout
@@ -25,7 +25,7 @@ for uuid in $(cat "$2")
       trial)
         # Display changes to records without updating
         java -jar ../../mafia/target/mafia-1.0.0.jar \
-            -url jdbc:postgresql://"$3"/geonetwork_aodn \
+            -url jdbc:postgresql://"$3" \
             -user "$4" -pass "$5" \
             -uuid $uuid \
     	    -transform "$6" \
@@ -34,7 +34,7 @@ for uuid in $(cat "$2")
       update)
         # Update
         java -jar ../../mafia/target/mafia-1.0.0.jar \
-            -url jdbc:postgresql://"$3"/geonetwork_aodn \
+            -url jdbc:postgresql://"$3" \
             -user "$4" -pass "$5" \
             -uuid $uuid \
             -transform "$6" \
