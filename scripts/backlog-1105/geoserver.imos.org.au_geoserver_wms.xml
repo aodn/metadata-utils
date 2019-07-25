@@ -1,0 +1,1433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <registryObjects>
+      <registryObject group="ServiceDiscoveryProcess">
+        <key>fa9e20b7-f023-7188-8596-28f008c06a16</key>
+        <originatingSource>ServiceDiscoveryProcess</originatingSource>
+        <service type="OGC:WMS">
+          <identifier type="local">fa9e20b7-f023-7188-8596-28f008c06a16</identifier>
+          <name type="primary">
+            <namePart>AODN Web Mapping Services (WMS)</namePart>
+          </name>
+          <location>
+            <address>
+              <electronic type="url">
+                <value>http://geoserver.imos.org.au/geoserver/wms?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetCapabilities</value>
+              </electronic>
+              <electronic type="email">
+                <value>info@aodn.org.au</value>
+              </electronic>
+            </address>
+          </location>
+          <location>
+            <address>
+              <physical type="postalAddress">
+                <addressPart type="addressLine">Data Officer</addressPart>
+                <addressPart type="addressLine">Australian Ocean Data Network (AODN)</addressPart>
+                <addressPart type="addressLine">Tasmania</addressPart>
+                <addressPart type="addressLine">Australia</addressPart>
+              </physical>
+            </address>
+          </location>
+          <subject type="local">climatologyMeteorologyAtmosphere</subject>
+          <subject type="local">environment</subject>
+          <subject type="local">oceans</subject>
+          <subject type="local">Oceans | Tides | Tidal Currents</subject>
+          <subject type="local">Oceans | Tides | Tidal Components</subject>
+          <subject type="local">Oceans | Ocean Circulation | Wind-driven Circulation</subject>
+          <subject type="local">Oceans | Ocean Circulation | Water Masses</subject>
+          <subject type="local">Oceans | Ocean Temperature | Water Temperature</subject>
+          <subject type="local">Oceans | Salinity/density | Salinity</subject>
+          <subject type="local">Oceans | Ocean Winds | Surface Winds</subject>
+          <subject type="local">Atmosphere | Atmospheric Winds | Surface Winds</subject>
+          <subject type="local">Paleoclimate | Ocean/lake Records | Isotopes</subject>
+          <subject type="local">Oceans | Ocean Optics | Secchi Depth</subject>
+          <subject type="local">depth</subject>
+          <subject type="local">secchi disk depth</subject>
+          <subject type="local">Oceans | Ocean Chemistry | Carbonate</subject>
+          <subject type="local">Oceans | Marine Sediments | Carbonate Sediments</subject>
+          <subject type="local">Oceans | Marine Sediments | Sediment Grain Size</subject>
+          <subject type="local">Oceans | Ocean Optics | Turbidity</subject>
+          <subject type="local">sediment</subject>
+          <subject type="local">turbidity</subject>
+          <subject type="local">secchi disc depth</subject>
+          <subject type="local">Oceans | Coastal Processes | Coral Reefs</subject>
+          <subject type="local">Oceans | Ocean Circulation | Ocean Currents</subject>
+          <subject type="local">Oceans | Marine Sediments | Sedimentation</subject>
+          <subject type="local">Oceans | Marine Sediments | Turbidity</subject>
+          <subject type="local">Nephelometer</subject>
+          <subject type="local">Oceans | Water Quality | Oxygen</subject>
+          <subject type="local">Oceans | Water Quality | Ph</subject>
+          <subject type="local">Oceans | Water Quality | Nutrients</subject>
+          <subject type="local">Oceans | Water Quality | Chlorophyll</subject>
+          <subject type="local">Oceans | Water Quality | Light Transmission</subject>
+          <subject type="local">Oceans | Water Quality | Dissolved Gases</subject>
+          <subject type="local">Oceans | Water Quality | Water Temperature</subject>
+          <subject type="local">Oceans | Water Quality | Nitrogen Compounds</subject>
+          <subject type="local">Oceans | Water Quality | Phosphorous Compounds</subject>
+          <subject type="local">Oceans | Water Quality | Turbidity</subject>
+          <subject type="local">boundaries</subject>
+          <subject type="local">Biosphere | Microbiota | Phytoplankton</subject>
+          <subject type="local">data parameter depth</subject>
+          <subject type="local">data parameter chlorophyll concentration</subject>
+          <subject type="local">data parameter phytoplankton count</subject>
+          <subject type="local">Oceans | Bathymetry | Water Depth</subject>
+          <subject type="local">Current Meter</subject>
+          <subject type="local">biota</subject>
+          <subject type="local">Biosphere | Microbiota | Diatoms</subject>
+          <subject type="local">Oceans | Ocean Temperature | Sea Surface Temperature</subject>
+          <subject type="local">Transfer function</subject>
+          <subject type="local">Oceans | Salinity/density | Conductivity</subject>
+          <subject type="local">Oceans l Salinity/density l Salinity</subject>
+          <subject type="local">51200000</subject>
+          <subject type="local">Foraminiferida</subject>
+          <subject type="local">Foraminiferans</subject>
+          <subject type="local">Foraminfera</subject>
+          <subject type="local">Biosphere | Microbiota | Foraminifers</subject>
+          <subject type="local">geoscientificInformation</subject>
+          <subject type="local">Paleoclimate | Ocean/lake Records | Oxygen Isotopes</subject>
+          <subject type="local">Foraminifera</subject>
+          <subject type="local">total suspended sediments</subject>
+          <subject type="local">chlorophyll concentration</subject>
+          <subject type="local">phytoplankton count</subject>
+          <subject type="local">Oceans | Water Quality | Contaminants</subject>
+          <subject type="local">Oceans | Water Quality | Toxic Chemicals</subject>
+          <subject type="local">Atmosphere | Atmospheric Pressure | Atmospheric Pressure</subject>
+          <subject type="local">Atmosphere | Atmospheric Temperature | Air Temperature</subject>
+          <subject type="local">Oceans | Tides | Tidal Height</subject>
+          <subject type="local">Atmosphere | Atmospheric Water Vapor | Humidity</subject>
+          <subject type="local">conductivity</subject>
+          <subject type="local">salinity</subject>
+          <subject type="local">Oceans | Ocean Waves | Significant Wave Height</subject>
+          <subject type="local">Oceans | Ocean Waves | Wind Waves</subject>
+          <subject type="local">Oceans | Ocean Waves | Swells</subject>
+          <subject type="local">Wave Rider Buoy</subject>
+          <subject type="local">Oceans | Ocean Optics | Fluorescence</subject>
+          <subject type="local">Paleoclimate | Ocean/lake Records | Radiocarbon</subject>
+          <subject type="local">Oceans | Marine Biology | Marine Microbiota</subject>
+          <subject type="local">Paleoclimate | Ocean/lake Records | Microfossils</subject>
+          <subject type="local">Oceans | Ocean Chemistry | Alkalinity</subject>
+          <subject type="local">Oceans | Ocean Chemistry | Dissolved Gases</subject>
+          <subject type="local">Oceans | Ocean Chemistry | Nitrate</subject>
+          <subject type="local">Oceans | Ocean Chemistry | Nutrients</subject>
+          <subject type="local">Oceans | Ocean Chemistry | Oxygen</subject>
+          <subject type="local">Radiolaria</subject>
+          <subject type="local">Oceans | Sea Surface Height | Water Depth</subject>
+          <subject type="local">Oceans | Ocean Pressure | Water Pressure</subject>
+          <subject type="local">elevation</subject>
+          <subject type="local">Hydrosphere | Surface Water | Floods</subject>
+          <subject type="local">Oceans | Coastal Processes | Lagoons</subject>
+          <subject type="local">Hydrosphere | Surface Water | Inundation</subject>
+          <subject type="local">Biosphere | Aquatic Habitat | Saline Lakes</subject>
+          <subject type="local">Gippsland Lakes, Victoria</subject>
+          <subject type="local">Paleoclimate | Ocean/lake Records | Sediments</subject>
+          <subject type="local">Oceans | Marine Sediments | Sediment Composition</subject>
+          <subject type="local">Oceans | Marine Sediments | Sediment Composition | Grain Size</subject>
+          <subject type="local">sediment grain size</subject>
+          <subject type="local">Oceans | Water Quality | Conductivity</subject>
+          <subject type="local">Atmosphere | Radiation Budget | Net Radiation</subject>
+          <subject type="local">Oceans | Water Quality | Suspended Solids</subject>
+          <subject type="local">Tide Gauges</subject>
+          <subject type="local">Biosphere | Ecological Dynamics | Population Dynamics</subject>
+          <subject type="local">Cryosphere | Sea Ice | Sea Ice Concentration</subject>
+          <subject type="local">Oceans | Sea Ice | Ice Extent</subject>
+          <subject type="local">Fragilariopsis doliolus</subject>
+          <subject type="local">Roperia tesselata</subject>
+          <subject type="local">Hemidiscus cuneiformis</subject>
+          <subject type="local">Azpeitia tabularis</subject>
+          <subject type="local">Thalassiosira lineata</subject>
+          <subject type="local">Thalassionema nitzschioides</subject>
+          <subject type="local">53120000</subject>
+          <subject type="local">53001900</subject>
+          <subject type="local">53150900</subject>
+          <subject type="local">Sediment traps</subject>
+          <subject type="local">Paleoclimate | Ocean/lake Records | Stratigraphic Sequence</subject>
+          <subject type="local">Fragilariopsis kerguelensis</subject>
+          <subject type="local">Thalassiosira lentiginosa</subject>
+          <subject type="local">Age vs. Depth</subject>
+          <subject type="local">Age vs. depth profile</subject>
+          <subject type="local">Isotopic Composition</subject>
+          <subject type="local">Sumatra</subject>
+          <subject type="local">Age vs. Depth Profile</subject>
+          <subject type="local">Biosphere | Wetlands | Estuarine Wetlands</subject>
+          <subject type="local">Oceans | Coastal Processes | Estuaries</subject>
+          <subject type="local">Reworked species</subject>
+          <subject type="local">Eltanin</subject>
+          <subject type="local">E53-10</subject>
+          <subject type="local">Phytolith</subject>
+          <subject type="local">Atmosphere | Precipitation | Precipitation Amount</subject>
+          <subject type="local">Fragilariopsis separanda</subject>
+          <description type="brief">The Australian Ocean Data Network (AODN) is an interoperable online network of marine and climate data resources. The AODN Geoserver catalogues Integrated Marine Observing System (IMOS) geospatial data, and also hosts a number of data layers from other marine organisations.</description>
+          <rights>
+            <accessRights>none</accessRights>
+          </rights>
+          <relatedInfo type="collection">
+            <title>Current values collected through the water column using an Acoustic Doppler Current Profiler (ADCP) in the centre of Jervis Bay: Winter Deployment</title>
+            <identifier type="global">fef1f3c0-6d9f-11dd-8128-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Boston Bay CTD Data 29 September 1997</title>
+            <identifier type="global">5098e030-8c0a-11dc-a1c4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in July 1989</title>
+            <identifier type="global">0b44e820-be3d-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon through time in the core GC04, located off the coast of New Caledonia</title>
+            <identifier type="global">bc267720-1e1b-11dc-badd-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 23 February 2003</title>
+            <identifier type="global">971a4df0-13c9-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The percentage of calcium carbonate in samples taken from various depths in core GC09, located in the Capricorn Channel.</title>
+            <identifier type="global">cafd0d90-22bc-11dc-8748-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Challenger Expedition in the Herbert River mouth near the Jetty Grab Sampling 08 February 2004</title>
+            <identifier type="global">10c00710-0823-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Grainsize of surface samples collected from the Lagoon physiographic zone of Wistari Reef</title>
+            <identifier type="global">8d79f1f0-125d-11dc-a108-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Current meter data obtained from a mooring off Point Perpendicular, Jervis Bay: 05/04/89 - 28/03/90</title>
+            <identifier type="global">089f8080-c897-11dc-85f3-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Geoffrey Bay Edge Cleveland Bay - 1993</title>
+            <identifier type="global">b78ad580-852b-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Cockburn Sound Management Council - Long-term Water Quality Sampling for Cockburn Sound (1982/83 to 2011/12)</title>
+            <identifier type="global">a5999530-e8b6-11dc-a271-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The physiographic zones of Wistari Reef</title>
+            <identifier type="global">fe1c7990-0d86-11dc-b244-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 30th October 2004</title>
+            <identifier type="global">022bb080-398a-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Coffin Bay CTD Data 23 September 1998</title>
+            <identifier type="global">0610d300-8c15-11dc-a1c4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Sedimentation rates on Wistari Reef</title>
+            <identifier type="global">1f913530-0f07-11dc-b94f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>s4 Current Meter data sets for Middle Reef - 1993</title>
+            <identifier type="global">0f237e30-1491-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Historical August Sea-Surface Temperature Estimates Utilising a Diatom Transfer Function with Core MD88-787</title>
+            <identifier type="global">10802fd0-6716-11dc-88d6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Sonde data measured during a high rainfall event in Port Jackson, 25 August 2007.</title>
+            <identifier type="global">16f61500-6ca2-11dc-abe9-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Age vs Depth profile of core GC13, collected from the Capricorn Channel off the Eastern Australian Coast</title>
+            <identifier type="global">19a86b60-2533-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon with increasing depth in core GC14, located in the Capricorn Channel</title>
+            <identifier type="global">33089890-29d0-11dc-b961-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining the grainsize of sediment with increasing depth in core GC12, located in the Capricorn Channel</title>
+            <identifier type="global">253926d0-250c-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Historical February Sea-Surface Temperature Estimates Utilising Diatom Transfer Functions with Core MD88-787</title>
+            <identifier type="global">274d3e20-6715-11dc-88d6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining the grainsize of sediment with increasing depth in core GC09, located in the Capricorn Channel</title>
+            <identifier type="global">27bdf390-22b4-11dc-8748-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Oxygen isotope (18-O) values for 5 different foraminiferal species down the core of GC12, collected from the Capricorn Channel</title>
+            <identifier type="global">333e1c20-251d-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Georges River CTD Data 17 October 1985</title>
+            <identifier type="global">35270b60-8d9f-11dc-915c-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty Turbidity Data Transect Friday 13th February 2004</title>
+            <identifier type="global">4d2a8dd0-08cb-11dc-bea3-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 21st October 2004</title>
+            <identifier type="global">50d436e0-3989-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>s4 Current Meter data sets for dump site mid-depth around Cleveland Bay - 1993</title>
+            <identifier type="global">3df3c650-148e-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 1st November 2004</title>
+            <identifier type="global">3f5c35b0-398a-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind Speed and Direction data sets for Myrmidon Reef - 1993</title>
+            <identifier type="global">43967d50-847c-11dd-a89f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Heavy Metal data measured during a high rainfall event in Port Jackson, 21 August 2007.</title>
+            <identifier type="global">5008edb0-715a-11dc-aaa0-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Nephelometer Profiles at the Jetty (J2) 19 February 2004</title>
+            <identifier type="global">8cebe730-0cd5-11dc-ab27-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Swan Alley Creek Port River Adelaide Salinometer Survey November 1996</title>
+            <identifier type="global">916cba40-9e26-11dc-9839-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Dutton Bay CTD Data 7 December 1998</title>
+            <identifier type="global">8b4bba30-8c15-11dc-a1c4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 26th October 2004</title>
+            <identifier type="global">9615b4e0-3989-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Seagrass Cruise IV Leg 2 Gulf St Vincent November 1993</title>
+            <identifier type="global">88705ad0-ae9f-11dc-bfcb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Dump Site West around Cleveland Bay - 1993</title>
+            <identifier type="global">914c0f90-8528-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Investigator Strait CTD Survey January 1986</title>
+            <identifier type="global">94bcbf50-98e6-11dc-b4d5-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Secchi Disc data measured during a high rainfall event in Port Jackson, 20 August 2007</title>
+            <identifier type="global">a2c6e560-67ce-11dc-b822-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Boston Bay CTD Data 01 October 1997</title>
+            <identifier type="global">a392edc0-8c06-11dc-a1c4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Time-series data from beacon 5 and Yarraville Shoal: 1983-1986</title>
+            <identifier type="global">a59ef1f0-3e61-11dd-97e6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Nephelometer Profiles at the end of Jetty (J7) 18 February 2004</title>
+            <identifier type="global">ac3ab8e0-0cd1-11dc-ab27-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 12 July 2002</title>
+            <identifier type="global">b5a67240-13cd-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 20 February 2003</title>
+            <identifier type="global">b8f71230-1330-11dc-ac00-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wave rider data from 2 Cleveland Bay sites - 1993</title>
+            <identifier type="global">bc86ec40-8472-11dd-a89f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 22 February 2003</title>
+            <identifier type="global">bd4e8960-13c8-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Georges River CTD Data 11 October 1985</title>
+            <identifier type="global">c14adb90-8d9e-11dc-915c-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind Speed and Direction data sets for Townsville Airport - 1993</title>
+            <identifier type="global">c838ae50-8479-11dd-a89f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 10 July 2002</title>
+            <identifier type="global">c7533480-13cb-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 21 February 2003</title>
+            <identifier type="global">c7689aa0-1894-11dc-a8fb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon with increasing depth in core GC11, located in the Capricorn Channel</title>
+            <identifier type="global">cdeb6910-246b-11dc-95fb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Investigator Strait CTD Survey August 1986</title>
+            <identifier type="global">cfb1c770-996a-11dc-a4aa-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour, Summary.</title>
+            <identifier type="global">d1149370-38cd-11dc-b3dc-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Radiometrically determined 14C dates obtained for 4 sediment cores on Wistari Reef</title>
+            <identifier type="global">d2de24f0-0f01-11dc-b94f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Radiolarian abundance counts on Last Glacial Maximum core samples</title>
+            <identifier type="global">d3e297b0-1f8b-11dc-8df0-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Secchi Disc data measured during a high rainfall event in Port Jackson, 23 August 2007</title>
+            <identifier type="global">d55e4e00-67d3-11dc-b822-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind Speed and Direction for Davies Reef - 1993</title>
+            <identifier type="global">d6ea51a0-847a-11dd-a89f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Heavy Metal data measured during a high rainfall event in Port Jackson, 20 August 2007.</title>
+            <identifier type="global">d68a7090-7158-11dc-aaa0-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon with increasing depth in core GC13, located in the Capricorn Channel</title>
+            <identifier type="global">dc981860-2532-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Georges River CTD Data 10 September 1988</title>
+            <identifier type="global">dff280d0-8c26-11dc-a1c4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Investigator Strait CTD Survey April 1986</title>
+            <identifier type="global">e7d191c0-98eb-11dc-b4d5-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Mass of Reef Top Sediments in the Wistari Platform</title>
+            <identifier type="global">e6caeea0-0dab-11dc-b244-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty Turbidity Data Transect Saturday 14th February 2004</title>
+            <identifier type="global">e69ae890-2070-11dc-ba71-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>St Vincent Gulf Cruise 6 Temperature Salinity Data March 1976</title>
+            <identifier type="global">69059ce0-93ed-11dc-b8ca-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Seagrass Cruise 2 Gulf St Vincent 1993</title>
+            <identifier type="global">7e8ba160-a3f4-11dc-99ce-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Investigator Strait CTD Survey July 1985</title>
+            <identifier type="global">86f1a0e0-98e4-11dc-b4d5-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining the grainsize of sediment with increasing depth in core GC13, located in the Capricorn Channel</title>
+            <identifier type="global">5d16d710-2533-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Hawkesbury River Temperature Salinity Data 1986</title>
+            <identifier type="global">5d525330-93f1-11dc-b8ca-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Investigator Strait CTD Survey December 1985</title>
+            <identifier type="global">7de26920-996c-11dc-a4aa-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Geoffrey Bay Deep Cleveland Bay - 1993</title>
+            <identifier type="global">55c1c380-852c-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Age vs Depth profile of core GC14, collected from the Capricorn Channel off the Eastern Australian Coast</title>
+            <identifier type="global">56f717d0-29d1-11dc-b961-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Hawkesbury River Temperature Salinity Data 1988</title>
+            <identifier type="global">8165d4b0-93f4-11dc-b8ca-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Port River Adelaide CTD Survey October 1994</title>
+            <identifier type="global">862974a0-9e23-11dc-9839-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The percentage of calcium carbonate in samples taken from various depths in core GC11, located in the Capricorn Channel</title>
+            <identifier type="global">6b9effd0-2478-11dc-95fb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Sonde data measured during a high rainfall event in Port Jackson, 23 August 2007.</title>
+            <identifier type="global">6bf205b0-6ca1-11dc-abe9-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 4th November 2004</title>
+            <identifier type="global">75415c00-398a-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Investigator Strait CTD Survey June 1985</title>
+            <identifier type="global">77e210a0-9897-11dc-b4d5-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 24 February 2003</title>
+            <identifier type="global">fccd3260-13ca-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Coffin Bay CTD Data 22 September 1998</title>
+            <identifier type="global">6bab1140-8c14-11dc-a1c4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Seagrass South around Cleveland Bay - 1993</title>
+            <identifier type="global">7d0f0bb0-850d-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Time-series data from the Mid-Spencer gulf: Experiment 2: 1986</title>
+            <identifier type="global">ea1131a0-440a-11dd-a828-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water levels in the Gippsland Lakes; 1998 to 2002.</title>
+            <identifier type="global">18469c80-1a32-11dc-aaf8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water current readings at the 'Green' mooring in the North West of Jervis Bay: 06/12/88 - 11/01/89</title>
+            <identifier type="global">a4d79ad0-c3c1-11dc-8135-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water current readings at the 'Red' mooring in the South Central area of Jervis Bay: (Winter) Deployment 2 (12/09/90 to 30/10/90)</title>
+            <identifier type="global">a1da6830-c344-11dc-9e24-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data at sampling stations on a transect across the mouth of Jervis Bay</title>
+            <identifier type="global">7e03e540-14ba-11dd-bdaa-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Current meter and tidal gauge data obtained from a mooring off Bowen Island, Jervis Bay: 05/04/89 - 27/03/90</title>
+            <identifier type="global">a2c0a820-c576-11dc-b888-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data within Jervis Bay and out across the shelf: 1991</title>
+            <identifier type="global">a44b1850-15bd-11dd-9ec7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data at sampling stations on a transect between Red Point and Bristol Point, Jervis Bay</title>
+            <identifier type="global">eb65dd50-14c4-11dd-bdaa-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Current meter and tide gauge data obtained from an off-shore mooring near Jervis Bay: 05/04/89 - 07/12/89</title>
+            <identifier type="global">d03f0f00-c47a-11dc-9a66-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty Turbidity Data Transect Monday 9th February 2004</title>
+            <identifier type="global">91549050-0826-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>s4 Current Meter data sets for dump site bottom Cleveland Bay - 1993</title>
+            <identifier type="global">20328130-148c-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water current readings from the North East mooring in Jervis Bay (off Green Point): 11/07/90 - 29/08/90</title>
+            <identifier type="global">45ede7c0-c3d2-11dc-8135-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water current readings at the 'Blue' mooring in the North East area of Jervis Bay: 6/12/88 - 11/1/89</title>
+            <identifier type="global">c5340590-c3b5-11dc-8135-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining main carbonate mineralogy, and the primary components of the non carbonate fraction, at four depths in core GC12, collected from the Capricorn Channel.</title>
+            <identifier type="global">20156510-251b-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Carbon isotope (13-C) values for 5 different foraminiferal species down the core of GC12, collected from the Capricorn Channel</title>
+            <identifier type="global">d009c810-2522-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data within Jervis Bay and out across the shelf: 1990</title>
+            <identifier type="global">a98cd420-14c3-11dd-bdaa-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon with increasing depth in core GC10, located in the Capricorn Channel</title>
+            <identifier type="global">455baa10-2385-11dc-a78e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining the grainsize of sediment with increasing depth in core GC10, located in the Capricorn Channel</title>
+            <identifier type="global">985ee190-2390-11dc-a78e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The percentage of calcium carbonate in samples taken from various depths in core GC10, located in the Capricorn Channel</title>
+            <identifier type="global">75795bf0-2391-11dc-a78e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data within Jervis Bay and out across the shelf: 1988</title>
+            <identifier type="global">6d523cb0-0b78-11dd-89fa-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 20th October 2004</title>
+            <identifier type="global">01b95c20-3989-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining main carbonate mineralogy, and the primary components of the non carbonate fraction, at two depths in core GC09, collected from the Capricorn Channel</title>
+            <identifier type="global">c09bb4c0-22bf-11dc-8748-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data at sampling stations on a transect between Dart Point and Callala Beach (S), Jervis Bay</title>
+            <identifier type="global">7f83d0c0-1194-11dd-a074-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Secchi Disc data measured during a high rainfall event in Port Jackson, 21 August 2007</title>
+            <identifier type="global">0e478200-67d3-11dc-b822-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Middle Reef in Cleveland Bay - 1993</title>
+            <identifier type="global">a352d480-852d-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining main carbonate mineralogy, and the primary components of the non carbonate fraction, at three depths in core GC11, collected from the Capricorn Channel.</title>
+            <identifier type="global">7341d810-2479-11dc-95fb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Age vs Depth profile of core GC11, collected from the Capricorn Channel off the Eastern Australian Coast</title>
+            <identifier type="global">be8d3fd0-246f-11dc-95fb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty Turbidity Data Transect Sunday 15th February 2004</title>
+            <identifier type="global">67cf8250-08ce-11dc-bea3-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Granulometric Analysis of Core Samples on Wistari Reef</title>
+            <identifier type="global">bf171490-0f0b-11dc-b94f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 29th October 2004</title>
+            <identifier type="global">e7c75200-3987-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data within Jervis Bay and out across the shelf: 1989</title>
+            <identifier type="global">05818c50-14c2-11dd-bdaa-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon with increasing depth in core GC09, located in the Capricorn Channel</title>
+            <identifier type="global">102fd170-22b0-11dc-8748-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Tide gauge data obtained from a mooring 200m off the west coast of Bowen Island, Jervis Bay</title>
+            <identifier type="global">e4eaf410-d469-11dc-9644-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water current readings at the 'Red' mooring in the South Central area of Jervis Bay: (Winter) Deployment 1 (10/07/90 to 30/08/90)</title>
+            <identifier type="global">6fed5f70-c336-11dc-9e24-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining the grainsize of sediment with increasing depth in core GC14, located in the Capricorn Channel</title>
+            <identifier type="global">b6fe6ab0-29d2-11dc-b961-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty Turbidity Data Transect Monday 16th February 2004</title>
+            <identifier type="global">1935e9f0-0828-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water current readings from the North East mooring in Jervis Bay (Honeymoon Bay): 13/9/90 - 30/10/90</title>
+            <identifier type="global">0b9e1780-c3d6-11dc-8135-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty Turbidity Data Transect Wednesday 11th February 2004</title>
+            <identifier type="global">43f54ea0-082e-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Sonde data measured during a high rainfall event in Port Jackson, 21 August 2007.</title>
+            <identifier type="global">43c39a30-6c9d-11dc-abe9-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Tide gauge and water temperature data from three moorings in Jervis Bay: 05/12/88 - 11/01/89</title>
+            <identifier type="global">08d650b0-c3f1-11dc-8135-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data at sampling stations on a transect between Red Point and Creswell, Jervis Bay</title>
+            <identifier type="global">4919d4f0-1192-11dd-a074-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty Turbidity Data Transect Thursday 12th February 2004</title>
+            <identifier type="global">23e66530-08ca-11dc-bea3-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Investigator Strait CTD Survey July 1986</title>
+            <identifier type="global">65801970-98ec-11dc-b4d5-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The percentage of CaCO3 in samples taken from various depths in core GC12, located in the Capricorn Channel</title>
+            <identifier type="global">031f69c0-251a-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Challenger Transect Lucinda Jetty to Palm Island Nephelometer and Grab Sampling 10th February 2004</title>
+            <identifier type="global">7e7d1870-0822-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water Quality Sampling in Cockburn Sound, Western Australia from 1977 - 1981</title>
+            <identifier type="global">693b6990-17d0-11dc-9787-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Time-series data from the Mid-Spencer gulf: Experiment 1: 1985-1986</title>
+            <identifier type="global">f4b69520-4403-11dd-a828-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Seagrass Cruise 3 leg 1 Gulf St Vincent 1993</title>
+            <identifier type="global">0bd457a0-a3f6-11dc-99ce-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Investigator Strait CTD Survey March 1986</title>
+            <identifier type="global">ac5d09e0-98ea-11dc-b4d5-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Surface Sediment Broken Bay to Abyssal Plain</title>
+            <identifier type="global">32c94ec0-2092-11dc-ba71-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 27th October 2004</title>
+            <identifier type="global">d633e420-3989-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Seagrass Cruise 3 leg 2 Gulf St Vincent 1993</title>
+            <identifier type="global">afd44a40-a3f6-11dc-99ce-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 13 July 2002</title>
+            <identifier type="global">e6e3ed00-13ce-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 11 July 2002</title>
+            <identifier type="global">ae0791a0-13cc-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water sample data from Cleveland Bay - 1993</title>
+            <identifier type="global">03cde810-1499-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Arthur Bay Edge Cleveland Bay - 1993</title>
+            <identifier type="global">6e374720-852a-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Percentage of variance in radiolarian correspondence analysis scores explained by various oceanic parameters</title>
+            <identifier type="global">46e61ac0-1f8c-11dc-8df0-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River along the Jetty Grab Sampling 11 February 2004</title>
+            <identifier type="global">7e6b36c0-0825-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 19 February 2003</title>
+            <identifier type="global">d85c1e90-0cd7-11dc-ab27-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay for the summer period between Dec 1990 and Feb 1991</title>
+            <identifier type="global">6ca2f8f0-be60-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 22nd October 2004</title>
+            <identifier type="global">52344e00-3987-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay for the summer period between Dec 1989 and Feb 1990</title>
+            <identifier type="global">de89a4e0-be61-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind measurements taken at Huskisson between 1/7/90 and 12/9/90</title>
+            <identifier type="global">78c5ece0-806d-11dc-9b3f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay for the summer period between Dec 1988 and Feb 1989</title>
+            <identifier type="global">7b110e20-be62-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytoplankton concentration measurements in Sydney Harbour - 15th October 2004</title>
+            <identifier type="global">73b3db00-3986-11dc-a05e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in October 1990</title>
+            <identifier type="global">ddf83820-be52-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in December 1988</title>
+            <identifier type="global">631e9d40-bda0-11dc-b5a4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in May 1991</title>
+            <identifier type="global">f41e7060-be57-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty Turbidity Data Transect Tuesday 10th February 2004</title>
+            <identifier type="global">0570c470-0829-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in February 1990</title>
+            <identifier type="global">abefbe80-be4c-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in February 1991</title>
+            <identifier type="global">6cde5540-be55-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Grainsize of surface samples collected from the Reef rim physiographic zone of Wistari Reef</title>
+            <identifier type="global">7ae2dc10-1496-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Meteorological measurements at Governor Head, Jervis Bay between 02/11/88 and 31/10/90: 1 hour averages</title>
+            <identifier type="global">31836c70-92fd-11dc-9613-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in February 1989</title>
+            <identifier type="global">8f9f4210-be37-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon with increasing depth in core GC12, located in the Capricorn Channel</title>
+            <identifier type="global">52f0cfd0-2505-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in March 1989</title>
+            <identifier type="global">913d9350-be38-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in August 1990</title>
+            <identifier type="global">1ecc82e0-be51-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in April 1989</title>
+            <identifier type="global">07daac90-bda4-11dc-b5a4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in November 1988</title>
+            <identifier type="global">49a62950-be36-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Grainsize of surface samples collected from the leeward, off-reef physiographic zone of Wistari Reef</title>
+            <identifier type="global">7800ddb0-1489-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River Lucinda Jetty CTD Data Transect 17th February 2004</title>
+            <identifier type="global">1cb59f00-0821-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Radiolarian abundance counts from the eastern and southern Indian Ocean</title>
+            <identifier type="global">5ae7da80-1ecf-11dc-bf0a-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in January 1991</title>
+            <identifier type="global">5a43df00-be54-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Secchi Disc data measured during a high rainfall event in Port Jackson, 25 August 2007</title>
+            <identifier type="global">e4237950-67d4-11dc-b822-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Mean grainsize of surface samples collected from the reef flat physiographic zone of Wistari Reef</title>
+            <identifier type="global">8749fec0-13c9-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Mean grainsize of surface samples collected from the leeward, off-reef physiographic zone of Wistari Reef</title>
+            <identifier type="global">4acece80-1487-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in August 1989</title>
+            <identifier type="global">3d4db680-bdac-11dc-b5a4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>East components of averaged hourly winds at Governnor Head Meteorological Station and Huskinsson, Jervis Bay between 10/8/90 and 12/9/90</title>
+            <identifier type="global">ab173b00-7c70-11dc-8be3-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay for the Autumn period between March 1989 and May 1989</title>
+            <identifier type="global">372c6b90-be63-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in December 1989</title>
+            <identifier type="global">8bfe3340-be47-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in June 1989</title>
+            <identifier type="global">47c01c80-be3c-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay for the Winter period between June 1989 and August 1989</title>
+            <identifier type="global">13957040-be64-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Meteorological measurements at Governor Head, Jervis Bay: 02/11/88 - 03/11/89: 10 minute samples</title>
+            <identifier type="global">d811bbe0-c7d3-11dc-9e8e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay over a one year period (Nov 1988 - Oct 1989)</title>
+            <identifier type="global">e7b78290-be65-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay over a one year period (Nov 1989 - Oct 1990)</title>
+            <identifier type="global">667f1400-be69-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in September 1990</title>
+            <identifier type="global">fbf9e900-be51-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in June 1991</title>
+            <identifier type="global">f50b9a10-be58-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in October 1989</title>
+            <identifier type="global">c98e53b0-be3e-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Tide Gauge data from Townsville Port - 1993</title>
+            <identifier type="global">1ed75270-1496-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Current values collected through the water column using an Acoustic Doppler Current Profiler (ADCP) in the centre of Jervis Bay: Summer Deployment</title>
+            <identifier type="global">30d0a700-1fc2-11dd-a7e7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>XRD analsyis of surface sediment samples collected from the reef rim physiographic zone of Wistari Reef</title>
+            <identifier type="global">a7a22c40-1498-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Mean grainsize of surface samples collected from the Reef rim physiographic zone of Wistari Reef</title>
+            <identifier type="global">5ee387b0-1493-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Coffin Bay CTD Data 24 September 1998</title>
+            <identifier type="global">f77dbb90-8c10-11dc-a1c4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Hawkesbury River Temperature Salinity Data 1990</title>
+            <identifier type="global">00748bd0-93f9-11dc-b8ca-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining main carbonate mineralogy, and the primary components of the non carbonate fraction, at two depths in core GC10, collected from the Capricorn Channel.</title>
+            <identifier type="global">9ea35af0-2394-11dc-a78e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Grainsize of surface samples collected from the sanded reef flat physiographic zone of Wistari Reef</title>
+            <identifier type="global">c1a39aa0-1323-11dc-ac00-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The relative abundance (%) of planktonic foraminifera over time in core MD 002361, located on the shelf edge, offshore Western Australia</title>
+            <identifier type="global">2fb543b0-07f6-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Dump Site South around Cleveland Bay - 1993</title>
+            <identifier type="global">7b7e5790-8523-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>North components of averaged hourly winds at Governnor Head Meteorological Station and Huskinsson, Jervis Bay between 10/8/90 and 12/9/90</title>
+            <identifier type="global">06f12f80-7c80-11dc-8be3-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining the grainsize of sediment with increasing depth in core GC11, located in the Capricorn Channel</title>
+            <identifier type="global">7e485510-2477-11dc-95fb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Horseshoe Bay Cleveland Bay - 1993</title>
+            <identifier type="global">03786fb0-852d-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>XRD analsyis of surface sediment samples collected from the reef-flat physiographic zone of Wistari Reef</title>
+            <identifier type="global">0a834460-13dc-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Mean grainsize of surface samples collected from the sanded reef flat physiographic zone of Wistari Reef</title>
+            <identifier type="global">1947c8c0-12f3-11dc-ac00-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>s4 Current Meter data sets for south Cleveland Bay - 1993</title>
+            <identifier type="global">d7fb2a80-1485-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Herbert River near the Jetty Secchi disk Sampling 14 July 2002</title>
+            <identifier type="global">0623ff60-13d0-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Hawkesbury River Temperature Salinity Data 1991</title>
+            <identifier type="global">7a0cc7f0-93f9-11dc-b8ca-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Historical February / September sea-ice concentration and annual sea-ice cover estimation at the location of core MD88-787 in the Southeast Indian Ocean</title>
+            <identifier type="global">a48db300-671b-11dc-88d6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Diatom recovery from core MD88-779: Raw counts</title>
+            <identifier type="global">c091c950-5a9c-11dc-bd3f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Ocean temperatures over time estimated from planktonic foraminifera assemblages in core MD032607 located off South Australia. Estimates are provided for the sea-surface, 50m, 100m, and 150m</title>
+            <identifier type="global">c22219c0-07fc-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining main carbonate mineralogy, and the primary components of the non carbonate fraction, at two depths in core GC14, collected from the Capricorn Channel.</title>
+            <identifier type="global">b5948500-29d3-11dc-b961-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Sediment trap data sets for rattlesnake island near Cleveland Bay - 1993</title>
+            <identifier type="global">1ac87030-14b2-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The age versus depth profile for core GC04, located off the coast of New Caledonia</title>
+            <identifier type="global">8bdaa800-1e1d-11dc-badd-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>A visual summary and annotation of the stratification in core MD002361, sampled from the shelf edge off Western Australia</title>
+            <identifier type="global">11718b50-07f8-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Sediment trap data sets for 2 individual sites in Geoffrey Bay - 1993</title>
+            <identifier type="global">512f7e70-14b7-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Rattlesnake Island - 1993</title>
+            <identifier type="global">281e09f0-852e-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Seagrass Cruise V Gulf St Vincent April 1994</title>
+            <identifier type="global">de134470-ae9f-11dc-bfcb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Seagrass Cruise IV Leg 1 Gulf St Vincent November 1993</title>
+            <identifier type="global">a10d0f20-ae95-11dc-bfcb-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Seagrass Centre around Cleveland Bay - 1993</title>
+            <identifier type="global">875af1a0-8513-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Sediment trap data sets for 10 individual sites around Cleveland Bay - 1993</title>
+            <identifier type="global">eee721c0-14a0-11dc-80b6-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Dredge_West around Cleveland Bay - 1993</title>
+            <identifier type="global">b6e700f0-8516-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Diatom recovery from core MD88-784: Raw counts</title>
+            <identifier type="global">739b3150-5aa0-11dc-bd3f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Determining main carbonate mineralogy, and the primary components of the non carbonate fraction, at two depths in core GC13, collected from the Capricorn Channel.</title>
+            <identifier type="global">9dc893c0-2533-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Age vs. Depth of core BAR 9403 (located off the coast of Sumatra). Age has been calculated through modelling based on oxygen isotope records</title>
+            <identifier type="global">80926820-04e6-11dc-b5d9-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Port River Adelaide CTD Survey September 1993</title>
+            <identifier type="global">501fb6b0-9e20-11dc-9839-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Dredge_East around Cleveland Bay - 1993</title>
+            <identifier type="global">b44d82a0-851c-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Age vs Depth profile of core GC10, collected from the Capricorn Channel off the Eastern Australian Coast</title>
+            <identifier type="global">b7596070-2386-11dc-a78e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Age vs. Depth of core MD032607 (off South Australia). Age has been calculated through modelling based on oxygen isotope records from Globigerina bulloides</title>
+            <identifier type="global">0595d210-07fc-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The relative abundance (%) of planktonic foraminifera over time in core BAR 9403, located off the coast of Sumatra</title>
+            <identifier type="global">626d4b90-04f9-11dc-b5d9-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Age vs Depth profile of core GC12, collected from the Capricorn Channel off the Eastern Australian Coast</title>
+            <identifier type="global">8a1e5f30-2506-11dc-aba4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Ocean temperatures over time estimated from planktonic foraminifera assemblages in core BAR9403 located off the coast of Sumatra. Estimates are provided for the sea-surface, 50m, 100m, and 150m.</title>
+            <identifier type="global">5d8f42d0-505e-11dc-bc04-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon through time in the core BAR 9403, located off the coast of Sumatra</title>
+            <identifier type="global">375368a0-04e4-11dc-b5d9-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon through time in the core MD002361, located on the shelf edge offshore Western Australia</title>
+            <identifier type="global">cbf81c20-07f1-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Dump Site North in Cleveland Bay - 1993</title>
+            <identifier type="global">8b162e70-851f-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in January 1989</title>
+            <identifier type="global">1e90f730-bda6-11dc-b5a4-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Nephelometer data sets for Arthur Bay Deep Cleveland Bay - 1993</title>
+            <identifier type="global">226a4260-852b-11dd-91d8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The relative abundance (%) of planktonic foraminifera over time in core MD032607, located off the coast South Australia</title>
+            <identifier type="global">5f27f740-07fc-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Age vs. depth of core MD002361 (shelf edge offshore Western Australia). Age has been calculated using radiocarbon dating and modelling based on oxygen isotope records.</title>
+            <identifier type="global">8f0bb9f0-07f3-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Water current readings at the 'Red' mooring in the South Central area of Jervis Bay: (Summer) Deployment 1 (06/12/88 to 11/01/89)</title>
+            <identifier type="global">30915440-c321-11dc-9e24-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Peel-Harvey Estuary Water Quality Data</title>
+            <identifier type="global">9694c100-0d78-11dc-b244-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Mean grainsize of surface samples collected from the Lagoon physiographic zone of Wistari Reef</title>
+            <identifier type="global">50db7030-1234-11dc-a108-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in January 1990</title>
+            <identifier type="global">7f55e290-be48-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in May 1989</title>
+            <identifier type="global">ff6a2800-be3a-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>XRD analysis of surface sediment samples collected from the Lagoon physiographic zone of Wistari Reef</title>
+            <identifier type="global">eff3ced0-1287-11dc-a108-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Meteorological measurements at Governor Head, Jervis Bay: 03/11/89 - 24/09/91: 15 minute samples</title>
+            <identifier type="global">936e8dd0-c7e0-11dc-9e8e-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Survey data collected from Core E53-10, located on the edge of the South Tasman rise</title>
+            <identifier type="global">5bde8770-56b2-11dc-b9db-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Quantifying the isotopic composition of oxygen and carbon through time in the core MD032607, located off South Australia</title>
+            <identifier type="global">33885270-07fb-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Raw counts of diatom species in 18 surface samples collected during the French PACIMA- and Antarctic CRC (South Tasman Rise)- cruise missions</title>
+            <identifier type="global">c300e8f0-5688-11dc-b9db-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Banana Boat Cruise to South of Lucinda Jetty 14 February 2004</title>
+            <identifier type="global">9db20410-081f-11dc-82f8-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Phytolith recovery from core MD88-779</title>
+            <identifier type="global">ed00c7e0-5aa4-11dc-bd3f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind Speed and Direction data sets for Townsville Port - 1993</title>
+            <identifier type="global">029b8d30-847d-11dd-a89f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Historical February Sea-Surface Temperature Estimates Utilising Diatom Transfer Functions with Core MD88-784</title>
+            <identifier type="global">b99e6540-65af-11dc-9037-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>XRD analsyis of surface sediment samples collected from the sanded reef-flat physiographic zone of Wistari Reef</title>
+            <identifier type="global">2a1e3520-1326-11dc-ac00-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Peel-Harvey Estuary Rainfall Data</title>
+            <identifier type="global">2a3661a0-1974-11dc-819b-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Preliminary log of core GC04, collected from the southeastern side of the New Caledonian Basin</title>
+            <identifier type="global">3ba1d6f0-1e19-11dc-badd-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Grainsize of surface samples collected from the reef flat physiographic zone of Wistari Reef</title>
+            <identifier type="global">0063c8d0-13da-11dc-b213-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in September 1989</title>
+            <identifier type="global">05d46e50-be3e-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Mass of Off-Reef Sediments on Wistari Reef</title>
+            <identifier type="global">d3085ac0-0e68-11dc-8c12-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind Speed and Direction data sets for Lucinda - 1993</title>
+            <identifier type="global">6ca6af90-847b-11dd-a89f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Temperature - Salinity distributions / CTD data at sampling stations on a transect between Long Beach and Huskisson, Jervis Bay</title>
+            <identifier type="global">0c995f90-15a8-11dd-9ec7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>The percentage breakdown of carbonate/non-carbonate fractions in core GC04, located off the coast of New Caledonia</title>
+            <identifier type="global">4c4c4df0-1e23-11dc-badd-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Ocean temperatures over time estimated from planktonic foraminifera assemblages in core MD002361 located on the shelf edge off Western Australia. Estimates are provided for the sea-surface, 50m, 100m, and 150m</title>
+            <identifier type="global">4837df50-07f7-11dc-92a7-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Diatom recovery from core MD88-787: Raw counts</title>
+            <identifier type="global">e63afb70-5a9e-11dc-bd3f-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <relatedInfo type="collection">
+            <title>Wind statistics at Governor Head Meteorological Station, Jervis Bay in November 1989</title>
+            <identifier type="global">6f9e5d70-be46-11dc-9c72-00188b4c0af8</identifier>
+            <relation type="hasAssociationWith"/>
+          </relatedInfo>
+          <coverage>
+            <spatial type="iso19139dcmiBox">northlimit=85; southlimit=-85; westlimit=-180; eastLimit=180; projection=WGS84</spatial>
+          </coverage>
+        </service>
+      </registryObject>
+    </registryObjects>
