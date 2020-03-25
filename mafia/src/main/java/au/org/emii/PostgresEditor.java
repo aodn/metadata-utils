@@ -166,7 +166,7 @@ public class PostgresEditor {
         options.addOption("transform", true, "transform stylesheet (.xslt) file to use");
 
         // validation
-        options.addOption("validate", true, "validation schema (.xsd) file to use");
+        options.addOption("validate", true, "validation schema (.xsd) file to use or provide schema folder (schema.xsd will be selected depending upon schema type)");
 
         // output
         options.addOption("stdout", false, "output to stdout");
@@ -225,9 +225,10 @@ public class PostgresEditor {
             int id = rs.getInt("id");
             String data = rs.getString("data");
             String uuid = (String) rs.getObject("uuid");
+            String schemaid = (String) rs.getObject("schemaid");
 
             System.out.println( "----------------------------------------------------" );
-            System.out.println( "id: " + id + " uuid: " + uuid );
+            System.out.println( "id: " + id + " uuid: " + uuid + " schemaid: " + schemaid );
             System.out.println( "----------------------------------------------------" );
  
 
@@ -308,6 +309,8 @@ public class PostgresEditor {
 
             if(cmd.hasOption("validate")) {
                 String filename = cmd.getOptionValue("validate");
+                if(filename.indexOf(".xsd")==-1)
+                    filename+="/"+schemaid+"/schema.xsd";
                 System.out.println( "validation xsd filename '" + filename + "'" );
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

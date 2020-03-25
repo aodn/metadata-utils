@@ -45,7 +45,7 @@ usage: Updater
                     jdbc:postgresql://127.0.0.1/geonetwork
  -user <arg>        user
  -uuid <arg>        etl applies to specific metadata record
- -validate <arg>    validation schema (.xsd) file to use
+ -validate <arg>    validation schema (.xsd) file to use  or provide schema folder (schema.xsd will be selected depending upon schema type)
 ```
 
 ##### Apply explicit identity transform
@@ -54,6 +54,15 @@ TODO: Fixme!
 java -jar ./validate/target/validate-1.0.0.jar \
   -source ./resources/argo.xml \
   -validate /home/meteo/imos/schema-plugins/iso19139.mcp-2.0/schema.xsd \
+  -transform resources/identity.xml \
+  | less
+```
+
+##### Apply explicit identity transform and validation using schema folder instead of schema (.xsd) file
+```
+java -jar ./validate/target/validate-1.0.0.jar \
+  -source ./resources/argo.xml \
+  -validate /home/meteo/imos/schema-plugins \
   -transform resources/identity.xml \
   | less
 ```
