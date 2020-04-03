@@ -1,14 +1,7 @@
 
 package au.org.emii;
 
-import java.io.FileInputStream;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.File;
-import java.io.StringReader; 
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 import java.sql.Connection;
@@ -22,14 +15,11 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerConfigurationException;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
@@ -68,6 +58,12 @@ import org.apache.commons.cli.Options;
 class MyValidationErrorHandler implements ErrorHandler {
 
     // pass the uuid in to output better errors...
+  private boolean isValid = true;
+
+  public boolean isValid()
+  {
+      return isValid;
+  }
 
   public void warning(SAXParseException e) throws SAXException {
     show("Warning", e);
@@ -82,7 +78,7 @@ class MyValidationErrorHandler implements ErrorHandler {
   }
 
   private void show(String type, SAXParseException e) {
-
+      isValid = false;
       System.out.println( 
           e.getLineNumber() 
           + ":" 
@@ -142,7 +138,30 @@ public class PostgresEditor {
         return DriverManager.getConnection(url, props);
     }
 
+    private static String getUUIDsFromFile(String filename) throws IOException {
+        StringBuffer result = new StringBuffer();
 
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        while (br.ready()) {
+            if(result.length()!=0)
+                result.append(", ");
+            result.append("'"+br.readLine()+"'");
+        }
+        return result.toString();
+    }
+
+    private static void writeDocument(Document document, String filename) throws IOException, TransformerException {
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.transform(new DOMSource(document), new StreamResult(new File(filename)));
+    }
+
+    private static void write(String data, String filename, boolean append) throws IOException {
+        FileWriter fw = new FileWriter(filename, append); //the true will append the new data
+        fw.write(data);//appends the string to the file
+        fw.close();
+    }
 
     public static void main(String[] args) throws Exception {
 
@@ -158,6 +177,8 @@ public class PostgresEditor {
         // selection
         options.addOption("uuid", true, "etl applies to specific metadata record");
         options.addOption("all", false, "etl applies to all metadata records");
+        options.addOption("selected", true, "etl applies to selected metadata records");
+        options.addOption("isharvested", true, "etl applies to harvested or non-harvested metadata records depending upon provided value (y or n)");
 
         // additional metadata context fields
         options.addOption("context", false, "expose additional metadata fields (eg. record uuid) to etl");
@@ -167,6 +188,8 @@ public class PostgresEditor {
 
         // validation
         options.addOption("validate", true, "validation schema (.xsd) file to use or provide schema folder (schema.xsd will be selected depending upon schema type)");
+        options.addOption("invalids", true, "Provide a name of the file to list all invalid uuids.");
+        options.addOption("xmloutputpath", true, "Provide a folder path to store xml files.");
 
         // output
         options.addOption("stdout", false, "output to stdout");
@@ -193,12 +216,20 @@ public class PostgresEditor {
 
         // all is kind of implied - but good to be explicit
         // uuid or all
+        query += " where 1=1 ";
         if(cmd.hasOption("uuid")) {
-            query += " where uuid = '" + cmd.getOptionValue("uuid") + "'";
+            query += " and uuid = '" + cmd.getOptionValue("uuid") + "'";
+        } else if(cmd.hasOption("selected")) {
+            query += " and uuid IN (" + getUUIDsFromFile(cmd.getOptionValue("selected")) + ")";
         } else if(cmd.hasOption("all")) {
             ;
         } else {
-            throw new Exception("Options should include one of -uuid or -all");
+            throw new Exception("Options should include one of -uuid or -all or -selected");
+        }
+
+        // apply harvested filter
+        if(cmd.hasOption("isharvested")) {
+            query += " and isharvested = '" + cmd.getOptionValue("isharvested") + "'";
         }
 
         query += " order by uuid";
@@ -216,6 +247,11 @@ public class PostgresEditor {
             transformer = getTransformerFromFile(cmd.getOptionValue("transform"));
         } else {
             transformer = identity;
+        }
+
+        // Empty invalid records list file
+        if(cmd.hasOption("invalids")) {
+            new FileWriter(cmd.getOptionValue("invalids")).close();
         }
 
         // TODO this crap really wants to be factored, so we pass the action and the transformer in...
@@ -281,6 +317,9 @@ public class PostgresEditor {
                 }
             }
 
+            // write original XML
+            if(cmd.hasOption("xmloutputpath"))
+                writeDocument(document, cmd.getOptionValue("xmloutputpath")+"/"+uuid+"/metadata/metadata.xml");
 
             // perform requested transform
             DOMResult output = new DOMResult();
@@ -302,6 +341,10 @@ public class PostgresEditor {
                 document.appendChild(myNode);
             }
 
+            // write transformed XML
+            if(cmd.hasOption("xmloutputpath") && cmd.hasOption("transform"))
+                writeDocument(document, cmd.getOptionValue("xmloutputpath")+"/"+uuid+"/metadata/metadata.transform.xml");
+
             // the double-handling back to text is to enable us to extract line numbers
             Writer writer = new StringWriter();
             identity.transform(new DOMSource(document), new StreamResult(writer));
@@ -317,13 +360,15 @@ public class PostgresEditor {
                 // Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
                 Schema schema = schemaFactory.newSchema( new File( filename ) );
                 Validator validator = schema.newValidator();
-
-                validator.setErrorHandler(  new MyValidationErrorHandler() );
+                MyValidationErrorHandler myValidationErrorHandler = new MyValidationErrorHandler();
+                validator.setErrorHandler(myValidationErrorHandler);
                 validator.validate( new StreamSource(new StringReader(data)));
+                if(cmd.hasOption("invalids")) {
+                    if(!myValidationErrorHandler.isValid())
+                        write(uuid+"\n", ""+cmd.getOptionValue("invalids"), true);
+                }
                 // validator.validate(  new DOMSource( myNode) );
             }
-
-
 
             if(cmd.hasOption("stdout")) {
                 // emit without context fields
