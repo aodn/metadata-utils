@@ -33,19 +33,24 @@ concurrent updates by the application
 java -jar ./mafia/target/mafia-1.0.0.jar -help
 
 usage: Updater
- -all               etl applies to all metadata records
- -context           expose additional metadata fields (eg. record uuid) to
-                    etl
- -help              show help
- -pass <arg>        password
- -stdout            dump result to stdout
- -transform <arg>   transform stylesheet (.xslt) file to use
- -update            perform inplace update of the metadata record
- -url <arg>         jdbc connection string, eg.
-                    jdbc:postgresql://127.0.0.1/geonetwork
- -user <arg>        user
- -uuid <arg>        etl applies to specific metadata record
- -validate <arg>    validation schema (.xsd) file to use  or provide schema folder (schema.xsd will be selected depending upon schema type)
+ -all                   etl applies to all metadata records
+ -context               expose additional metadata fields (eg. record uuid) to
+                        etl
+ -help                  show help
+ -pass <arg>            password
+ -stdout                dump result to stdout
+ -transform <arg>       transform stylesheet (.xslt) file to use
+ -update                perform inplace update of the metadata record
+ -url <arg>             jdbc connection string, eg.
+                        jdbc:postgresql://127.0.0.1/geonetwork
+ -user <arg>            user
+ -uuid <arg>            etl applies to specific metadata record
+- selected <arg>        etl applies to selected metadata record uuids listed in the provided file
+- isharvested <arg>     etl applies to harvested or non-harvested metadata records depending upon provided value (y or n)
+- validate <arg>        validation schema (.xsd) file to use  or provide schema folder (schema.xsd will be selected depending upon schema type)
+- invalids <arg>        provide a name of the file to list all invalid uuids
+- xmloutputpath <arg>   provide a folder path to store xml files
+
 ```
 
 ##### Apply explicit identity transform
@@ -134,4 +139,21 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
   -all -stdout
 ```
 
+##### List record uuids with schema validation errors
+```
+java -jar ./mafia/target/mafia-1.0.0.jar  \ 
+    -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
+    -all \
+    -validate /path/to/schema-plugins \
+    -invalids invalids.txt 
+```
 
+##### Transform to fix validation errors for selected list of uuids and downloads metadata.xml (before and after applying fix)
+```
+java -jar ./mafia/target/mafia-1.0.0.jar 
+    -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
+    -selected invalids.txt \
+    -validate /path/to/schema-plugins \
+    -transform /path/to/fix-mcp-schema-validation.xsl \
+    -xmloutputpath /tmp/gn-validate-imos-xml 
+```
