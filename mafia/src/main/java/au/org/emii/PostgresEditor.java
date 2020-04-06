@@ -57,7 +57,7 @@ import org.apache.commons.cli.Options;
 
 class MyValidationErrorHandler implements ErrorHandler {
 
-    // pass the uuid in to output better errors...
+    // TODO pass the uuid in to output better errors...
   private boolean isValid = true;
 
   public boolean isValid()

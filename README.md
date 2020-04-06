@@ -45,11 +45,11 @@ usage: Updater
                         jdbc:postgresql://127.0.0.1/geonetwork
  -user <arg>            user
  -uuid <arg>            etl applies to specific metadata record
-- selected <arg>        etl applies to selected metadata record uuids listed in the provided file
-- isharvested <arg>     etl applies to harvested or non-harvested metadata records depending upon provided value (y or n)
-- validate <arg>        validation schema (.xsd) file to use  or provide schema folder (schema.xsd will be selected depending upon schema type)
-- invalids <arg>        provide a name of the file to list all invalid uuids
-- xmloutputpath <arg>   provide a folder path to store xml files
+ -selected <arg>        etl applies to selected metadata record uuids listed in the provided file
+ -isharvested <arg>     etl applies to harvested or non-harvested metadata records depending upon provided value (y or n)
+ -validate <arg>        validation schema (.xsd) file to use  or provide schema folder (schema.xsd will be selected depending upon schema type)
+ -invalids <arg>        provide a name of the file to list all invalid uuids
+ -xmloutputpath <arg>   provide a folder path to store xml files
 
 ```
 
