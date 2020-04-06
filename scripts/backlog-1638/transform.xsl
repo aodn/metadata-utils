@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:gco="http://www.isotc211.org/2005/gco"
@@ -9,7 +8,8 @@
 
                 exclude-result-prefixes="xsl gco gmd gmx geonet">
 
-    <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
+    <xsl:output method="xml" encoding="UTF-8" />
+    <xsl:preserve-space elements="*" />
 
     <xsl:variable name="oldCredit">Integrated Marine Observing System (IMOS) - IMOS is a national collaborative research infrastructure, supported by the Australian Government</xsl:variable>
     <xsl:variable name="oldCredit1">Integrated Marine Observing System (IMOS) - IMOS is a national collaborative research infrastructure, supported by Australian Government</xsl:variable>
