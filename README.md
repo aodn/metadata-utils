@@ -47,6 +47,7 @@ usage: Updater
  -uuid <arg>            etl applies to specific metadata record
  -selected <arg>        etl applies to selected metadata record uuids listed in the provided file
  -isharvested <arg>     etl applies to harvested or non-harvested metadata records depending upon provided value (y or n)
+ -istemplate <arg>     etl applies to template records depending upon provided value (y or n)
  -validate <arg>        validation schema (.xsd) file to use  or provide schema folder (schema.xsd will be selected depending upon schema type)
  -invalids <arg>        provide a name of the file to list all invalid uuids
  -xmloutputpath <arg>   provide a folder path to store xml files
@@ -139,11 +140,13 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
   -all -stdout
 ```
 
-##### List record uuids with schema validation errors
+##### List non harvested and non template metadata record uuids with schema validation errors
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar  \ 
     -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
     -all \
+    - isharvested n \
+    - istemplate n \
     -validate /path/to/schema-plugins \
     -invalids invalids.txt 
 ```

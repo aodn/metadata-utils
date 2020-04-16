@@ -179,6 +179,7 @@ public class PostgresEditor {
         options.addOption("all", false, "etl applies to all metadata records");
         options.addOption("selected", true, "etl applies to selected metadata records");
         options.addOption("isharvested", true, "etl applies to harvested or non-harvested metadata records depending upon provided value (y or n)");
+        options.addOption("istemplate", true, "etl applies to template records depending upon provided value (y or n)");
 
         // additional metadata context fields
         options.addOption("context", false, "expose additional metadata fields (eg. record uuid) to etl");
@@ -230,6 +231,11 @@ public class PostgresEditor {
         // apply harvested filter
         if(cmd.hasOption("isharvested")) {
             query += " and isharvested = '" + cmd.getOptionValue("isharvested") + "'";
+        }
+
+        // apply istemplate filter
+        if(cmd.hasOption("istemplate")) {
+            query += " and istemplate = '" + cmd.getOptionValue("istemplate") + "'";
         }
 
         query += " order by uuid";
