@@ -31,14 +31,18 @@
     <xsl:template match="*[local-name() = 'MD_Metadata']/gmd:identificationInfo/*[local-name() = 'MD_DataIdentification']/gmd:credit/gco:CharacterString">
         <xsl:choose>
             <xsl:when test="contains(., $oldCredit)">
-                <xsl:value-of select="substring-before(.,$oldCredit)"/>
-                <xsl:value-of select="$newCredit"/>
-                <xsl:value-of select="substring-after(.,$oldCredit)"/>
+                <gco:CharacterString>
+                    <xsl:value-of select="substring-before(.,$oldCredit)"/>
+                    <xsl:value-of select="$newCredit"/>
+                    <xsl:value-of select="substring-after(.,$oldCredit)"/>
+                </gco:CharacterString>
             </xsl:when>
             <xsl:when test="contains(., $oldCredit1)">
-                <xsl:value-of select="substring-before(.,$oldCredit1)"/>
-                <xsl:value-of select="$newCredit"/>
-                <xsl:value-of select="substring-after(.,$oldCredit1)"/>
+                <gco:CharacterString>
+                    <xsl:value-of select="substring-before(.,$oldCredit1)"/>
+                    <xsl:value-of select="$newCredit"/>
+                    <xsl:value-of select="substring-after(.,$oldCredit1)"/>
+                </gco:CharacterString>
             </xsl:when>
             <xsl:when test="contains(., $oldCredit2)">
                 <gco:CharacterString>
