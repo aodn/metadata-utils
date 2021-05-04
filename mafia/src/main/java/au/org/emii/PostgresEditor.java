@@ -24,21 +24,15 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathConstants;
-// import javax.xml.bind.Validator;
 import javax.xml.validation.Validator;
 
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Schema;
 import javax.xml.XMLConstants;
 
-// import javax.xml.validation.*;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ErrorHandler;
-// import org.xml.sax.InputSource;
-// import org.xml.sax.SAXException;
-// import org.xml.sax.SAXParseException;
-// import org.xml.sax.XMLReader;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -51,15 +45,9 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
-
-
-
-
 class MyValidationErrorHandler implements ErrorHandler {
 
-    // TODO pass the uuid in to output better errors...
   private boolean isValid = true;
-
   public boolean isValid()
   {
       return isValid;
@@ -94,17 +82,11 @@ class MyValidationErrorHandler implements ErrorHandler {
 
 }
 
-
-
-// TODO perhaps change name to Main to make easier to call from cli? 
-
 public class PostgresEditor {
 
     private static Transformer getTransformerFromFile(String filename)
         throws FileNotFoundException, TransformerConfigurationException {
 
-        // TODO this is terrible, should work with a stream, and let the caller set this up.
-        // similarly for the next function
         final TransformerFactory tsf = TransformerFactory.newInstance();
         final InputStream is  = new FileInputStream(filename);
 
@@ -130,7 +112,6 @@ public class PostgresEditor {
         props.setProperty("user", user);
         props.setProperty("password", pass);
 
-        // props.setProperty("search_path","soop_sst,public");
         props.setProperty("ssl","true");
         props.setProperty("sslfactory","org.postgresql.ssl.NonValidatingFactory");
         props.setProperty("driver","org.postgresql.Driver");
@@ -212,10 +193,13 @@ public class PostgresEditor {
             cmd.getOptionValue("pass")
         );
 
-        // String query = "SELECT id,uuid,data FROM metadata ";
+
+        /*
+        STAGE 1: get the meta data from the database
+         */
+
         String query = "SELECT * FROM metadata ";
 
-        // all is kind of implied - but good to be explicit
         // uuid or all
         query += " where 1=1 ";
         if(cmd.hasOption("uuid")) {
@@ -243,10 +227,12 @@ public class PostgresEditor {
         PreparedStatement stmt = conn.prepareStatement(query);
         ResultSet rs = stmt.executeQuery();
 
+        /*
+        STAGE 2: get the transform
+         */
 
         // setup the identity transform
         Transformer identity = getIdentityTransformer();
-
 
         Transformer transformer = null;
         if(cmd.hasOption("transform")) {
@@ -255,13 +241,15 @@ public class PostgresEditor {
             transformer = identity;
         }
 
+        /*
+        STAGE 3: transform each record
+         */
+
         // Empty invalid records list file
         if(cmd.hasOption("invalids")) {
             new FileWriter(cmd.getOptionValue("invalids")).close();
         }
 
-        // TODO this crap really wants to be factored, so we pass the action and the transformer in...
-        // loop records
         int count = 0;
         while(rs.next()) {
             int id = rs.getInt("id");
@@ -272,13 +260,14 @@ public class PostgresEditor {
             System.out.println( "----------------------------------------------------" );
             System.out.println( "id: " + id + " uuid: " + uuid + " schemaid: " + schemaid );
             System.out.println( "----------------------------------------------------" );
- 
-
-            // TODO - should factor db and xml processing into separate classes/methods
 
             // decode record
             InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+
+            /*
+            STAGE 3a: Add extra "context" nodes to the XML
+            */
 
             if(cmd.hasOption("context")) {
 
@@ -323,6 +312,10 @@ public class PostgresEditor {
                 }
             }
 
+            /*
+            STAGE 3b: Perform the transformation
+             */
+
             // write original XML
             if(cmd.hasOption("xmloutputpath"))
                 writeDocument(document, cmd.getOptionValue("xmloutputpath")+"/"+uuid+"/metadata/metadata.xml");
@@ -333,7 +326,6 @@ public class PostgresEditor {
             document = (Document) output.getNode();
 
             if(cmd.hasOption("context") && !cmd.hasOption("stdout")) {
-                // TODO better names
                 // pick out the transformed record
                 XPath xpath = XPathFactory.newInstance().newXPath();
                 Node myNode = (Node) xpath.compile("//root/record/*").evaluate(document, XPathConstants.NODE);
@@ -356,6 +348,10 @@ public class PostgresEditor {
             identity.transform(new DOMSource(document), new StreamResult(writer));
             data = writer.toString();
 
+            /*
+            STAGE 3c: validate result
+             */
+
             if(cmd.hasOption("validate")) {
                 String filename = cmd.getOptionValue("validate");
                 if(filename.indexOf(".xsd")==-1)
@@ -363,7 +359,6 @@ public class PostgresEditor {
                 System.out.println( "validation xsd filename '" + filename + "'" );
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                // Schema schema = schemaFactory.newSchema( new File( "../schema-plugins/iso19139.mcp-2.0/schema.xsd") );
                 Schema schema = schemaFactory.newSchema( new File( filename ) );
                 Validator validator = schema.newValidator();
                 MyValidationErrorHandler myValidationErrorHandler = new MyValidationErrorHandler();
@@ -373,30 +368,27 @@ public class PostgresEditor {
                     if(!myValidationErrorHandler.isValid())
                         write(uuid+"\n", ""+cmd.getOptionValue("invalids"), true);
                 }
-                // validator.validate(  new DOMSource( myNode) );
             }
 
+            /*
+            STAGE 3d: Output result (stdout or database)
+             */
+
             if(cmd.hasOption("stdout")) {
-                // emit without context fields
                 System.out.println(data);
             }
             else if(cmd.hasOption("update")) {
                 // update the db
-                PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=? where id=?");
+                PreparedStatement updateStmt = conn.prepareStatement("update metadata set data=?, changedate=to_char(current_timestamp, 'YYYY-MM-DD\"T\"HH24:MI:SS') where id=?");
                 updateStmt.setString(1, data);
                 updateStmt.setInt(2, id);
                 updateStmt.executeUpdate();
-                // close...?
-                // TODO should be finally, using.
                 updateStmt.close();
-            } else {
-                // ok, don't output anything except that we processed the record 
             }
 
             ++count;
         }
 
-        // TODO finally, using...
         stmt.close();
         rs.close();
         conn.close();
