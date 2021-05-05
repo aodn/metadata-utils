@@ -2,6 +2,7 @@
 ## MAFIA
 
 CLI tool for Iso19139 Administration
+Requires Java RE 1.7
 
 
 ### TODO
