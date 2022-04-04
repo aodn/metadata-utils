@@ -1,11 +1,13 @@
 
-## MAFIA
+# MAFIA
 
 CLI tool for Iso19139 Administration
 Requires Java RE 1.7
 
+## Licensing
+This project is licensed under the terms of the GNU GPLv3 license.
 
-### TODO
+## TODO
 - removal of saxon dependency.
     Note need for factory.setNamespaceAware(true) in non-saxon implementation
 
@@ -15,21 +17,21 @@ Requires Java RE 1.7
 - done - remove need to specify the class
 - done - rename artifact from myartifact.jar
 
-### Build
+## Build
     mvn clean install
 
-### Warning
+## Warning
 
 This utility performs no concurrent update checking so it is recommended to 
 shutdown the geonetwork instance which needs to be updated to prevent
 concurrent updates by the application
 
 
-### Examples
+## Examples
 
 
 
-##### Get help
+#### Get help
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar -help
 
@@ -55,7 +57,7 @@ usage: Updater
 
 ```
 
-##### Apply explicit identity transform
+#### Apply explicit identity transform
 ```
 TODO: Fixme!
 java -jar ./validate/target/validate-1.0.0.jar \
@@ -65,7 +67,7 @@ java -jar ./validate/target/validate-1.0.0.jar \
   | less
 ```
 
-##### Apply explicit identity transform and validation using schema folder instead of schema (.xsd) file
+#### Apply explicit identity transform and validation using schema folder instead of schema (.xsd) file
 ```
 java -jar ./validate/target/validate-1.0.0.jar \
   -source ./resources/argo.xml \
@@ -75,7 +77,7 @@ java -jar ./validate/target/validate-1.0.0.jar \
 ```
 
 
-##### Dump untransformed Argo record to stdout
+#### Dump untransformed Argo record to stdout
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
@@ -83,7 +85,7 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
   -stdout
 ```
 
-##### Validate Argo record against mcp-2 schema
+#### Validate Argo record against mcp-2 schema
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
@@ -91,7 +93,7 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
   -validate ../mcp-2.0/schema-plugins/iso19139.mcp-2.0/schema.xsd
 ```
 
-##### Validate all records against mcp-2 schema and generate report
+#### Validate all records against mcp-2 schema and generate report
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
@@ -101,7 +103,7 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
 ```
 
 
-##### Transform Argo record from draft mcp-2 to mcp-2 and validate but do not update
+#### Transform Argo record from draft mcp-2 to mcp-2 and validate but do not update
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
@@ -111,7 +113,7 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
 ```
 
 
-##### Transform Argo record from draft mcp-2 to mcp-2 and perform in-place update
+#### Transform Argo record from draft mcp-2 to mcp-2 and perform in-place update
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
@@ -120,7 +122,7 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
   -update
 ```
 
-##### Transform Argo record from mcp-2 to iso19139 and validate
+#### Transform Argo record from mcp-2 to iso19139 and validate
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar \
   -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
@@ -130,7 +132,7 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
 ```
 
 
-##### Port forward vagrant box postgres instance and dump all records to stdout
+#### Port forward vagrant box postgres instance and dump all records to stdout
 ```
 Fixme!
 
@@ -141,7 +143,7 @@ java -jar ./mafia/target/mafia-1.0.0.jar \
   -all -stdout
 ```
 
-##### List non harvested and non template metadata record uuids with schema validation errors
+#### List non harvested and non template metadata record uuids with schema validation errors
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar  \ 
     -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
@@ -152,7 +154,7 @@ java -jar ./mafia/target/mafia-1.0.0.jar  \
     -invalids invalids.txt 
 ```
 
-##### Transform to fix validation errors for selected list of uuids and downloads metadata.xml (before and after applying fix)
+#### Transform to fix validation errors for selected list of uuids and downloads metadata.xml (before and after applying fix)
 ```
 java -jar ./mafia/target/mafia-1.0.0.jar 
     -url jdbc:postgresql://geonetwork2/geonetwork -user geonetwork -pass geonetwork \
